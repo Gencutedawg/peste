@@ -8,14 +8,14 @@ use App\Http\Middleware\IsOperator;
 
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('landing');
 });
 
 //only for user route
 Route::middleware(['auth', IsOperator::class])->group(function () {
         Route::get('/dashboard', function () {
         return view('dashboard');
-        })->middleware(['auth', 'verified'])->name('dashboard');
+        })->name('dashboard');
 
 });
 

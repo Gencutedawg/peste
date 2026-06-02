@@ -10,8 +10,8 @@
     </a>
 </div>
 
-<div class="row">
-    <div class="col-lg-8">
+<div class="row justify-content-center">
+    <div class="col-xl-8 col-lg-10">
         <div class="card">
             <div class="card-header" style="background: #f8f9fa; border-bottom: 2px solid #e3e6f0;">
                 <h5 class="mb-0" style="color: #1D3557; font-weight: 600;">Plate Information</h5>
@@ -108,8 +108,19 @@
                         </div>
                     </div>
 
+                    <!-- Status -->
+                    <div class="mb-4">
+                        <h6 style="color: #1D3557; font-weight: 600; margin-bottom: 15px;">Status</h6>
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="is_active" name="is_active" value="1" checked>
+                            <label class="form-check-label" for="is_active" style="margin-top: 5px;">
+                                Active
+                            </label>
+                        </div>
+                    </div>
+
                     <!-- Action Buttons -->
-                    <div class="d-flex gap-2 pt-3">
+                    <div class="d-flex gap-2 pt-3 justify-content-end">
                         <button type="submit" class="btn btn-primary" style="padding: 8px 16px; font-size: 14px;">
                             <i class="bi bi-check" style="font-size: 14px; margin-right: 6px;"></i>Create Plate
                         </button>

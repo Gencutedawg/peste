@@ -13,31 +13,23 @@ return new class extends Migration
     {
         Schema::create('plate_specification', function (Blueprint $table) {
             $table->id();
-            $table->string('plate_name', 100);
-            
-            // Weight specifications
+            $table->string('plate_code', 100);
+
             $table->decimal('weight_usl', 10, 2)->nullable();
             $table->decimal('weight_target', 10, 2)->nullable();
             $table->decimal('weight_lsl', 10, 2)->nullable();
-            
-            // Thickness specifications
+
             $table->decimal('thick_usl', 10, 2)->nullable();
             $table->decimal('thick_target', 10, 2)->nullable();
             $table->decimal('thick_lsl', 10, 2)->nullable();
-            
-            // Moisture content specifications
+
             $table->decimal('mc_lsl', 10, 2)->nullable();
-            
-            // Audit tracking
-            $table->timestamp('created_at')->useCurrent();
-            $table->unsignedBigInteger('created_by')->nullable();
-            $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
-            $table->unsignedBigInteger('updated_by')->nullable();
+
+            $table->foreignId('created_by')->nullable()->constrained('users')->nullOnDelete();
+            $table->foreignId('updated_by')->nullable()->constrained('users')->nullOnDelete();
+
             $table->boolean('is_active')->default(true);
-            
-            // Foreign key constraint
-            $table->foreign('created_by')->references('id')->on('users')->onDelete('set null');
-            $table->foreign('updated_by')->references('id')->on('users')->onDelete('set null');
+            $table->timestamps();
         });
     }
 

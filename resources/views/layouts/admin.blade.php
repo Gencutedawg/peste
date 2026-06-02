@@ -122,6 +122,7 @@
             justify-content: space-between;
             padding: 0 30px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            width: calc(100% - 260px);
         }
         
         .topbar .topbar-nav {
@@ -160,10 +161,15 @@
         }
         
         .main-content {
+            position: relative;
+            z-index: 1;
             margin-left: 260px;
+            width: calc(100% - 260px);
             margin-top: 60px;
             padding: 24px;
-            min-height: calc(100vh - 60px - 80px);
+            min-height: auto;
+            padding-bottom: 32px;
+            overflow: visible;
         }
         
         .footer {
@@ -335,6 +341,10 @@
             .main-content {
                 margin-left: 0;
                 margin-top: 60px;
+            }
+
+            .sidebar.show ~ .main-content {
+                margin-top: 520px;
             }
             
             .footer {
