@@ -12,7 +12,7 @@ Route::get('/', function () {
 });
 
 //only for user route
-Route::middleware(['auth', IsOperator::class])->group(function () {
+Route::middleware(['auth', 'verified', IsOperator::class])->group(function () {
         Route::get('/dashboard', function () {
         return view('dashboard');
         })->name('dashboard');
@@ -20,7 +20,7 @@ Route::middleware(['auth', IsOperator::class])->group(function () {
 });
 
 //only for admin route
-Route::middleware(['auth', IsAdmin::class])->group(function () {
+Route::middleware(['auth', 'verified', IsAdmin::class])->group(function () {
         Route::get('/admin/dashboard', [AdminController::class, 'AdminDashboard'])
         ->name('admin.dashboard');
         
