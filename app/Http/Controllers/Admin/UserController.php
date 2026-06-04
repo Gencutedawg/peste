@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
@@ -60,8 +62,14 @@ class UserController extends Controller
             'first_name' => 'required|string|max:255',
             'middle_name' => 'nullable|string|max:255',
             'last_name' => 'required|string|max:255',
-            'username' => 'required|string|max:255|unique:users,username',
-            'email' => 'required_if:role,admin|nullable|email|unique:users,email|max:255',
+            'username' => 'required_if:role,operator|nullable|string|max:255|unique:users,username',
+            'email' => [
+                'required_if:role,admin',
+                'nullable',
+                'email',
+                Rule::unique('users', 'email')->whereNotNull('email')->whereNull('deleted_at'),
+                'max:255'
+            ],
             'password' => 'required|string|min:8|confirmed',
             'role' => 'required|in:admin,operator',
         ]);
@@ -70,6 +78,7 @@ class UserController extends Controller
         $validated['password'] = Hash::make($validated['password']);
         $validated['is_active'] = 1;
         $validated['token_used'] = 0;
+        $validated['created_by'] = Auth::id();
 
         if ($validated['role'] === 'operator') {
             $validated['email_verified_at'] = now();
@@ -107,8 +116,20 @@ class UserController extends Controller
             'middle_name' => 'nullable|string|max:255',
             'last_name' => 'required|string|max:255',
             'name' => 'required|string|max:255',
-            'username' => 'nullable|string|max:255|unique:users,username,' . $user->id,
-            'email' => 'required_if:role,admin|nullable|email|max:255|unique:users,email,' . $user->id,
+            'username' => [
+                'required_if:role,operator',
+                'nullable',
+                'string',
+                'max:255',
+                Rule::unique('users', 'username')->ignore($user->id)->whereNull('deleted_at'),
+            ],
+            'email' => [
+                'required_if:role,admin',
+                'nullable',
+                'email',
+                Rule::unique('users', 'email')->ignore($user->id)->whereNotNull('email')->whereNull('deleted_at'),
+                'max:255'
+            ],
             'password' => 'nullable|string|min:8|confirmed',
             'role' => 'required|in:admin,operator',
             'is_active' => 'required|boolean',
@@ -120,6 +141,7 @@ class UserController extends Controller
             unset($validated['password']);
         }
 
+        $validated['updated_by'] = Auth::id();
         $user->update($validated);
 
         return redirect()->route('users.index')

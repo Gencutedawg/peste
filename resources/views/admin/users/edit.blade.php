@@ -432,3 +432,50 @@
     </div>
 </div>
 @endsection
+
+@section('scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // SweetAlert confirmation for form submission
+        const editUserForm = document.getElementById('editUserForm');
+        
+        editUserForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Collect form data
+            const firstName = document.querySelector('#first_name').value;
+            const middleName = document.querySelector('#middle_name').value;
+            const lastName = document.querySelector('#last_name').value;
+            const role = document.querySelector('#role').value;
+            const email = document.querySelector('#email')?.value || 'N/A';
+            const username = document.querySelector('#username')?.value || 'N/A';
+            const isActive = document.querySelector('#is_active').checked ? 'Yes' : 'No';
+            
+            // Build summary HTML
+            const summaryHtml = `
+                <div style="text-align: left; font-size: 0.95rem; line-height: 1.8;">
+                    <div style="margin-bottom: 0.5rem;"><strong>Full Name:</strong> ${firstName} ${middleName ? middleName + ' ' : ''}${lastName}</div>
+                    <div style="margin-bottom: 0.5rem;"><strong>Account Type:</strong> <span style="text-transform: capitalize; background: ${role === 'admin' ? '#e7f3ff' : '#f0f0f0'}; padding: 2px 8px; border-radius: 4px;">${role}</span></div>
+                    ${role === 'admin' ? `<div style="margin-bottom: 0.5rem;"><strong>Email:</strong> ${email}</div>` : `<div style="margin-bottom: 0.5rem;"><strong>Username:</strong> ${username}</div>`}
+                    <div style="margin-bottom: 0.5rem;"><strong>Status:</strong> ${isActive}</div>
+                </div>
+            `;
+
+            Swal.fire({
+                title: 'Confirm Update',
+                html: `<div style="margin-bottom: 1rem;">Please review the information below:</div>${summaryHtml}`,
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#2C6CB0',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Yes, Update',
+                cancelButtonText: 'Cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    editUserForm.submit();
+                }
+            });
+        });
+    });
+</script>
+@endsection

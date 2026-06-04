@@ -160,14 +160,14 @@
                                     <a href="{{ route('plates.edit', $plate) }}" class="btn btn-outline-primary" title="Edit plate" aria-label="Edit">
                                         <i class="bi bi-pencil"></i>
                                     </a>
-                                    <form action="{{ route('plates.destroy', $plate) }}" method="POST" style="display: inline;">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-outline-danger" title="Delete plate" aria-label="Delete" onclick="return confirm('Delete this plate?');">
-                                            <i class="bi bi-trash"></i>
-                                        </button>
-                                    </form>
+                                    <button type="button" class="btn btn-outline-danger delete-plate" data-plate-id="{{ $plate->id }}" data-plate-code="{{ $plate->plate_code }}" title="Delete plate" aria-label="Delete">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
                                 </div>
+                                <form id="delete-plate-{{ $plate->id }}" action="{{ route('plates.destroy', $plate) }}" method="POST" style="display: none;">
+                                    @csrf
+                                    @method('DELETE')
+                                </form>
                             </td>
                         </tr>
                     @empty
@@ -204,6 +204,29 @@
                 paginate: { first: "First", last: "Last", next: "Next", previous: "Previous" },
                 emptyTable: "No plates found"
             }
+        });
+
+        // SweetAlert for delete plate
+        document.querySelectorAll('.delete-plate').forEach(button => {
+            button.addEventListener('click', function() {
+                const plateId = this.getAttribute('data-plate-id');
+                const plateCode = this.getAttribute('data-plate-code');
+
+                Swal.fire({
+                    title: 'Delete Plate?',
+                    text: `Are you sure you want to delete plate "${plateCode}"? This action cannot be undone.`,
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#dc3545',
+                    cancelButtonColor: '#6c757d',
+                    confirmButtonText: 'Yes, Delete',
+                    cancelButtonText: 'Cancel'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        document.getElementById(`delete-plate-${plateId}`).submit();
+                    }
+                });
+            });
         });
     });
 </script>

@@ -431,3 +431,59 @@
     </div>
 </div>
 @endsection
+
+@section('scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // SweetAlert confirmation for form submission
+        const createPlateForm = document.getElementById('createPlateForm');
+        const isEditForm = createPlateForm.getAttribute('action').includes('update');
+        
+        createPlateForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Collect form data
+            const plateCode = document.querySelector('#plate_code').value;
+            const weightTarget = document.querySelector('#weight_target').value;
+            const weightUsl = document.querySelector('#weight_usl').value;
+            const weightLsl = document.querySelector('#weight_lsl').value;
+            const thickTarget = document.querySelector('#thick_target').value;
+            const thickUsl = document.querySelector('#thick_usl').value;
+            const thickLsl = document.querySelector('#thick_lsl').value;
+            
+            // Build summary HTML
+            let summaryHtml = `
+                <div style="text-align: left; font-size: 0.95rem; line-height: 1.8;">
+                    <div style="margin-bottom: 0.5rem;"><strong>Plate Code:</strong> ${plateCode}</div>
+                    <div style="background: #f5f5f5; padding: 0.75rem; border-radius: 4px; margin: 0.5rem 0;">
+                        <div style="font-weight: bold; margin-bottom: 0.5rem;">Weight Specifications:</div>
+                        <div>Target: ${weightTarget} | USL: ${weightUsl} | LSL: ${weightLsl}</div>
+                    </div>
+                    <div style="background: #f5f5f5; padding: 0.75rem; border-radius: 4px;">
+                        <div style="font-weight: bold; margin-bottom: 0.5rem;">Thickness Specifications:</div>
+                        <div>Target: ${thickTarget} | USL: ${thickUsl} | LSL: ${thickLsl}</div>
+                    </div>
+                </div>
+            `;
+            
+            const actionText = isEditForm ? 'update' : 'create';
+            const confirmText = isEditForm ? 'Yes, Update' : 'Yes, Create';
+
+            Swal.fire({
+                title: 'Confirm ' + (isEditForm ? 'Update' : 'Create'),
+                html: `<div style="margin-bottom: 1rem;">Please review the information below:</div>${summaryHtml}`,
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#2C6CB0',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: confirmText,
+                cancelButtonText: 'Cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    createPlateForm.submit();
+                }
+            });
+        });
+    });
+</script>
+@endsection

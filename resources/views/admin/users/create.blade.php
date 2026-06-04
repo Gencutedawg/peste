@@ -360,8 +360,9 @@
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
-                    <!-- Conditional: Email for Admin, Username for Operator -->
-                    <div id="emailField" class="conditional-section active">
+                    <!-- Email only for Admin -->
+                    @if(old('role', 'admin') === 'admin')
+                    <div id="emailField">
                         <label for="email" class="form-label">
                             Email Address
                             <span class="required">*</span>
@@ -372,7 +373,9 @@
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
-                    <div id="usernameField" class="conditional-section">
+                    @else
+                    <!-- Username only for Operator -->
+                    <div id="usernameField">
                         <label for="username" class="form-label">
                             Username
                             <span class="required">*</span>
@@ -383,6 +386,7 @@
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
+                    @endif
                 </div>
             </div>
 
@@ -426,31 +430,101 @@
     document.addEventListener('DOMContentLoaded', function() {
         const adminRadio = document.querySelector('input[value="admin"]');
         const operatorRadio = document.querySelector('input[value="operator"]');
-        const emailField = document.getElementById('emailField');
-        const usernameField = document.getElementById('usernameField');
+        const lastNameDiv = document.querySelector('input[name="last_name"]').parentElement;
         const emailInput = document.querySelector('#email');
         const usernameInput = document.querySelector('#username');
+        const emailFieldDiv = emailInput ? emailInput.parentElement : null;
+        const usernameFieldDiv = usernameInput ? usernameInput.parentElement : null;
 
         function updateFields(role) {
+            const formRow = lastNameDiv.parentElement;
+            
             if (role === 'admin') {
-                emailField.classList.add('active');
-                usernameField.classList.remove('active');
-                emailInput.setAttribute('required', 'required');
-                usernameInput.removeAttribute('required');
+                if (usernameFieldDiv && usernameFieldDiv.parentElement === formRow) {
+                    usernameFieldDiv.remove();
+                }
+                
+                if (!document.querySelector('#emailField')) {
+                    const emailField = document.createElement('div');
+                    emailField.id = 'emailField';
+                    emailField.innerHTML = `
+                        <label for="email" class="form-label">
+                            Email Address
+                            <span class="required">*</span>
+                        </label>
+                        <input type="email" class="form-control" id="email" name="email" value="" required>
+                        <div class="invalid-feedback"></div>
+                    `;
+                    formRow.appendChild(emailField);
+                }
             } else {
-                emailField.classList.remove('active');
-                usernameField.classList.add('active');
-                emailInput.removeAttribute('required');
-                usernameInput.setAttribute('required', 'required');
+                if (emailFieldDiv && emailFieldDiv.parentElement === formRow) {
+                    emailFieldDiv.remove();
+                }
+                
+                if (!document.querySelector('#usernameField')) {
+                    const usernameField = document.createElement('div');
+                    usernameField.id = 'usernameField';
+                    usernameField.innerHTML = `
+                        <label for="username" class="form-label">
+                            Username
+                            <span class="required">*</span>
+                        </label>
+                        <input type="text" class="form-control" id="username" name="username" value="">
+                        <div class="invalid-feedback"></div>
+                    `;
+                    formRow.appendChild(usernameField);
+                }
             }
         }
 
         adminRadio.addEventListener('change', () => updateFields('admin'));
         operatorRadio.addEventListener('change', () => updateFields('operator'));
 
-        // Initialize based on current selection
-        const currentRole = document.querySelector('input[name="role"]:checked').value;
-        updateFields(currentRole);
+        // SweetAlert confirmation for form submission
+        const createUserForm = document.getElementById('createUserForm');
+        const isEditForm = createUserForm.getAttribute('action').includes('update');
+        
+        createUserForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Collect form data
+            const role = document.querySelector('input[name="role"]:checked').value;
+            const firstName = document.querySelector('#first_name').value;
+            const middleName = document.querySelector('#middle_name').value;
+            const lastName = document.querySelector('#last_name').value;
+            const email = document.querySelector('#email')?.value || 'N/A';
+            const username = document.querySelector('#username')?.value || 'N/A';
+            const isActive = document.querySelector('#is_active')?.checked ? 'Yes' : 'No';
+            
+            // Build summary HTML
+            let summaryHtml = `
+                <div style="text-align: left; font-size: 0.95rem; line-height: 1.8;">
+                    <div style="margin-bottom: 0.5rem;"><strong>Full Name:</strong> ${firstName} ${middleName ? middleName + ' ' : ''}${lastName}</div>
+                    <div style="margin-bottom: 0.5rem;"><strong>Account Type:</strong> <span style="text-transform: capitalize; background: ${role === 'admin' ? '#e7f3ff' : '#f0f0f0'}; padding: 2px 8px; border-radius: 4px;">${role}</span></div>
+                    ${role === 'admin' ? `<div style="margin-bottom: 0.5rem;"><strong>Email:</strong> ${email}</div>` : `<div style="margin-bottom: 0.5rem;"><strong>Username:</strong> ${username}</div>`}
+                    ${isEditForm ? `<div style="margin-bottom: 0.5rem;"><strong>Status:</strong> ${isActive}</div>` : ''}
+                </div>
+            `;
+            
+            const actionText = isEditForm ? 'update' : 'create';
+            const confirmText = isEditForm ? 'Yes, Update' : 'Yes, Create';
+
+            Swal.fire({
+                title: 'Confirm ' + (isEditForm ? 'Update' : 'Create'),
+                html: `<div style="margin-bottom: 1rem;">Please review the information below:</div>${summaryHtml}`,
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#2C6CB0',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: confirmText,
+                cancelButtonText: 'Cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    createUserForm.submit();
+                }
+            });
+        });
     });
 </script>
 @endsection

@@ -33,7 +33,7 @@ class AdminLoginRequest extends FormRequest
         $password = $this->string('password');
         $remember = $this->boolean('remember');
 
-        $credentials = ['password' => $password];
+        $credentials = ['password' => $password, 'role' => 'admin'];
         $attempted = Auth::attempt(array_merge($credentials, ['email' => $login]), $remember);
 
         if (! $attempted) {

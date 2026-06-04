@@ -159,14 +159,14 @@
                                     <a href="{{ route('users.edit', $user) }}" class="btn btn-outline-primary" title="Edit user" aria-label="Edit">
                                         <i class="bi bi-pencil"></i>
                                     </a>
-                                    <form action="{{ route('users.destroy', $user) }}" method="POST" style="display: inline;">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-outline-danger" title="Delete user" aria-label="Delete" onclick="return confirm('Delete this user?');">
-                                            <i class="bi bi-trash"></i>
-                                        </button>
-                                    </form>
+                                    <button type="button" class="btn btn-outline-danger delete-user" data-user-id="{{ $user->id }}" data-user-name="{{ $user->first_name ?? $user->name }}" title="Delete user" aria-label="Delete">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
                                 </div>
+                                <form id="delete-user-{{ $user->id }}" action="{{ route('users.destroy', $user) }}" method="POST" style="display: none;">
+                                    @csrf
+                                    @method('DELETE')
+                                </form>
                             </td>
                         </tr>
                     @empty
@@ -203,6 +203,29 @@
                 paginate: { first: "First", last: "Last", next: "Next", previous: "Previous" },
                 emptyTable: "No users found"
             }
+        });
+
+        // SweetAlert for delete user
+        document.querySelectorAll('.delete-user').forEach(button => {
+            button.addEventListener('click', function() {
+                const userId = this.getAttribute('data-user-id');
+                const userName = this.getAttribute('data-user-name');
+
+                Swal.fire({
+                    title: 'Delete User?',
+                    text: `Are you sure you want to delete ${userName}? This action cannot be undone.`,
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#dc3545',
+                    cancelButtonColor: '#6c757d',
+                    confirmButtonText: 'Yes, Delete',
+                    cancelButtonText: 'Cancel'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        document.getElementById(`delete-user-${userId}`).submit();
+                    }
+                });
+            });
         });
     });
 </script>

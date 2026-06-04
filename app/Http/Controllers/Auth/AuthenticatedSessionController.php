@@ -89,6 +89,11 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerateToken();
 
+        // Clear any cached user data
+        if (auth()->check()) {
+            auth()->logout();
+        }
+
         return redirect('/');
     }
 }

@@ -33,7 +33,7 @@ class OperatorLoginRequest extends FormRequest
         $password = $this->string('password');
         $remember = $this->boolean('remember');
 
-        $attempted = Auth::attempt(['username' => $login, 'password' => $password], $remember);
+        $attempted = Auth::attempt(['username' => $login, 'password' => $password, 'role' => 'operator'], $remember);
 
         if (! $attempted) {
             RateLimiter::hit($this->throttleKey());
