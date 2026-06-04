@@ -404,10 +404,19 @@
                             Lower Specification Limit (LSL) %
                             <span class="required">*</span>
                         </label>
-                        <input type="number" step="0.01" min="0" max="999.99"
-                               class="form-control @error('mc_lsl') is-invalid @enderror"
-                               id="mc_lsl" name="mc_lsl" value="{{ old('mc_lsl') }}"
-                               placeholder="8.00" required>
+                        <select class="form-select @error('mc_lsl') is-invalid @enderror"
+                                id="mc_lsl" name="mc_lsl" required>
+                            <option value="">Select LSL %</option>
+                            <option value="9.5" {{ old('mc_lsl') === '9.5' ? 'selected' : '' }}>9.5%</option>
+                            <option value="8.5" {{ old('mc_lsl') === '8.5' ? 'selected' : '' }}>8.5%</option>
+                        </select>
+                        @error('mc_lsl')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                        <div class="field-hint">Select minimum moisture percentage</div>
+                    </div>
+                </div>
+            </div>
                         @error('mc_lsl')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
