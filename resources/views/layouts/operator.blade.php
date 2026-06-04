@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title', 'Admin Dashboard') - {{ config('app.name', 'Dashboard') }}</title>
+    <title>@yield('title', 'Operator Dashboard') - {{ config('app.name', 'Dashboard') }}</title>
     
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -124,6 +124,12 @@
             padding-left: 26px;
         }
 
+        .nav-dropdown-toggle.active {
+            color: white !important;
+            background-color: #2C6CB0;
+            border-left-color: #fff;
+        }
+
         .nav-dropdown-toggle i:first-child {
             margin-right: 8px;
             width: 18px;
@@ -163,12 +169,15 @@
         }
 
         .nav-dropdown .nav-link:hover {
-            background-color: rgba(106, 168, 218, 0.5);
+            color: white !important;
+            background-color: #6EA8DA;
+            border-left-color: #fff;
             padding-left: 48px;
         }
 
         .nav-dropdown .nav-link.active {
-            background-color: rgba(44, 108, 176, 0.6);
+            color: white !important;
+            background-color: #2C6CB0;
             border-left-color: #fff;
         }
         
@@ -437,32 +446,67 @@
         <div class="nav-label">Main Menu</div>
         <ul class="nav flex-column">
             <li class="nav-item">
-                <a class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}" 
-                   href="{{ route('admin.dashboard') }}">
+                <a class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}" 
+                   href="{{ route('dashboard') }}">
                     <i class="bi bi-speedometer2"></i> Dashboard
                 </a>
             </li>
         </ul>
-        
-        <div class="nav-label mt-3">Management</div>
+
+        <div class="nav-label mt-3">Operations</div>
         <ul class="nav flex-column">
+            <!-- Testing Dropdown -->
             <li class="nav-item">
-                <a class="nav-link {{ request()->routeIs('users.index') ? 'active' : '' }}" 
-                   href="{{ route('users.index') }}">
-                    <i class="bi bi-people"></i> User Management
-                </a>
+                <button class="nav-dropdown-toggle {{ request()->routeIs('testing.*') ? 'active' : '' }}" id="testingToggle" type="button">
+                    <div style="display: flex; align-items: center;">
+                        <i class="bi bi-flask"></i> Testing
+                    </div>
+                    <i class="bi bi-chevron-down dropdown-arrow"></i>
+                </button>
+                <ul class="nav flex-column nav-dropdown {{ request()->routeIs('testing.*') ? 'show' : '' }}" id="testingDropdown">
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('testing.weight') ? 'active' : '' }}" href="{{ route('testing.weight') }}">
+                            <i class="bi bi-circle-fill" style="font-size: 6px;"></i> Weight Testing
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('testing.thickness') ? 'active' : '' }}" href="{{ route('testing.thickness') }}">
+                            <i class="bi bi-circle-fill" style="font-size: 6px;"></i> Thickness Testing
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('testing.moisture') ? 'active' : '' }}" href="{{ route('testing.moisture') }}">
+                            <i class="bi bi-circle-fill" style="font-size: 6px;"></i> Moisture Content Analysis
+                        </a>
+                    </li>
+                </ul>
             </li>
+
+            <!-- SPC Alarm Dropdown -->
             <li class="nav-item">
-                <a class="nav-link {{ request()->routeIs('plates.index') ? 'active' : '' }}" 
-                   href="{{ route('plates.index') }}">
-                    <i class="bi bi-layers"></i> Plate Type Management
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link {{ request()->routeIs('spc-report.*') ? 'active' : '' }}" 
-                   href="javascript:void(0);">
-                    <i class="bi bi-file-earmark-text"></i> SPC Report
-                </a>
+                <button class="nav-dropdown-toggle {{ request()->routeIs('alarm.*') ? 'active' : '' }}" id="alarmToggle" type="button">
+                    <div style="display: flex; align-items: center;">
+                        <i class="bi bi-exclamation-triangle"></i> SPC Alarm
+                    </div>
+                    <i class="bi bi-chevron-down dropdown-arrow"></i>
+                </button>
+                <ul class="nav flex-column nav-dropdown {{ request()->routeIs('alarm.*') ? 'show' : '' }}" id="alarmDropdown">
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('alarm.weight') ? 'active' : '' }}" href="{{ route('alarm.weight') }}">
+                            <i class="bi bi-circle-fill" style="font-size: 6px;"></i> Weight Alarm
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('alarm.thickness') ? 'active' : '' }}" href="{{ route('alarm.thickness') }}">
+                            <i class="bi bi-circle-fill" style="font-size: 6px;"></i> Thickness Alarm
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('alarm.moisture') ? 'active' : '' }}" href="{{ route('alarm.moisture') }}">
+                            <i class="bi bi-circle-fill" style="font-size: 6px;"></i> Moisture Content Alarm
+                        </a>
+                    </li>
+                </ul>
             </li>
         </ul>
     </nav>
@@ -543,7 +587,7 @@
 
     <!-- Footer -->
     <footer class="footer">
-        <p>&copy; {{ date('Y') }} {{ config('app.name', 'Dashboard') }}. All rights reserved. | Admin Dashboard</p>
+        <p>&copy; {{ date('Y') }} {{ config('app.name', 'Dashboard') }}. All rights reserved. | Operator Dashboard</p>
     </footer>
 
     <!-- Bootstrap 5 JS -->
@@ -572,6 +616,24 @@
         const sidebarLinks = document.querySelectorAll('.sidebar .nav-link');
         sidebarLinks.forEach(link => {
             link.addEventListener('click', closeSidebar);
+        });
+
+        // Dropdown Toggle Functionality
+        const testingToggle = document.getElementById('testingToggle');
+        const testingDropdown = document.getElementById('testingDropdown');
+        const alarmToggle = document.getElementById('alarmToggle');
+        const alarmDropdown = document.getElementById('alarmDropdown');
+
+        testingToggle?.addEventListener('click', function(e) {
+            e.preventDefault();
+            testingDropdown.classList.toggle('show');
+            testingToggle.classList.toggle('active');
+        });
+
+        alarmToggle?.addEventListener('click', function(e) {
+            e.preventDefault();
+            alarmDropdown.classList.toggle('show');
+            alarmToggle.classList.toggle('active');
         });
         
         // SweetAlert for success messages

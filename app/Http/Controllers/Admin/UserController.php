@@ -41,7 +41,9 @@ class UserController extends Controller
             $query->where('is_active', $status === 'active' ? 1 : 0);
         }
 
-        $users = $query->paginate(10);
+        $perPage = (int) $request->input('per_page', 10);
+        $users = $query->paginate($perPage)->withQueryString();
+        
         return view('admin.users.index', compact('users'));
     }
 

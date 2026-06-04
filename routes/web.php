@@ -17,6 +17,32 @@ Route::middleware(['auth', IsOperator::class, \App\Http\Middleware\ValidateSessi
         return view('dashboard');
         })->name('dashboard');
 
+        // Testing Routes
+        Route::prefix('testing')->name('testing.')->group(function () {
+                Route::get('weight', function () {
+                        return view('operator.testing.weight');
+                })->name('weight');
+                Route::get('thickness', function () {
+                        return view('operator.testing.thickness');
+                })->name('thickness');
+                Route::get('moisture', function () {
+                        return view('operator.testing.moisture');
+                })->name('moisture');
+        });
+
+        // SPC Alarm Routes
+        Route::prefix('alarm')->name('alarm.')->group(function () {
+                Route::get('weight', function () {
+                        return view('operator.alarm.weight');
+                })->name('weight');
+                Route::get('thickness', function () {
+                        return view('operator.alarm.thickness');
+                })->name('thickness');
+                Route::get('moisture', function () {
+                        return view('operator.alarm.moisture');
+                })->name('moisture');
+        });
+
 });
 
 //only for admin route

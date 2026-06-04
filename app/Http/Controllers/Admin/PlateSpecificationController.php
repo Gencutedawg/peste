@@ -30,7 +30,8 @@ class PlateSpecificationController extends Controller
             }
         }
 
-        $plates = $query->orderBy('created_at', 'desc')->get();
+        $perPage = (int) $request->input('per_page', 10);
+        $plates = $query->orderBy('created_at', 'desc')->paginate($perPage)->withQueryString();
 
         return view('admin.plates.index', compact('plates'));
     }

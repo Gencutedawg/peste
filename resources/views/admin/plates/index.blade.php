@@ -43,17 +43,20 @@
     /* Pagination - improved spacing */
     .dataTables_paginate { margin-top: 1rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem; }
     .dataTables_info { color: #6c757d; font-size: 0.875rem; }
-    .pagination { margin: 0; gap: 0.25rem; }
+    .pagination { margin: 0; gap: 0.25rem; display: inline-flex; }
     .page-link {
         color: #2C6CB0;
         border-color: #dee2e6;
         border-radius: 6px;
-        padding: 0.375rem 0.5rem;
+        padding: 0.375rem 0.625rem;
         font-size: 0.875rem;
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
     }
     .page-link:hover { color: #fff; background-color: #2C6CB0; border-color: #2C6CB0; }
     .page-item.active .page-link { background-color: #2C6CB0; border-color: #2C6CB0; }
-    .page-item.disabled .page-link { color: #6c757d; background-color: #fff; border-color: #dee2e6; }
+    .page-item.disabled .page-link { color: #6c757d; background-color: #fff; border-color: #dee2e6; cursor: not-allowed; }
 
     /* Action buttons group */
     .btn-group-sm { gap: 0.5rem; }
@@ -67,6 +70,9 @@
         .filter-toolbar { flex-direction: column; }
         .filter-toolbar > * { width: 100%; }
         .filter-toolbar .btn-group { width: 100%; }
+        
+        .pagination { flex-wrap: wrap; }
+        .page-link { padding: 0.5rem 0.375rem; font-size: 0.8125rem; }
     }
 </style>
 @endsection
@@ -83,6 +89,18 @@
 <!-- Filter Toolbar -->
 <div class="d-flex filter-toolbar align-items-center flex-wrap mb-3">
     <form method="GET" action="{{ route('plates.index') }}" class="d-flex filter-toolbar align-items-center flex-wrap" id="filterForm" style="gap: 0.5rem; width: 100%;">
+        <!-- Show Entries Dropdown -->
+        <div class="d-flex align-items-center" style="gap: 0.5rem;">
+            <label for="perPage" class="small mb-0" style="white-space: nowrap;">Show</label>
+            <select class="form-select form-select-sm" id="perPage" name="per_page" style="width: 70px;" onchange="document.getElementById('filterForm').submit();">
+                <option value="10" {{ request('per_page', 10) == 10 ? 'selected' : '' }}>10</option>
+                <option value="25" {{ request('per_page') == 25 ? 'selected' : '' }}>25</option>
+                <option value="50" {{ request('per_page') == 50 ? 'selected' : '' }}>50</option>
+                <option value="100" {{ request('per_page') == 100 ? 'selected' : '' }}>100</option>
+            </select>
+            <span class="small text-muted" style="white-space: nowrap;">entries</span>
+        </div>
+
         <!-- Search Input -->
         <input type="text" class="form-control form-control-sm" id="searchPlates" name="search" placeholder="Search plate code..." style="min-width: 200px; flex: 1; max-width: 300px;" value="{{ request('search') }}">
 
@@ -182,6 +200,11 @@
             </table>
         </div>
     </div>
+
+    <!-- Pagination -->
+    <div class="mt-3 px-3 pb-3">
+        {{ $plates->links('pagination::bootstrap-5') }}
+    </div>
 </div>
 @endsection
 
@@ -191,20 +214,7 @@
 <script src="https://cdn.jsdelivr.net/npm/datatables.net-bs5@1.13.4/js/dataTables.bootstrap5.min.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        const table = new DataTable('#platesTable', {
-            pageLength: 10,
-            ordering: false,
-            searching: false,
-            paging: true,
-            info: true,
-            lengthChange: true,
-            language: {
-                lengthMenu: "Show _MENU_",
-                info: "Showing _START_ to _END_ of _TOTAL_ plates",
-                paginate: { first: "First", last: "Last", next: "Next", previous: "Previous" },
-                emptyTable: "No plates found"
-            }
-        });
+        // Disable DataTables - using Laravel server-side pagination instead
 
         // SweetAlert for delete plate
         document.querySelectorAll('.delete-plate').forEach(button => {
