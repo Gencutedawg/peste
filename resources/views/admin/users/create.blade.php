@@ -4,193 +4,453 @@
 
 @section('styles')
 <style>
-    .role-toggle {
+    /* Modern SaaS Form Design */
+    .form-container {
+        max-width: 750px;
+        margin: 0 auto;
+    }
+
+    /* Header with breadcrumb */
+    .form-header {
         display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 2rem;
+        gap: 1rem;
+    }
+
+    .form-header-title {
+        display: flex;
+        align-items: center;
         gap: 0.5rem;
-    }
-
-    .role-toggle .btn {
-        flex: 1;
-        border: 1px solid #2C6CB0;
-        background: rgba(44, 108, 176, 0.08);
-        color: #2C6CB0;
-        font-weight: 600;
-        transition: all 0.25s ease;
-    }
-
-    .role-toggle .btn:hover,
-    .role-toggle .btn:focus {
-        background: rgba(44, 108, 176, 0.16);
+        font-size: 1.125rem;
         color: #1D3557;
     }
 
-    .role-toggle .btn.active {
-        background: #2C6CB0;
-        color: #ffffff;
-        box-shadow: 0 8px 24px rgba(44, 108, 176, 0.24);
+    .form-header-title .breadcrumb-sep {
+        color: #ccc;
+        margin: 0 0.25rem;
     }
 
-    .role-toggle .btn.active:hover,
-    .role-toggle .btn.active:focus {
-        background: #1D3557;
+    .form-header-buttons {
+        display: flex;
+        gap: 0.75rem;
+    }
+
+    /* Card styling - minimal */
+    .form-card {
+        border: 1px solid #e3e6f0;
+        border-radius: 8px;
+        background: #fff;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+        padding: 2rem;
+    }
+
+    /* Form groups - compact */
+    .form-group-section {
+        margin-bottom: 1.75rem;
+    }
+
+    .form-group-section:last-child {
+        margin-bottom: 0;
+    }
+
+    .form-section-title {
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: #1D3557;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 1rem;
+        display: block;
+    }
+
+    /* Radio button group - modern style */
+    .radio-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+        margin-bottom: 1.75rem;
+    }
+
+    .radio-option {
+        display: flex;
+        align-items: center;
+        padding: 0.75rem;
+        border: 1px solid #e3e6f0;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: all 0.15s ease;
+        background: #fff;
+    }
+
+    .radio-option:hover {
+        border-color: #2C6CB0;
+        background-color: #f8f9fa;
+    }
+
+    .radio-option input[type="radio"] {
+        margin-right: 0.75rem;
+        cursor: pointer;
+        accent-color: #2C6CB0;
+    }
+
+    .radio-option-label {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        cursor: pointer;
+    }
+
+    .radio-option-title {
+        font-weight: 600;
+        color: #1D3557;
+        font-size: 0.9375rem;
+    }
+
+    .radio-option-desc {
+        font-size: 0.8125rem;
+        color: #6c757d;
+        margin-top: 0.125rem;
+    }
+
+    .radio-option input[type="radio"]:checked + .radio-option-label .radio-option-title {
+        color: #2C6CB0;
+    }
+
+    /* Two-column grid */
+    .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    .form-row.full {
+        grid-template-columns: 1fr;
+    }
+
+    /* Form controls */
+    .form-label {
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: #1D3557;
+        margin-bottom: 0.375rem;
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+    }
+
+    .form-label .required {
+        color: #dc3545;
+        font-weight: 600;
+    }
+
+    .form-control,
+    .form-select {
+        height: 40px;
+        font-size: 0.9375rem;
+        border: 1px solid #e3e6f0;
+        border-radius: 6px;
+        padding: 0.5rem 0.75rem;
+        transition: all 0.15s ease;
+        background-color: #fff;
+    }
+
+    .form-control:focus,
+    .form-select:focus {
+        border-color: #2C6CB0;
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(44, 108, 176, 0.1);
+    }
+
+    .form-control.is-invalid,
+    .form-select.is-invalid {
+        border-color: #dc3545;
+    }
+
+    .form-control.is-invalid:focus {
+        box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.1);
+    }
+
+    /* Validation feedback */
+    .invalid-feedback {
+        display: block;
+        font-size: 0.8125rem;
+        color: #dc3545;
+        margin-top: 0.25rem;
+    }
+
+    /* Helper text */
+    .form-text {
+        font-size: 0.8125rem;
+        color: #6c757d;
+        margin-top: 0.25rem;
+        display: block;
+    }
+
+    /* Conditional sections */
+    .conditional-section {
+        display: none;
+    }
+
+    .conditional-section.active {
+        display: block;
+    }
+
+    /* Buttons */
+    .btn-primary,
+    .btn-secondary {
+        height: 40px;
+        padding: 0.5rem 1rem;
+        font-size: 0.9375rem;
+        font-weight: 500;
+        border-radius: 6px;
+        border: none;
+        cursor: pointer;
+        transition: all 0.15s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .btn-primary {
+        background-color: #2C6CB0;
+        color: white;
+    }
+
+    .btn-primary:hover {
+        background-color: #1D3557;
+    }
+
+    .btn-secondary {
+        background-color: #f0f0f0;
+        color: #1D3557;
+        border: 1px solid #e3e6f0;
+    }
+
+    .btn-secondary:hover {
+        background-color: #e8e8e8;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .form-container {
+            max-width: 100%;
+            padding: 0 1rem;
+        }
+
+        .form-card {
+            padding: 1.5rem;
+        }
+
+        .form-header {
+            flex-direction: column;
+            align-items: flex-start;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-header-buttons {
+            width: 100%;
+            justify-content: flex-end;
+        }
+
+        .form-header-buttons .btn-secondary {
+            display: none;
+        }
+
+        .form-row {
+            grid-template-columns: 1fr;
+            gap: 0.75rem;
+        }
+
+        .form-header-title {
+            font-size: 1rem;
+        }
     }
 </style>
 @endsection
 
 @section('content')
-<div class="container-fluid px-0">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="page-title">Create New User</h1>
-        <a href="{{ route('users.index') }}" class="btn btn-secondary">
-            <i class="bi bi-arrow-left" style="font-size: 13px; margin-right: 6px;"></i>Back
-        </a>
+<div class="form-container">
+    <!-- Header with Breadcrumb & Buttons -->
+    <div class="form-header">
+        <div class="form-header-title">
+            <a href="{{ route('users.index') }}" style="color: #2C6CB0; text-decoration: none;">Users</a>
+            <span class="breadcrumb-sep">/</span>
+            <span>Create User</span>
+        </div>
+        <div class="form-header-buttons">
+            <a href="{{ route('users.index') }}" class="btn-secondary">
+                <i class="bi bi-x"></i>Cancel
+            </a>
+            <button type="submit" form="createUserForm" class="btn-primary">
+                <i class="bi bi-check"></i>Create User
+            </button>
+        </div>
     </div>
 
-    <div class="row justify-content-center">
-    <div class="col-xl-8 col-lg-10">
-        <div class="card">
-            <div class="card-header" style="background: #f8f9fa; border-bottom: 2px solid #e3e6f0;">
-                <h5 class="mb-0" style="color: #1D3557; font-weight: 600;">User Information</h5>
-            </div>
-            <div class="card-body">
-                <form action="{{ route('users.store') }}" method="POST">
-                    @csrf
+    <!-- Form Card -->
+    <div class="form-card">
+        <form action="{{ route('users.store') }}" method="POST" id="createUserForm">
+            @csrf
 
-                    <div class="mb-4">
-                        <label class="form-label">User Role <span class="text-danger">*</span></label>
-                        <div class="btn-group role-toggle" role="group" aria-label="User role">
-                            <button type="button" class="btn {{ old('role', 'admin') === 'admin' ? 'active' : '' }}" data-role="admin">Admin</button>
-                            <button type="button" class="btn {{ old('role') === 'operator' ? 'active' : '' }}" data-role="operator">Operator</button>
+            <!-- Account Type Selection -->
+            <div class="form-group-section">
+                <label class="form-label">
+                    Account Type
+                    <span class="required">*</span>
+                </label>
+                <div class="radio-group">
+                    <label class="radio-option">
+                        <input type="radio" name="role" value="admin" {{ old('role', 'admin') === 'admin' ? 'checked' : '' }} required>
+                        <div class="radio-option-label">
+                            <span class="radio-option-title">Admin</span>
+                            <span class="radio-option-desc">Full access with email login</span>
                         </div>
-                        <input type="hidden" name="role" id="role" value="{{ old('role', 'admin') }}">
-                        @error('role')
-                            <div class="invalid-feedback d-block">{{ $message }}</div>
-                        @enderror
-                    </div>
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="role" value="operator" {{ old('role') === 'operator' ? 'checked' : '' }} required>
+                        <div class="radio-option-label">
+                            <span class="radio-option-title">Operator</span>
+                            <span class="radio-option-desc">Limited access with username login</span>
+                        </div>
+                    </label>
+                </div>
+                @error('role')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
 
-                    <div class="mb-4">
-                        <label for="first_name" class="form-label">First Name <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control @error('first_name') is-invalid @enderror" 
+            <!-- Personal Information -->
+            <div class="form-group-section">
+                <span class="form-section-title">Personal Information</span>
+
+                <div class="form-row">
+                    <div>
+                        <label for="first_name" class="form-label">
+                            First Name
+                            <span class="required">*</span>
+                        </label>
+                        <input type="text" class="form-control @error('first_name') is-invalid @enderror"
                                id="first_name" name="first_name" value="{{ old('first_name') }}" required>
                         @error('first_name')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
-
-                    <div class="mb-4">
+                    <div>
                         <label for="middle_name" class="form-label">Middle Name</label>
-                        <input type="text" class="form-control @error('middle_name') is-invalid @enderror" 
+                        <input type="text" class="form-control @error('middle_name') is-invalid @enderror"
                                id="middle_name" name="middle_name" value="{{ old('middle_name') }}">
                         @error('middle_name')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
-                        <small class="form-text text-muted d-block mt-2">
-                            Optional.
-                        </small>
                     </div>
+                </div>
 
-                    <div class="mb-4">
-                        <label for="last_name" class="form-label">Last Name <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control @error('last_name') is-invalid @enderror" 
+                <div class="form-row">
+                    <div>
+                        <label for="last_name" class="form-label">
+                            Last Name
+                            <span class="required">*</span>
+                        </label>
+                        <input type="text" class="form-control @error('last_name') is-invalid @enderror"
                                id="last_name" name="last_name" value="{{ old('last_name') }}" required>
                         @error('last_name')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
-
-                    <div class="mb-4" id="emailField" style="{{ old('role', 'admin') === 'operator' ? 'display:none;' : '' }}">
-                        <label for="email" class="form-label">Email Address <span class="text-danger">{{ old('role', 'admin') === 'admin' ? '*' : '' }}</span></label>
-                        <input type="email" class="form-control @error('email') is-invalid @enderror" 
-                               id="email" name="email" value="{{ old('email') }}" {{ old('role', 'admin') === 'admin' ? 'required' : '' }}>
+                    <!-- Conditional: Email for Admin, Username for Operator -->
+                    <div id="emailField" class="conditional-section active">
+                        <label for="email" class="form-label">
+                            Email Address
+                            <span class="required">*</span>
+                        </label>
+                        <input type="email" class="form-control @error('email') is-invalid @enderror"
+                               id="email" name="email" value="{{ old('email') }}" required>
                         @error('email')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
-                        <small class="form-text text-muted d-block mt-2">
-                            Only needed for admin accounts. Operators can be created without email.
-                        </small>
                     </div>
-
-                    <div class="mb-4">
-                        <label for="username" class="form-label">Username <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control @error('username') is-invalid @enderror" 
-                               id="username" name="username" value="{{ old('username') }}" required>
+                    <div id="usernameField" class="conditional-section">
+                        <label for="username" class="form-label">
+                            Username
+                            <span class="required">*</span>
+                        </label>
+                        <input type="text" class="form-control @error('username') is-invalid @enderror"
+                               id="username" name="username" value="{{ old('username') }}">
                         @error('username')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
-                        <small class="form-text text-muted d-block mt-2">
-                            Required. Operators can use this field to login instead of email.
-                        </small>
                     </div>
+                </div>
+            </div>
 
-                    <div class="mb-4">
-                        <label for="password" class="form-label">Password <span class="text-danger">*</span></label>
-                        <input type="password" class="form-control @error('password') is-invalid @enderror" 
+            <!-- Security Information -->
+            <div class="form-group-section">
+                <span class="form-section-title">Security</span>
+
+                <div class="form-row">
+                    <div>
+                        <label for="password" class="form-label">
+                            Password
+                            <span class="required">*</span>
+                        </label>
+                        <input type="password" class="form-control @error('password') is-invalid @enderror"
                                id="password" name="password" required>
                         @error('password')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
-                        <small class="form-text text-muted d-block mt-2">
-                            Password must be at least 8 characters long
-                        </small>
+                        <small class="form-text">Minimum 8 characters</small>
                     </div>
-
-                    <div class="mb-4">
-                        <label for="password_confirmation" class="form-label">Confirm Password <span class="text-danger">*</span></label>
-                        <input type="password" class="form-control @error('password_confirmation') is-invalid @enderror" 
+                    <div>
+                        <label for="password_confirmation" class="form-label">
+                            Confirm Password
+                            <span class="required">*</span>
+                        </label>
+                        <input type="password" class="form-control @error('password_confirmation') is-invalid @enderror"
                                id="password_confirmation" name="password_confirmation" required>
                         @error('password_confirmation')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
-
-                    <div class="d-flex gap-2 pt-3 justify-content-end">
-                        <button type="submit" class="btn btn-primary" style="padding: 8px 16px; font-size: 14px;">
-                            <i class="bi bi-check" style="font-size: 14px; margin-right: 6px;"></i>Create User
-                        </button>
-                        <a href="{{ route('users.index') }}" class="btn btn-secondary" style="padding: 8px 16px; font-size: 14px;">
-                            <i class="bi bi-x" style="font-size: 14px; margin-right: 6px;"></i>Cancel
-                        </a>
-                    </div>
-                </form>
+                </div>
             </div>
-        </div>
+        </form>
     </div>
-</div>
 </div>
 @endsection
 
 @section('scripts')
 <script>
-    function updateEmailField(role) {
+    document.addEventListener('DOMContentLoaded', function() {
+        const adminRadio = document.querySelector('input[value="admin"]');
+        const operatorRadio = document.querySelector('input[value="operator"]');
         const emailField = document.getElementById('emailField');
-        const emailInput = document.getElementById('email');
-        const label = emailField.querySelector('label');
+        const usernameField = document.getElementById('usernameField');
+        const emailInput = document.querySelector('#email');
+        const usernameInput = document.querySelector('#username');
 
-        if (role === 'operator') {
-            emailField.style.display = 'none';
-            emailInput.removeAttribute('required');
-            label.innerHTML = 'Email Address';
-        } else {
-            emailField.style.display = '';
-            emailInput.setAttribute('required', 'required');
-            label.innerHTML = 'Email Address <span class="text-danger">*</span>';
+        function updateFields(role) {
+            if (role === 'admin') {
+                emailField.classList.add('active');
+                usernameField.classList.remove('active');
+                emailInput.setAttribute('required', 'required');
+                usernameInput.removeAttribute('required');
+            } else {
+                emailField.classList.remove('active');
+                usernameField.classList.add('active');
+                emailInput.removeAttribute('required');
+                usernameInput.setAttribute('required', 'required');
+            }
         }
-    }
 
-    function updateRoleSelection(role) {
-        document.getElementById('role').value = role;
-        document.querySelectorAll('[data-role]').forEach((button) => {
-            button.classList.toggle('active', button.dataset.role === role);
-        });
-        updateEmailField(role);
-    }
+        adminRadio.addEventListener('change', () => updateFields('admin'));
+        operatorRadio.addEventListener('change', () => updateFields('operator'));
 
-    document.querySelectorAll('[data-role]').forEach((button) => {
-        button.addEventListener('click', () => updateRoleSelection(button.dataset.role));
-    });
-
-    document.addEventListener('DOMContentLoaded', () => {
-        updateRoleSelection(document.getElementById('role').value || 'admin');
+        // Initialize based on current selection
+        const currentRole = document.querySelector('input[name="role"]:checked').value;
+        updateFields(currentRole);
     });
 </script>
 @endsection

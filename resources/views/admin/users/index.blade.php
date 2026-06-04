@@ -5,73 +5,125 @@
 @section('styles')
 <link href="https://cdn.jsdelivr.net/npm/datatables.net-bs5@1.13.4/css/dataTables.bootstrap5.min.css" rel="stylesheet">
 <style>
+    /* Main layout & spacing */
     .dataTables_wrapper { padding: 0; }
-    .dataTables_length { margin-bottom: 20px; }
-    .dataTables_filter { margin-bottom: 20px; }
-    .dataTables_filter label { display: flex; align-items: center; gap: 10px; margin: 0; }
-    .dataTables_filter input { border-radius: 6px; border: 1px solid #dee2e6; padding: 8px 12px; font-size: 14px; min-width: 250px; }
-    .dataTables_length label { display: flex; align-items: center; gap: 8px; margin: 0; }
-    .dataTables_length select { padding: 6px 10px; border-radius: 6px; border: 1px solid #dee2e6; }
-    #usersTable thead th { background: #f8f9fa; border-bottom: 2px solid #e3e6f0; color: #1D3557; font-weight: 600; padding: 16px !important; white-space: nowrap; cursor: pointer; user-select: none; }
-    #usersTable thead th.sorting::after { margin-left: 8px; opacity: 0.8; }
-    #usersTable tbody td { padding: 14px 16px !important; vertical-align: middle; border-bottom: 1px solid #f0f0f0; }
-    #usersTable tbody tr { transition: background-color 0.2s ease; }
+
+    /* Toolbar controls - compact styling */
+    .filter-toolbar { margin-bottom: 1rem; gap: 0.5rem; }
+    .filter-toolbar .form-select-sm,
+    .filter-toolbar .form-control-sm { height: 38px; font-size: 0.875rem; }
+    .filter-toolbar .btn-sm { height: 38px; padding: 0.375rem 0.75rem; font-size: 0.875rem; }
+
+    /* Table controls */
+    .dataTables_length,
+    .dataTables_filter { margin: 0; display: inline-flex; align-items: center; gap: 0.5rem; }
+    .dataTables_length select,
+    .dataTables_filter input { height: 38px; font-size: 0.875rem; }
+
+    /* Table header & body */
+    #usersTable thead th {
+        background: #f8f9fa;
+        border-bottom: 2px solid #e3e6f0;
+        color: #1D3557;
+        font-weight: 600;
+        padding: 0.75rem !important;
+        vertical-align: middle;
+    }
+    #usersTable tbody td {
+        padding: 0.75rem !important;
+        vertical-align: middle;
+        border-bottom: 1px solid #f0f0f0;
+    }
+    #usersTable tbody tr { transition: background-color 0.15s ease; }
     #usersTable tbody tr:hover { background-color: #f8f9fa !important; }
-    .dataTables_paginate { margin-top: 20px; }
-    .dataTables_info { margin-top: 20px; color: #6c757d; font-size: 14px; }
-    .page-link { color: #2C6CB0; border-color: #dee2e6; border-radius: 6px; margin: 0 2px; }
+
+    /* Badges - standardized */
+    .badge-admin { background-color: #1D3557; color: white; padding: 0.375rem 0.75rem; border-radius: 12px; font-weight: 500; font-size: 0.8125rem; }
+    .badge-moderator { background-color: #6EA8DA; color: white; padding: 0.375rem 0.75rem; border-radius: 12px; font-weight: 500; font-size: 0.8125rem; }
+    .badge-success, .badge-danger, .bg-success, .bg-secondary { border-radius: 12px !important; padding: 0.375rem 0.75rem; font-weight: 500; font-size: 0.8125rem; }
+
+    /* Pagination - improved spacing */
+    .dataTables_paginate { margin-top: 1rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem; }
+    .dataTables_info { color: #6c757d; font-size: 0.875rem; }
+    .pagination { margin: 0; gap: 0.25rem; }
+    .page-link {
+        color: #2C6CB0;
+        border-color: #dee2e6;
+        border-radius: 6px;
+        padding: 0.375rem 0.5rem;
+        font-size: 0.875rem;
+    }
     .page-link:hover { color: #fff; background-color: #2C6CB0; border-color: #2C6CB0; }
     .page-item.active .page-link { background-color: #2C6CB0; border-color: #2C6CB0; }
     .page-item.disabled .page-link { color: #6c757d; background-color: #fff; border-color: #dee2e6; }
+
+    /* Action buttons group */
+    .btn-group-sm { gap: 0.5rem; }
+    .btn-group-sm .btn { padding: 0.375rem 0.5rem; font-size: 0.875rem; }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .filter-toolbar { flex-direction: column; }
+        .filter-toolbar > * { width: 100%; }
+        .filter-toolbar .btn-group { width: 100%; }
+        .btn-toolbar-right { width: 100%; margin-top: 0.5rem; }
+    }
 </style>
 @endsection
 
 @section('content')
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <h1 class="page-title">User Management</h1>
-    <a href="{{ route('users.create') }}" class="btn btn-primary" style="padding: 8px 16px; font-size: 14px;">
-        <i class="bi bi-plus" style="font-size: 14px; margin-right: 6px;"></i>Add New User
+<!-- Page Header -->
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="page-title mb-0">User Management</h1>
+    <a href="{{ route('users.create') }}" class="btn btn-primary btn-sm">
+        <i class="bi bi-plus" style="margin-right: 6px;"></i>Add User
     </a>
 </div>
 
-<!-- Filter Section -->
-<div class="card mb-4">
-    <div class="card-body">
-        <form method="GET" action="{{ route('users.index') }}" class="row g-3" id="filterForm">
-            <div class="col-md-4">
-                <label for="roleFilter" class="form-label">Filter by Role</label>
-                <select class="form-select" id="roleFilter" name="role">
-                    <option value="">-- All Roles --</option>
-                    <option value="admin" {{ request('role') === 'admin' ? 'selected' : '' }}>Admin</option>
-                    <option value="operator" {{ request('role') === 'operator' ? 'selected' : '' }}>Operator</option>
-                </select>
-            </div>
+<!-- Filter Toolbar -->
+<div class="d-flex filter-toolbar align-items-center flex-wrap mb-3">
+    <form method="GET" action="{{ route('users.index') }}" class="d-flex filter-toolbar align-items-center flex-wrap" id="filterForm" style="gap: 0.5rem; width: 100%;">
+        <!-- Role Filter -->
+        <select class="form-select form-select-sm" id="roleFilter" name="role" style="width: 140px;">
+            <option value="">All Roles</option>
+            <option value="admin" {{ request('role') === 'admin' ? 'selected' : '' }}>Admin</option>
+            <option value="operator" {{ request('role') === 'operator' ? 'selected' : '' }}>Operator</option>
+        </select>
 
-            <div class="col-md-4">
-                <label for="statusFilter" class="form-label">Filter by Status</label>
-                <select class="form-select" id="statusFilter" name="status">
-                    <option value="">-- All Status --</option>
-                    <option value="active" {{ request('status') === 'active' ? 'selected' : '' }}>Active</option>
-                    <option value="inactive" {{ request('status') === 'inactive' ? 'selected' : '' }}>Inactive</option>
-                </select>
-            </div>
+        <!-- Status Filter -->
+        <select class="form-select form-select-sm" id="statusFilter" name="status" style="width: 140px;">
+            <option value="">All Status</option>
+            <option value="active" {{ request('status') === 'active' ? 'selected' : '' }}>Active</option>
+            <option value="inactive" {{ request('status') === 'inactive' ? 'selected' : '' }}>Inactive</option>
+        </select>
 
-            <div class="col-md-4 d-flex align-items-end gap-2">
-                <button type="submit" class="btn btn-primary" style="padding: 8px 12px; font-size: 14px;"><i class="bi bi-funnel" style="font-size: 13px; margin-right: 6px;"></i>Filter</button>
-                <a href="{{ route('users.index') }}" class="btn btn-secondary" style="padding: 8px 12px; font-size: 14px;"><i class="bi bi-arrow-clockwise" style="font-size: 13px; margin-right: 6px;"></i>Reset</a>
-            </div>
-        </form>
-    </div>
+        <!-- Search Input -->
+        <input type="text" class="form-control form-control-sm" id="searchUsers" name="search" placeholder="Search users..." style="min-width: 200px; flex: 1; max-width: 300px;" value="{{ request('search') }}">
+
+        <!-- Filter Buttons Group -->
+        <div class="btn-group btn-group-sm" role="group">
+            <button type="submit" class="btn btn-primary btn-sm" title="Apply filters">
+                <i class="bi bi-funnel" style="margin-right: 4px;"></i>Filter
+            </button>
+            <a href="{{ route('users.index') }}" class="btn btn-outline-secondary btn-sm" title="Clear all filters">
+                <i class="bi bi-arrow-clockwise" style="margin-right: 4px;"></i>Reset
+            </a>
+        </div>
+
+        <!-- Spacer to push button group to end -->
+        <div style="flex-grow: 1;"></div>
+    </form>
 </div>
 
 <!-- Users Table Card -->
 <div class="card">
-    <div class="card-body">
+    <div class="card-body p-3">
         <div class="table-responsive">
             <table id="usersTable" class="table table-hover mb-0">
                 <thead>
                     <tr>
                         <th>Name</th>
+                        <th>Username</th>
                         <th>Email</th>
                         <th>Role</th>
                         <th>Status</th>
@@ -83,17 +135,11 @@
                 <tbody>
                     @forelse($users as $user)
                         <tr>
-                            <td>
-                                <div class="d-flex align-items-center">
-                                    <div class="user-avatar me-3" style="width: 36px; height: 36px; font-size: 13px;">
-                                        {{ strtoupper(substr($user->first_name ?? $user->name, 0, 1)) }}
-                                    </div>
-                                    <div style="font-weight: 600; color: #1D3557;">
-                                        {{ $user->first_name ? $user->first_name . ' ' . $user->last_name : $user->name }}
-                                    </div>
-                                </div>
+                            <td style="font-weight: 600; color: #1D3557;">
+                                {{ $user->first_name ? $user->first_name . ' ' . $user->last_name : $user->name }}
                             </td>
-                            <td><small>{{ $user->email }}</small></td>
+                            <td><small class="text-muted">{{ $user->username }}</small></td>
+                            <td><small class="text-muted">{{ $user->email }}</small></td>
                             <td>
                                 @if($user->role === 'admin')
                                     <span class="badge badge-admin">Admin</span>
@@ -101,22 +147,35 @@
                                     <span class="badge badge-moderator">Operator</span>
                                 @endif
                             </td>
-                            <td><span class="badge {{ $user->is_active ? 'bg-success' : 'bg-danger' }}">{{ $user->is_active ? 'Active' : 'Inactive' }}</span></td>
+                            <td>
+                                <span class="badge {{ $user->is_active ? 'bg-success' : 'bg-secondary' }}">
+                                    {{ $user->is_active ? 'Active' : 'Inactive' }}
+                                </span>
+                            </td>
                             <td><small class="text-muted">{{ $user->creator ? $user->creator->name : 'System' }}</small></td>
                             <td><small class="text-muted">{{ $user->updated_at->format('d M Y H:i') }}</small></td>
                             <td>
                                 <div class="btn-group btn-group-sm" role="group">
-                                    <a href="{{ route('users.edit', $user) }}" class="btn btn-outline-primary" style="padding: 6px 8px;"><i class="bi bi-pencil" style="font-size: 13px;"></i></a>
+                                    <a href="{{ route('users.edit', $user) }}" class="btn btn-outline-primary" title="Edit user" aria-label="Edit">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
                                     <form action="{{ route('users.destroy', $user) }}" method="POST" style="display: inline;">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-outline-danger" style="padding: 6px 8px;" onclick="return confirm('Delete this user');"><i class="bi bi-trash" style="font-size: 13px;"></i></button>
+                                        <button type="submit" class="btn btn-outline-danger" title="Delete user" aria-label="Delete" onclick="return confirm('Delete this user?');">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
                                     </form>
                                 </div>
                             </td>
                         </tr>
                     @empty
-                        <tr><td colspan="7" class="text-center text-muted py-5"><i class="bi bi-inbox" style="font-size: 32px; color: #ccc;"></i><p class="mt-3">No users found</p></td></tr>
+                        <tr>
+                            <td colspan="8" class="text-center text-muted py-5">
+                                <i class="bi bi-inbox" style="font-size: 32px; color: #ccc; display: block; margin-bottom: 0.5rem;"></i>
+                                No users found
+                            </td>
+                        </tr>
                     @endforelse
                 </tbody>
             </table>
@@ -133,19 +192,17 @@
     document.addEventListener('DOMContentLoaded', function() {
         const table = new DataTable('#usersTable', {
             pageLength: 10,
-            ordering: true,
-            searching: true,
+            ordering: false,
+            searching: false,
             paging: true,
             info: true,
             lengthChange: true,
             language: {
-                search: "Search:",
-                lengthMenu: "Show _MENU_ entries per page",
-                info: "Showing _START_ to _END_ of _TOTAL_ entries",
+                lengthMenu: "Show _MENU_",
+                info: "Showing _START_ to _END_ of _TOTAL_ users",
                 paginate: { first: "First", last: "Last", next: "Next", previous: "Previous" },
                 emptyTable: "No users found"
-            },
-            columnDefs: [{ targets: 6, orderable: false, searchable: false }]
+            }
         });
     });
 </script>

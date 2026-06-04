@@ -8,11 +8,11 @@ use App\Http\Middleware\IsOperator;
 
 
 Route::get('/', function () {
-    return view('landing');
+    return redirect('/login');
 });
 
 //only for user route
-Route::middleware(['auth', 'verified', IsOperator::class])->group(function () {
+Route::middleware(['auth', IsOperator::class])->group(function () {
         Route::get('/dashboard', function () {
         return view('dashboard');
         })->name('dashboard');

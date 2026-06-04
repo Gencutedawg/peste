@@ -2,135 +2,432 @@
 
 @section('title', 'Create Plate Specification')
 
+@section('styles')
+<style>
+    /* Modern SaaS Form Design */
+    .form-container {
+        max-width: 850px;
+        margin: 0 auto;
+    }
+
+    /* Header with breadcrumb */
+    .form-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 2rem;
+        gap: 1rem;
+    }
+
+    .form-header-title {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 1.125rem;
+        color: #1D3557;
+    }
+
+    .form-header-title .breadcrumb-sep {
+        color: #ccc;
+        margin: 0 0.25rem;
+    }
+
+    .form-header-buttons {
+        display: flex;
+        gap: 0.75rem;
+    }
+
+    /* Card styling - minimal */
+    .form-card {
+        border: 1px solid #e3e6f0;
+        border-radius: 8px;
+        background: #fff;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+        padding: 2rem;
+    }
+
+    /* Form groups - compact */
+    .form-group-section {
+        margin-bottom: 2rem;
+    }
+
+    .form-group-section:last-child {
+        margin-bottom: 0;
+    }
+
+    .form-section-title {
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: #1D3557;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 1rem;
+        display: block;
+    }
+
+    /* Multi-column grid */
+    .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    .form-row.full {
+        grid-template-columns: 1fr;
+    }
+
+    .form-row.two-col {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    /* Form controls */
+    .form-label {
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: #1D3557;
+        margin-bottom: 0.375rem;
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+    }
+
+    .form-label .required {
+        color: #dc3545;
+        font-weight: 600;
+    }
+
+    .form-control,
+    .form-select {
+        height: 40px;
+        font-size: 0.9375rem;
+        border: 1px solid #e3e6f0;
+        border-radius: 6px;
+        padding: 0.5rem 0.75rem;
+        transition: all 0.15s ease;
+        background-color: #fff;
+    }
+
+    .form-control:focus,
+    .form-select:focus {
+        border-color: #2C6CB0;
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(44, 108, 176, 0.1);
+    }
+
+    .form-control.is-invalid,
+    .form-select.is-invalid {
+        border-color: #dc3545;
+    }
+
+    .form-control.is-invalid:focus {
+        box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.1);
+    }
+
+    /* Validation feedback */
+    .invalid-feedback {
+        display: block;
+        font-size: 0.8125rem;
+        color: #dc3545;
+        margin-top: 0.25rem;
+    }
+
+    /* Helper text */
+    .form-text {
+        font-size: 0.8125rem;
+        color: #6c757d;
+        margin-top: 0.25rem;
+        display: block;
+    }
+
+    /* Toggle switch */
+    .form-check {
+        margin-top: 0.5rem;
+    }
+
+    .form-check-input {
+        width: 2.5rem;
+        height: 1.5rem;
+        margin-top: 0.125rem;
+        cursor: pointer;
+    }
+
+    .form-check-input:checked {
+        background-color: #2C6CB0;
+        border-color: #2C6CB0;
+    }
+
+    .form-check-label {
+        font-size: 0.9375rem;
+        color: #1D3557;
+        margin-left: 0.75rem;
+        font-weight: 500;
+        cursor: pointer;
+    }
+
+    /* Buttons */
+    .btn-primary,
+    .btn-secondary {
+        height: 40px;
+        padding: 0.5rem 1rem;
+        font-size: 0.9375rem;
+        font-weight: 500;
+        border-radius: 6px;
+        border: none;
+        cursor: pointer;
+        transition: all 0.15s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .btn-primary {
+        background-color: #2C6CB0;
+        color: white;
+    }
+
+    .btn-primary:hover {
+        background-color: #1D3557;
+    }
+
+    .btn-secondary {
+        background-color: #f0f0f0;
+        color: #1D3557;
+        border: 1px solid #e3e6f0;
+    }
+
+    .btn-secondary:hover {
+        background-color: #e8e8e8;
+    }
+
+    /* Field hint */
+    .field-hint {
+        font-size: 0.75rem;
+        color: #999;
+        margin-top: 0.2rem;
+        font-style: italic;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .form-container {
+            max-width: 100%;
+            padding: 0 1rem;
+        }
+
+        .form-card {
+            padding: 1.5rem;
+        }
+
+        .form-header {
+            flex-direction: column;
+            align-items: flex-start;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-header-buttons {
+            width: 100%;
+            justify-content: flex-end;
+        }
+
+        .form-header-buttons .btn-secondary {
+            display: none;
+        }
+
+        .form-row {
+            grid-template-columns: 1fr;
+            gap: 0.75rem;
+        }
+
+        .form-row.two-col {
+            grid-template-columns: 1fr;
+        }
+
+        .form-header-title {
+            font-size: 1rem;
+        }
+    }
+</style>
+@endsection
+
 @section('content')
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <h1 class="page-title">Create Plate Specification</h1>
-    <a href="{{ route('plates.index') }}" class="btn btn-secondary">
-        <i class="bi bi-arrow-left" style="font-size: 13px; margin-right: 6px;"></i>Back
-    </a>
-</div>
+<div class="form-container">
+    <!-- Header with Breadcrumb & Buttons -->
+    <div class="form-header">
+        <div class="form-header-title">
+            <a href="{{ route('plates.index') }}" style="color: #2C6CB0; text-decoration: none;">Plate Specifications</a>
+            <span class="breadcrumb-sep">/</span>
+            <span>Create</span>
+        </div>
+        <div class="form-header-buttons">
+            <a href="{{ route('plates.index') }}" class="btn-secondary">
+                <i class="bi bi-x"></i>Cancel
+            </a>
+            <button type="submit" form="createPlateForm" class="btn-primary">
+                <i class="bi bi-check"></i>Create Plate
+            </button>
+        </div>
+    </div>
 
-<div class="row justify-content-center">
-    <div class="col-xl-8 col-lg-10">
-        <div class="card">
-            <div class="card-header" style="background: #f8f9fa; border-bottom: 2px solid #e3e6f0;">
-                <h5 class="mb-0" style="color: #1D3557; font-weight: 600;">Plate Information</h5>
-            </div>
-            <div class="card-body">
-                <form action="{{ route('plates.store') }}" method="POST">
-                    @csrf
+    <!-- Form Card -->
+    <div class="form-card">
+        <form action="{{ route('plates.store') }}" method="POST" id="createPlateForm">
+            @csrf
 
-                    <!-- Plate Code -->
-                    <div class="mb-4">
-                        <label for="plate_code" class="form-label">Plate Code <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control @error('plate_code') is-invalid @enderror" 
-                               id="plate_code" name="plate_code" value="{{ old('plate_code') }}" 
-                               placeholder="Enter plate code" required>
+            <!-- Basic Information -->
+            <div class="form-group-section">
+                <span class="form-section-title">Basic Information</span>
+
+                <div class="form-row full">
+                    <div>
+                        <label for="plate_code" class="form-label">
+                            Plate Code
+                            <span class="required">*</span>
+                        </label>
+                        <input type="text" class="form-control @error('plate_code') is-invalid @enderror"
+                               id="plate_code" name="plate_code" value="{{ old('plate_code') }}"
+                               placeholder="e.g., PL-001" required>
                         @error('plate_code')
-                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                            <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
-
-                    <!-- Weight Specifications -->
-                    <div class="mb-4">
-                        <h6 style="color: #1D3557; font-weight: 600; margin-bottom: 15px;">Weight Specifications (grams)</h6>
-                        <div class="row">
-                            <div class="col-md-4">
-                                <label for="weight_usl" class="form-label">Upper Specification Limit (USL) <span class="text-danger">*</span></label>
-                                <input type="number" step="0.01" min="0" max="999.99" class="form-control @error('weight_usl') is-invalid @enderror" 
-                                       id="weight_usl" name="weight_usl" value="{{ old('weight_usl') }}" placeholder="e.g., 100.00" required>
-                                @error('weight_usl')
-                                    <div class="invalid-feedback d-block">{{ $message }}</div>
-                                @enderror
-                            </div>
-                            <div class="col-md-4">
-                                <label for="weight_target" class="form-label">Target Value <span class="text-danger">*</span></label>
-                                <input type="number" step="0.01" min="0" max="999.99" class="form-control @error('weight_target') is-invalid @enderror" 
-                                       id="weight_target" name="weight_target" value="{{ old('weight_target') }}" placeholder="e.g., 95.00" required>
-                                @error('weight_target')
-                                    <div class="invalid-feedback d-block">{{ $message }}</div>
-                                @enderror
-                            </div>
-                            <div class="col-md-4">
-                                <label for="weight_lsl" class="form-label">Lower Specification Limit (LSL) <span class="text-danger">*</span></label>
-                                <input type="number" step="0.01" min="0" max="999.99" class="form-control @error('weight_lsl') is-invalid @enderror" 
-                                       id="weight_lsl" name="weight_lsl" value="{{ old('weight_lsl') }}" placeholder="e.g., 90.00" required>
-                                @error('weight_lsl')
-                                    <div class="invalid-feedback d-block">{{ $message }}</div>
-                                @enderror
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Thickness Specifications -->
-                    <div class="mb-4">
-                        <h6 style="color: #1D3557; font-weight: 600; margin-bottom: 15px;">Thickness Specifications (mm)</h6>
-                        <div class="row">
-                            <div class="col-md-4">
-                                <label for="thick_usl" class="form-label">Upper Specification Limit (USL) <span class="text-danger">*</span></label>
-                                <input type="number" step="0.01" min="0" max="999.99" class="form-control @error('thick_usl') is-invalid @enderror" 
-                                       id="thick_usl" name="thick_usl" value="{{ old('thick_usl') }}" placeholder="e.g., 5.00" required>
-                                @error('thick_usl')
-                                    <div class="invalid-feedback d-block">{{ $message }}</div>
-                                @enderror
-                            </div>
-                            <div class="col-md-4">
-                                <label for="thick_target" class="form-label">Target Value <span class="text-danger">*</span></label>
-                                <input type="number" step="0.01" min="0" max="999.99" class="form-control @error('thick_target') is-invalid @enderror" 
-                                       id="thick_target" name="thick_target" value="{{ old('thick_target') }}" placeholder="e.g., 4.75" required>
-                                @error('thick_target')
-                                    <div class="invalid-feedback d-block">{{ $message }}</div>
-                                @enderror
-                            </div>
-                            <div class="col-md-4">
-                                <label for="thick_lsl" class="form-label">Lower Specification Limit (LSL) <span class="text-danger">*</span></label>
-                                <input type="number" step="0.01" min="0" max="999.99" class="form-control @error('thick_lsl') is-invalid @enderror" 
-                                       id="thick_lsl" name="thick_lsl" value="{{ old('thick_lsl') }}" placeholder="e.g., 4.50" required>
-                                @error('thick_lsl')
-                                    <div class="invalid-feedback d-block">{{ $message }}</div>
-                                @enderror
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Moisture Content Specification -->
-                    <div class="mb-4">
-                        <h6 style="color: #1D3557; font-weight: 600; margin-bottom: 15px;">Moisture Content</h6>
-                        <div class="row">
-                            <div class="col-md-4">
-                                <label for="mc_lsl" class="form-label">Lower Specification Limit (LSL) (%) <span class="text-danger">*</span></label>
-                                <input type="number" step="0.01" min="0" max="999.99" class="form-control @error('mc_lsl') is-invalid @enderror" 
-                                       id="mc_lsl" name="mc_lsl" value="{{ old('mc_lsl') }}" placeholder="e.g., 8.00" required>
-                                @error('mc_lsl')
-                                    <div class="invalid-feedback d-block">{{ $message }}</div>
-                                @enderror
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Status -->
-                    <div class="mb-4">
-                        <h6 style="color: #1D3557; font-weight: 600; margin-bottom: 15px;">Status</h6>
-                        <div class="form-check form-switch">
-                            <input class="form-check-input" type="checkbox" id="is_active" name="is_active" value="1" checked>
-                            <label class="form-check-label" for="is_active" style="margin-top: 5px;">
-                                Active
-                            </label>
-                        </div>
-                    </div>
-
-                    <!-- Action Buttons -->
-                    <div class="d-flex gap-2 pt-3 justify-content-end">
-                        <button type="submit" class="btn btn-primary" style="padding: 8px 16px; font-size: 14px;">
-                            <i class="bi bi-check" style="font-size: 14px; margin-right: 6px;"></i>Create Plate
-                        </button>
-                        <a href="{{ route('plates.index') }}" class="btn btn-secondary" style="padding: 8px 16px; font-size: 14px;">
-                            <i class="bi bi-x" style="font-size: 14px; margin-right: 6px;"></i>Cancel
-                        </a>
-                    </div>
-                </form>
+                </div>
             </div>
-        </div>
+
+            <!-- Weight Specifications -->
+            <div class="form-group-section">
+                <span class="form-section-title">Weight Specifications (grams)</span>
+
+                <div class="form-row">
+                    <div>
+                        <label for="weight_usl" class="form-label">
+                            Upper Limit (USL)
+                            <span class="required">*</span>
+                        </label>
+                        <input type="number" step="0.01" min="0" max="999.99"
+                               class="form-control @error('weight_usl') is-invalid @enderror"
+                               id="weight_usl" name="weight_usl" value="{{ old('weight_usl') }}"
+                               placeholder="100.00" required>
+                        @error('weight_usl')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                        <div class="field-hint">Maximum allowed</div>
+                    </div>
+                    <div>
+                        <label for="weight_target" class="form-label">
+                            Target Value
+                            <span class="required">*</span>
+                        </label>
+                        <input type="number" step="0.01" min="0" max="999.99"
+                               class="form-control @error('weight_target') is-invalid @enderror"
+                               id="weight_target" name="weight_target" value="{{ old('weight_target') }}"
+                               placeholder="95.00" required>
+                        @error('weight_target')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                        <div class="field-hint">Ideal weight</div>
+                    </div>
+                    <div>
+                        <label for="weight_lsl" class="form-label">
+                            Lower Limit (LSL)
+                            <span class="required">*</span>
+                        </label>
+                        <input type="number" step="0.01" min="0" max="999.99"
+                               class="form-control @error('weight_lsl') is-invalid @enderror"
+                               id="weight_lsl" name="weight_lsl" value="{{ old('weight_lsl') }}"
+                               placeholder="90.00" required>
+                        @error('weight_lsl')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                        <div class="field-hint">Minimum allowed</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Thickness Specifications -->
+            <div class="form-group-section">
+                <span class="form-section-title">Thickness Specifications (mm)</span>
+
+                <div class="form-row">
+                    <div>
+                        <label for="thick_usl" class="form-label">
+                            Upper Limit (USL)
+                            <span class="required">*</span>
+                        </label>
+                        <input type="number" step="0.01" min="0" max="999.99"
+                               class="form-control @error('thick_usl') is-invalid @enderror"
+                               id="thick_usl" name="thick_usl" value="{{ old('thick_usl') }}"
+                               placeholder="5.00" required>
+                        @error('thick_usl')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                        <div class="field-hint">Maximum allowed</div>
+                    </div>
+                    <div>
+                        <label for="thick_target" class="form-label">
+                            Target Value
+                            <span class="required">*</span>
+                        </label>
+                        <input type="number" step="0.01" min="0" max="999.99"
+                               class="form-control @error('thick_target') is-invalid @enderror"
+                               id="thick_target" name="thick_target" value="{{ old('thick_target') }}"
+                               placeholder="4.75" required>
+                        @error('thick_target')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                        <div class="field-hint">Ideal thickness</div>
+                    </div>
+                    <div>
+                        <label for="thick_lsl" class="form-label">
+                            Lower Limit (LSL)
+                            <span class="required">*</span>
+                        </label>
+                        <input type="number" step="0.01" min="0" max="999.99"
+                               class="form-control @error('thick_lsl') is-invalid @enderror"
+                               id="thick_lsl" name="thick_lsl" value="{{ old('thick_lsl') }}"
+                               placeholder="4.50" required>
+                        @error('thick_lsl')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                        <div class="field-hint">Minimum allowed</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Moisture Content -->
+            <div class="form-group-section">
+                <span class="form-section-title">Moisture Content</span>
+
+                <div class="form-row full">
+                    <div>
+                        <label for="mc_lsl" class="form-label">
+                            Lower Specification Limit (LSL) %
+                            <span class="required">*</span>
+                        </label>
+                        <input type="number" step="0.01" min="0" max="999.99"
+                               class="form-control @error('mc_lsl') is-invalid @enderror"
+                               id="mc_lsl" name="mc_lsl" value="{{ old('mc_lsl') }}"
+                               placeholder="8.00" required>
+                        @error('mc_lsl')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                        <div class="field-hint">Minimum moisture percentage</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Status -->
+            <div class="form-group-section">
+                <span class="form-section-title">Status</span>
+
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" id="is_active" name="is_active" value="1" checked>
+                    <label class="form-check-label" for="is_active">
+                        Active
+                    </label>
+                </div>
+            </div>
+        </form>
     </div>
 </div>
 @endsection

@@ -423,12 +423,6 @@
                 
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userMenu">
                     <li>
-                        <a class="dropdown-item" href="{{ route('profile.edit') }}">
-                            <i class="bi bi-person"></i> Profile
-                        </a>
-                    </li>
-                    <li><hr class="dropdown-divider"></li>
-                    <li>
                         <form method="POST" action="{{ route('logout') }}" style="margin: 0;">
                             @csrf
                             <button type="submit" class="dropdown-item" style="text-decoration: none; border: none; background: none; cursor: pointer; width: 100%; text-align: left;">

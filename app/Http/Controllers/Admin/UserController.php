@@ -71,6 +71,10 @@ class UserController extends Controller
         $validated['is_active'] = 1;
         $validated['token_used'] = 0;
 
+        if ($validated['role'] === 'operator') {
+            $validated['email_verified_at'] = now();
+        }
+
         User::create($validated);
 
         return redirect()->route('users.index')
