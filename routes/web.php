@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Operator\WeightTestingController;
 use App\Http\Middleware\IsAdmin;
 use App\Http\Middleware\IsOperator; 
 
@@ -19,9 +20,8 @@ Route::middleware(['auth', IsOperator::class, \App\Http\Middleware\ValidateSessi
 
         // Testing Routes
         Route::prefix('testing')->name('testing.')->group(function () {
-                Route::get('weight', function () {
-                        return view('operator.testing.weight');
-                })->name('weight');
+                Route::get('weight', [WeightTestingController::class, 'index'])->name('weight');
+                Route::post('weight', [WeightTestingController::class, 'store'])->name('weight.store');
                 Route::get('thickness', function () {
                         return view('operator.testing.thickness');
                 })->name('thickness');
