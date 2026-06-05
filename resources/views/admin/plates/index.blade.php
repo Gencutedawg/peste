@@ -104,13 +104,6 @@
         <!-- Search Input -->
         <input type="text" class="form-control form-control-sm" id="searchPlates" name="search" placeholder="Search plate code..." style="min-width: 200px; flex: 1; max-width: 300px;" value="{{ request('search') }}">
 
-        <!-- Status Filter -->
-        <select class="form-select form-select-sm" id="statusFilter" name="status" style="width: 140px;">
-            <option value="">All Status</option>
-            <option value="active" {{ request('status') === 'active' ? 'selected' : '' }}>Active</option>
-            <option value="inactive" {{ request('status') === 'inactive' ? 'selected' : '' }}>Inactive</option>
-        </select>
-
         <!-- Filter Buttons Group -->
         <div class="btn-group btn-group-sm" role="group">
             <button type="submit" class="btn btn-primary btn-sm" title="Apply filters">
@@ -137,7 +130,6 @@
                         <th>Weight (USL/Target/LSL)</th>
                         <th>Thickness (USL/Target/LSL)</th>
                         <th>MC LSL %</th>
-                        <th>Status</th>
                         <th>Created By</th>
                         <th>Updated</th>
                         <th>Actions</th>
@@ -166,11 +158,6 @@
                                 </div>
                             </td>
                             <td><span class="spec-value">{{ $plate->mc_lsl ?? '-' }}</span></td>
-                            <td>
-                                <span class="badge {{ $plate->is_active ? 'bg-success' : 'bg-secondary' }}">
-                                    {{ $plate->is_active ? 'Active' : 'Inactive' }}
-                                </span>
-                            </td>
                             <td><small class="text-muted">{{ $plate->creator ? $plate->creator->name : 'System' }}</small></td>
                             <td><small class="text-muted">{{ $plate->updated_at->format('d M Y H:i') }}</small></td>
                             <td>
@@ -190,7 +177,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="8" class="text-center text-muted py-5">
+                            <td colspan="7" class="text-center text-muted py-5">
                                 <i class="bi bi-inbox" style="font-size: 32px; color: #ccc; display: block; margin-bottom: 0.5rem;"></i>
                                 No plates found
                             </td>
