@@ -12,8 +12,12 @@ class WeightAlarmController extends Controller
     {
         $query = PlateWeightLog::where('plate_quality_status_id', 2);
 
-        if ($request->filled('date')) {
-            $query->whereDate('weight_date_log', $request->date);
+        if ($request->filled('from_date')) {
+            $query->whereDate('weight_date_log', '>=', $request->from_date);
+        }
+
+        if ($request->filled('to_date')) {
+            $query->whereDate('weight_date_log', '<=', $request->to_date);
         }
 
         if ($request->filled('operator')) {
@@ -30,6 +34,34 @@ class WeightAlarmController extends Controller
 
         if ($request->filled('plate_code')) {
             $query->where('plate_code', $request->plate_code);
+        }
+
+        $activeFilters = [];
+        if ($request->filled('from_date') || $request->filled('to_date')) {
+            $activeFilters['date'] = true;
+        }
+        if ($request->filled('operator')) {
+            $activeFilters['operator'] = $request->operator;
+        }
+        if ($request->filled('line')) {
+            $activeFilters['line'] = $request->line;
+        }
+        if ($request->filled('shift')) {
+            $activeFilters['shift'] = $request->shift;
+        }
+        if ($request->filled('plate_code')) {
+            $activeFilters['plate_code'] = $request->plate_code;
+        }
+
+        $filterSummary = [];
+        if ($request->filled('shift')) {
+            $filterSummary[] = $request->shift;
+        }
+        if ($request->filled('line')) {
+            $filterSummary[] = $request->line;
+        }
+        if ($request->filled('operator')) {
+            $filterSummary[] = $request->operator;
         }
 
         $failedTests = $query->orderBy('weight_date_log', 'desc')
@@ -62,6 +94,16 @@ class WeightAlarmController extends Controller
             ->sort()
             ->values();
 
-        return view('operator.alarm.weight', compact('failedTests', 'totalFailed', 'operators', 'lines', 'shifts', 'plateCodes'));
+        return view('operator.alarm.weight', compact(
+            'failedTests',
+            'totalFailed',
+            'operators',
+            'lines',
+            'shifts',
+            'plateCodes',
+            'activeFilters',
+            'filterSummary'
+        ));
     }
 }
+

@@ -86,6 +86,8 @@ class WeightTestingController extends Controller
                 $remarkName = $remark->remark_name;
             }
 
+            $philippineTime = Carbon::now('Asia/Manila');
+
             $log = PlateWeightLog::create([
                 'production_line_id' => $validated['production_line_id'],
                 'production_line_name' => $productionLine->line_name,
@@ -97,8 +99,8 @@ class WeightTestingController extends Controller
                 'plate_code' => $plate->plate_code,
                 'run_type_id' => $validated['run_type_id'],
                 'run_type_name' => $runType->run_type_name,
-                'weight_date_log' => Carbon::now()->toDateString(),
-                'weight_time_log' => Carbon::now()->toTimeString(),
+                'weight_date_log' => $philippineTime->toDateString(),
+                'weight_time_log' => $philippineTime->toTimeString(),
                 'op_w1' => $validated['op_w01'] ?? null,
                 'op_w2' => $validated['op_w02'] ?? null,
                 'op_w3' => $validated['op_w03'] ?? null,
