@@ -70,7 +70,6 @@
     .filter-group select:focus {
         outline: none;
         border-color: var(--info);
-        box-shadow: 0 0 0 3px rgba(13, 202, 240, 0.1);
     }
 
     .btn-measure {
@@ -87,7 +86,6 @@
         box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
     }
 
-    .btn-measure:hover { transform: translateY(-2px); }
 
     .content-grid {
         display: grid;
@@ -199,7 +197,6 @@
     .weight-input:focus {
         outline: none;
         border-color: var(--info);
-        box-shadow: 0 0 0 3px rgba(13, 202, 240, 0.1);
     }
 
     .weight-input.pass {
@@ -308,7 +305,6 @@
     .remarks-select:focus {
         outline: none;
         border-color: var(--info);
-        box-shadow: 0 0 0 3px rgba(13, 202, 240, 0.1);
     }
 
     .btn-remarks {
@@ -324,7 +320,6 @@
         transition: all 0.2s ease;
     }
 
-    .btn-remarks:hover { transform: translateY(-2px); }
 
     .timestamp {
         font-size: 11px;
@@ -348,6 +343,19 @@
     .content-grid {
         flex: 1;
         overflow: hidden;
+    }
+
+    .specification-grid *,
+    .specs-grid *,
+    .stats-grid *,
+    .data-table * {
+        transition: none !important;
+    }
+
+    .specification-grid *:hover,
+    .stats-grid *:hover,
+    .data-table tbody tr:hover {
+        transform: none !important;
     }
 
     @media (max-width: 768px) {
