@@ -466,17 +466,17 @@
                 <ul class="nav flex-column nav-dropdown {{ request()->routeIs('testing.*') ? 'show' : '' }}" id="testingDropdown">
                     <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('testing.weight') ? 'active' : '' }}" href="{{ route('testing.weight') }}">
-                            <i class="bi bi-circle-fill" style="font-size: 6px;"></i> Weight Testing
+                            Weight Testing
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('testing.thickness') ? 'active' : '' }}" href="{{ route('testing.thickness') }}">
-                            <i class="bi bi-circle-fill" style="font-size: 6px;"></i> Thickness Testing
+                            Thickness Testing
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('testing.moisture') ? 'active' : '' }}" href="{{ route('testing.moisture') }}">
-                            <i class="bi bi-circle-fill" style="font-size: 6px;"></i> Moisture Content Analysis
+                            Moisture Content Analysis
                         </a>
                     </li>
                 </ul>
@@ -493,17 +493,17 @@
                 <ul class="nav flex-column nav-dropdown {{ request()->routeIs('alarm.*') ? 'show' : '' }}" id="alarmDropdown">
                     <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('alarm.weight') ? 'active' : '' }}" href="{{ route('alarm.weight') }}">
-                            <i class="bi bi-circle-fill" style="font-size: 6px;"></i> Weight Alarm
+                            Weight Alarm
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('alarm.thickness') ? 'active' : '' }}" href="{{ route('alarm.thickness') }}">
-                            <i class="bi bi-circle-fill" style="font-size: 6px;"></i> Thickness Alarm
+                            Thickness Alarm
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('alarm.moisture') ? 'active' : '' }}" href="{{ route('alarm.moisture') }}">
-                            <i class="bi bi-circle-fill" style="font-size: 6px;"></i> Moisture Content Alarm
+                            Moisture Content Alarm
                         </a>
                     </li>
                 </ul>

@@ -351,17 +351,6 @@
 @endsection
 
 @section('content')
-<div class="page-header">
-    <div class="page-title-section">
-        <h1><i class="bi bi-speedometer2"></i> Weight Testing</h1>
-        <p class="page-subtitle">Precision weight measurement and statistical analysis</p>
-    </div>
-    <div class="timestamp">
-        <i class="bi bi-clock"></i>
-        <span id="currentTime">{{ now()->format('M d, Y · H:i') }}</span>
-    </div>
-</div>
-
 <form id="weightTestForm" data-url="{{ route('testing.weight.store') }}">
     @csrf
 
@@ -723,9 +712,12 @@ class WeightTestController {
     }
 
     updateTime() {
+        const timeElement = document.getElementById('currentTime');
+        if (!timeElement) return;
+
         const now = new Date();
         const formatted = now.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) + ' · ' + now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
-        document.getElementById('currentTime').textContent = formatted;
+        timeElement.textContent = formatted;
     }
 }
 

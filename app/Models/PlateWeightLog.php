@@ -8,6 +8,8 @@ class PlateWeightLog extends Model
 {
     protected $table = 'plate_weight_log';
 
+    public $timestamps = false;
+
     protected $fillable = [
         'production_line_id',
         'user_id',
