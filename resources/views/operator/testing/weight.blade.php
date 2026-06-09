@@ -473,6 +473,7 @@ class WeightTestController {
         this.target = null;
         this.usl = null;
         this.remarks = @json($remarks ?? []);
+        this.isSaving = false;
         this.init();
     }
 
@@ -508,10 +509,6 @@ class WeightTestController {
                     return false;
                 }
             });
-
-            input.addEventListener('change', () => {
-                this.checkAndAutoSave();
-            });
         });
 
         document.getElementById('measureBtn').addEventListener('click', () => {
@@ -525,6 +522,8 @@ class WeightTestController {
     }
 
     checkAndAutoSave() {
+        if (this.isSaving) return;
+
         const weights = this.collectWeights();
 
         if (weights.length === 8) {
@@ -539,6 +538,9 @@ class WeightTestController {
     }
 
     autoSave() {
+        if (this.isSaving) return;
+
+        this.isSaving = true;
         const form = document.getElementById('weightTestForm');
         const indicator = document.getElementById('savingIndicator');
 
@@ -554,6 +556,7 @@ class WeightTestController {
         .then(response => response.json().then(data => ({ status: response.status, data })))
         .then(({ status, data }) => {
             indicator.classList.remove('active');
+            this.isSaving = false;
 
             if (status === 200 || status === 201) {
                 Swal.fire({
@@ -578,6 +581,7 @@ class WeightTestController {
         })
         .catch(error => {
             indicator.classList.remove('active');
+            this.isSaving = false;
             Swal.fire({
                 icon: 'error',
                 title: 'Error!',

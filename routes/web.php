@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Operator\WeightTestingController;
+use App\Http\Controllers\Operator\WeightAlarmController;
 use App\Http\Middleware\IsAdmin;
 use App\Http\Middleware\IsOperator; 
 
@@ -32,9 +33,7 @@ Route::middleware(['auth', IsOperator::class, \App\Http\Middleware\ValidateSessi
 
         // SPC Alarm Routes
         Route::prefix('alarm')->name('alarm.')->group(function () {
-                Route::get('weight', function () {
-                        return view('operator.alarm.weight');
-                })->name('weight');
+                Route::get('weight', [WeightAlarmController::class, 'weight'])->name('weight');
                 Route::get('thickness', function () {
                         return view('operator.alarm.thickness');
                 })->name('thickness');
