@@ -14,6 +14,7 @@ class PlateWeightLog extends Model
         'production_line_id',
         'production_line_name',
         'user_id',
+        'operator_name',
         'time_shift_id',
         'shift_name',
         'plate_specification_id',

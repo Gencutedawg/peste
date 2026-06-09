@@ -90,6 +90,7 @@ class WeightTestingController extends Controller
                 'production_line_id' => $validated['production_line_id'],
                 'production_line_name' => $productionLine->line_name,
                 'user_id' => Auth::id(),
+                'operator_name' => Auth::user()->first_name ? Auth::user()->first_name . ' ' . Auth::user()->last_name : Auth::user()->name,
                 'time_shift_id' => $validated['time_shift_id'],
                 'shift_name' => $shift->shift_name,
                 'plate_specification_id' => $validated['plate_specification_id'],
