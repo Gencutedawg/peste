@@ -101,7 +101,12 @@
             <span class="small text-muted" style="white-space: nowrap;">entries</span>
         </div>
 
-        <!-- Search Input -->
+        <!-- Status Filter -->
+        <select class="form-select form-select-sm" id="statusFilter" name="status" style="width: 140px;">
+            <option value="">All Status</option>
+            <option value="active" {{ request('status') === 'active' ? 'selected' : '' }}>Active</option>
+            <option value="inactive" {{ request('status') === 'inactive' ? 'selected' : '' }}>Inactive</option>
+        </select>
         <input type="text" class="form-control form-control-sm" id="searchPlates" name="search" placeholder="Search plate code..." style="min-width: 200px; flex: 1; max-width: 300px;" value="{{ request('search') }}">
 
         <!-- Filter Buttons Group -->

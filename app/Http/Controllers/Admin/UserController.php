@@ -76,6 +76,12 @@ class UserController extends Controller
             'role' => 'required|in:admin,operator',
         ]);
 
+        $validated['first_name'] = ucfirst($validated['first_name']);
+        if ($validated['middle_name']) {
+            $validated['middle_name'] = ucfirst($validated['middle_name']);
+        }
+        $validated['last_name'] = ucfirst($validated['last_name']);
+
         $validated['name'] = trim($validated['first_name'] . ' ' . ($validated['middle_name'] ? $validated['middle_name'] . ' ' : '') . $validated['last_name']);
         $validated['password'] = Hash::make($validated['password']);
         $validated['is_active'] = 1;
@@ -136,6 +142,12 @@ class UserController extends Controller
             'role' => 'required|in:admin,operator',
             'is_active' => 'required|boolean',
         ]);
+
+        $validated['first_name'] = ucfirst($validated['first_name']);
+        if ($validated['middle_name']) {
+            $validated['middle_name'] = ucfirst($validated['middle_name']);
+        }
+        $validated['last_name'] = ucfirst($validated['last_name']);
 
         if (!empty($validated['password'])) {
             $validated['password'] = Hash::make($validated['password']);

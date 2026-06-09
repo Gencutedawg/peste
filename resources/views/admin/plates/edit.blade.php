@@ -46,6 +46,20 @@
         padding: 2rem;
     }
 
+    /* Error Icon Tooltip */
+    .field-error-icon {
+        position: absolute;
+        right: 0.75rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: transparent;
+        font-size: 1.25rem;
+        display: none;
+        pointer-events: none;
+        width: 1px;
+        height: 1px;
+    }
+
     /* Form groups - compact */
     .form-group-section {
         margin-bottom: 2rem;
@@ -97,6 +111,10 @@
         font-weight: 600;
     }
 
+    .form-control-wrapper {
+        position: relative;
+    }
+
     .form-control,
     .form-select {
         height: 40px;
@@ -106,6 +124,8 @@
         padding: 0.5rem 0.75rem;
         transition: all 0.15s ease;
         background-color: #fff;
+        width: 100%;
+        box-sizing: border-box;
     }
 
     .form-control:focus,
@@ -118,18 +138,40 @@
     .form-control.is-invalid,
     .form-select.is-invalid {
         border-color: #dc3545;
+        padding-right: 2.5rem;
     }
 
     .form-control.is-invalid:focus {
         box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.1);
     }
 
+    /* Error icon on field */
+    .field-error-icon {
+        position: absolute;
+        right: 0.75rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #dc3545;
+        font-size: 1.25rem;
+        display: none;
+        pointer-events: none;
+    }
+
+    .form-control.is-invalid ~ .field-error-icon,
+    .form-select.is-invalid ~ .field-error-icon {
+        display: block;
+    }
+
     /* Validation feedback */
     .invalid-feedback {
-        display: block;
+        display: none;
         font-size: 0.8125rem;
         color: #dc3545;
         margin-top: 0.25rem;
+    }
+
+    .invalid-feedback.show {
+        display: block;
     }
 
     /* Helper text */
@@ -330,11 +372,15 @@
                             Plate Code
                             <span class="required">*</span>
                         </label>
-                        <input type="text" class="form-control @error('plate_code') is-invalid @enderror"
-                               id="plate_code" name="plate_code" value="{{ old('plate_code', $plate->plate_code) }}"
-                               placeholder="e.g., PL-001" required>
+                        <div class="form-control-wrapper">
+                            <input type="text" class="form-control @error('plate_code') is-invalid @enderror"
+                                   id="plate_code" name="plate_code" value="{{ old('plate_code', $plate->plate_code) }}"
+                                   placeholder="e.g., PL-001" required>
+                            <span class="field-error-icon"></span>
+                            
+                        </div>
                         @error('plate_code')
-                            <div class="invalid-feedback">{{ $message }}</div>
+                            <div class="invalid-feedback show">{{ $message }}</div>
                         @enderror
                     </div>
                 </div>
@@ -346,46 +392,58 @@
 
                 <div class="form-row">
                     <div>
-                        <label for="weight_usl" class="form-label">
-                            Upper Limit (USL)
+                        <label for="weight_lsl" class="form-label">
+                            Lower Limit (LSL)
                             <span class="required">*</span>
                         </label>
-                        <input type="number" step="0.01" min="0" max="999.99"
-                               class="form-control @error('weight_usl') is-invalid @enderror"
-                               id="weight_usl" name="weight_usl" value="{{ old('weight_usl', $plate->weight_usl) }}"
-                               placeholder="100.00" required>
-                        @error('weight_usl')
-                            <div class="invalid-feedback">{{ $message }}</div>
+                        <div class="form-control-wrapper">
+                            <input type="number" step="0.01" min="0" max="999.99"
+                                   class="form-control @error('weight_lsl') is-invalid @enderror"
+                                   id="weight_lsl" name="weight_lsl" value="{{ old('weight_lsl', $plate->weight_lsl) }}"
+                                   placeholder="90.00" required>
+                            <span class="field-error-icon"></span>
+
+                        </div>
+                        @error('weight_lsl')
+                            <div class="invalid-feedback show">{{ $message }}</div>
                         @enderror
-                        <div class="field-hint">Maximum allowed</div>
+                        <div class="field-hint">Minimum allowed</div>
                     </div>
                     <div>
                         <label for="weight_target" class="form-label">
                             Target Value
                             <span class="required">*</span>
                         </label>
-                        <input type="number" step="0.01" min="0" max="999.99"
-                               class="form-control @error('weight_target') is-invalid @enderror"
-                               id="weight_target" name="weight_target" value="{{ old('weight_target', $plate->weight_target) }}"
-                               placeholder="95.00" required>
+                        <div class="form-control-wrapper">
+                            <input type="number" step="0.01" min="0" max="999.99"
+                                   class="form-control @error('weight_target') is-invalid @enderror"
+                                   id="weight_target" name="weight_target" value="{{ old('weight_target', $plate->weight_target) }}"
+                                   placeholder="95.00" required>
+                            <span class="field-error-icon"></span>
+
+                        </div>
                         @error('weight_target')
-                            <div class="invalid-feedback">{{ $message }}</div>
+                            <div class="invalid-feedback show">{{ $message }}</div>
                         @enderror
                         <div class="field-hint">Ideal weight</div>
                     </div>
                     <div>
-                        <label for="weight_lsl" class="form-label">
-                            Lower Limit (LSL)
+                        <label for="weight_usl" class="form-label">
+                            Upper Limit (USL)
                             <span class="required">*</span>
                         </label>
-                        <input type="number" step="0.01" min="0" max="999.99"
-                               class="form-control @error('weight_lsl') is-invalid @enderror"
-                               id="weight_lsl" name="weight_lsl" value="{{ old('weight_lsl', $plate->weight_lsl) }}"
-                               placeholder="90.00" required>
-                        @error('weight_lsl')
-                            <div class="invalid-feedback">{{ $message }}</div>
+                        <div class="form-control-wrapper">
+                            <input type="number" step="0.01" min="0" max="999.99"
+                                   class="form-control @error('weight_usl') is-invalid @enderror"
+                                   id="weight_usl" name="weight_usl" value="{{ old('weight_usl', $plate->weight_usl) }}"
+                                   placeholder="100.00" required>
+                            <span class="field-error-icon"></span>
+
+                        </div>
+                        @error('weight_usl')
+                            <div class="invalid-feedback show">{{ $message }}</div>
                         @enderror
-                        <div class="field-hint">Minimum allowed</div>
+                        <div class="field-hint">Maximum allowed</div>
                     </div>
                 </div>
             </div>
@@ -396,46 +454,58 @@
 
                 <div class="form-row">
                     <div>
-                        <label for="thick_usl" class="form-label">
-                            Upper Limit (USL)
+                        <label for="thick_lsl" class="form-label">
+                            Lower Limit (LSL)
                             <span class="required">*</span>
                         </label>
-                        <input type="number" step="0.01" min="0" max="999.99"
-                               class="form-control @error('thick_usl') is-invalid @enderror"
-                               id="thick_usl" name="thick_usl" value="{{ old('thick_usl', $plate->thick_usl) }}"
-                               placeholder="5.00" required>
-                        @error('thick_usl')
-                            <div class="invalid-feedback">{{ $message }}</div>
+                        <div class="form-control-wrapper">
+                            <input type="number" step="0.01" min="0" max="999.99"
+                                   class="form-control @error('thick_lsl') is-invalid @enderror"
+                                   id="thick_lsl" name="thick_lsl" value="{{ old('thick_lsl', $plate->thick_lsl) }}"
+                                   placeholder="4.50" required>
+                            <span class="field-error-icon"></span>
+
+                        </div>
+                        @error('thick_lsl')
+                            <div class="invalid-feedback show">{{ $message }}</div>
                         @enderror
-                        <div class="field-hint">Maximum allowed</div>
+                        <div class="field-hint">Minimum allowed</div>
                     </div>
                     <div>
                         <label for="thick_target" class="form-label">
                             Target Value
                             <span class="required">*</span>
                         </label>
-                        <input type="number" step="0.01" min="0" max="999.99"
-                               class="form-control @error('thick_target') is-invalid @enderror"
-                               id="thick_target" name="thick_target" value="{{ old('thick_target', $plate->thick_target) }}"
-                               placeholder="4.75" required>
+                        <div class="form-control-wrapper">
+                            <input type="number" step="0.01" min="0" max="999.99"
+                                   class="form-control @error('thick_target') is-invalid @enderror"
+                                   id="thick_target" name="thick_target" value="{{ old('thick_target', $plate->thick_target) }}"
+                                   placeholder="4.75" required>
+                            <span class="field-error-icon"></span>
+
+                        </div>
                         @error('thick_target')
-                            <div class="invalid-feedback">{{ $message }}</div>
+                            <div class="invalid-feedback show">{{ $message }}</div>
                         @enderror
                         <div class="field-hint">Ideal thickness</div>
                     </div>
                     <div>
-                        <label for="thick_lsl" class="form-label">
-                            Lower Limit (LSL)
+                        <label for="thick_usl" class="form-label">
+                            Upper Limit (USL)
                             <span class="required">*</span>
                         </label>
-                        <input type="number" step="0.01" min="0" max="999.99"
-                               class="form-control @error('thick_lsl') is-invalid @enderror"
-                               id="thick_lsl" name="thick_lsl" value="{{ old('thick_lsl', $plate->thick_lsl) }}"
-                               placeholder="4.50" required>
-                        @error('thick_lsl')
-                            <div class="invalid-feedback">{{ $message }}</div>
+                        <div class="form-control-wrapper">
+                            <input type="number" step="0.01" min="0" max="999.99"
+                                   class="form-control @error('thick_usl') is-invalid @enderror"
+                                   id="thick_usl" name="thick_usl" value="{{ old('thick_usl', $plate->thick_usl) }}"
+                                   placeholder="5.00" required>
+                            <span class="field-error-icon"></span>
+
+                        </div>
+                        @error('thick_usl')
+                            <div class="invalid-feedback show">{{ $message }}</div>
                         @enderror
-                        <div class="field-hint">Minimum allowed</div>
+                        <div class="field-hint">Maximum allowed</div>
                     </div>
                 </div>
             </div>
@@ -450,23 +520,20 @@
                             Lower Specification Limit (LSL) %
                             <span class="required">*</span>
                         </label>
-                        <select class="form-select @error('mc_lsl') is-invalid @enderror"
-                                id="mc_lsl" name="mc_lsl" required>
-                            <option value="">Select LSL %</option>
-                            <option value="9.5" {{ old('mc_lsl', $plate->mc_lsl) === '9.5' || old('mc_lsl', $plate->mc_lsl) == 9.5 ? 'selected' : '' }}>9.5%</option>
-                            <option value="8.5" {{ old('mc_lsl', $plate->mc_lsl) === '8.5' || old('mc_lsl', $plate->mc_lsl) == 8.5 ? 'selected' : '' }}>8.5%</option>
-                        </select>
+                        <div class="form-control-wrapper">
+                            <select class="form-select @error('mc_lsl') is-invalid @enderror"
+                                    id="mc_lsl" name="mc_lsl" required>
+                                <option value="">Select LSL %</option>
+                                <option value="9.5" {{ old('mc_lsl', $plate->mc_lsl) === '9.5' || old('mc_lsl', $plate->mc_lsl) == 9.5 ? 'selected' : '' }}>9.5%</option>
+                                <option value="8.5" {{ old('mc_lsl', $plate->mc_lsl) === '8.5' || old('mc_lsl', $plate->mc_lsl) == 8.5 ? 'selected' : '' }}>8.5%</option>
+                            </select>
+                            <span class="field-error-icon"></span>
+                            
+                        </div>
                         @error('mc_lsl')
-                            <div class="invalid-feedback">{{ $message }}</div>
+                            <div class="invalid-feedback show">{{ $message }}</div>
                         @enderror
                         <div class="field-hint">Select minimum moisture percentage</div>
-                    </div>
-                </div>
-            </div>
-                        @error('mc_lsl')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                        <div class="field-hint">Minimum moisture percentage</div>
                     </div>
                 </div>
             </div>
@@ -518,14 +585,83 @@
 @section('scripts')
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // SweetAlert confirmation for form submission
         const editPlateForm = document.getElementById('editPlateForm');
         const isEditForm = editPlateForm.getAttribute('action').includes('update');
-        
+
+        // Auto-convert plate code to uppercase
+        const plateCodeInput = document.querySelector('#plate_code');
+        if (plateCodeInput) {
+            plateCodeInput.addEventListener('input', function() {
+                this.value = this.value.toUpperCase();
+            });
+        }
+
+        function validateSpecifications() {
+            clearValidationErrors();
+            let errors = [];
+
+            const weightUsl = parseFloat(document.querySelector('#weight_usl').value);
+            const weightTarget = parseFloat(document.querySelector('#weight_target').value);
+            const weightLsl = parseFloat(document.querySelector('#weight_lsl').value);
+
+            if (weightLsl >= weightUsl) {
+                errors.push('Weight LSL must be lower than USL');
+            }
+            if (weightTarget < weightLsl || weightTarget > weightUsl) {
+                errors.push('Weight target must be between LSL and USL');
+            }
+
+            const thickUsl = parseFloat(document.querySelector('#thick_usl').value);
+            const thickTarget = parseFloat(document.querySelector('#thick_target').value);
+            const thickLsl = parseFloat(document.querySelector('#thick_lsl').value);
+
+            if (thickLsl >= thickUsl) {
+                errors.push('Thickness LSL must be lower than USL');
+            }
+            if (thickTarget < thickLsl || thickTarget > thickUsl) {
+                errors.push('Thickness target must be between LSL and USL');
+            }
+
+            if (errors.length > 0) {
+                showErrorAlert(errors);
+            }
+
+            return errors.length === 0;
+        }
+
+        function showErrorAlert(errors) {
+            const errorList = errors.map(err => `<li style="margin-bottom: 0.5rem;">• ${err}</li>`).join('');
+            Swal.fire({
+                title: 'Validation Errors',
+                html: `<ul style="text-align: left; list-style: none; padding: 0;">${errorList}</ul>`,
+                icon: 'error',
+                confirmButtonColor: '#2C6CB0'
+            });
+        }
+
+        function clearValidationErrors() {
+            document.querySelectorAll('.form-control.is-invalid, .form-select.is-invalid').forEach(field => {
+                field.classList.remove('is-invalid');
+            });
+            document.querySelectorAll('.invalid-feedback').forEach(div => {
+                div.classList.remove('show');
+            });
+        }
+
+        ['weight_usl', 'weight_target', 'weight_lsl', 'thick_usl', 'thick_target', 'thick_lsl'].forEach(fieldId => {
+            const field = document.querySelector(`#${fieldId}`);
+            if (field) {
+                field.addEventListener('change', validateSpecifications);
+            }
+        });
+
         editPlateForm.addEventListener('submit', function(e) {
             e.preventDefault();
-            
-            // Collect form data
+
+            if (!validateSpecifications()) {
+                return;
+            }
+
             const plateCode = document.querySelector('#plate_code').value;
             const weightTarget = document.querySelector('#weight_target').value;
             const weightUsl = document.querySelector('#weight_usl').value;
@@ -533,8 +669,7 @@
             const thickTarget = document.querySelector('#thick_target').value;
             const thickUsl = document.querySelector('#thick_usl').value;
             const thickLsl = document.querySelector('#thick_lsl').value;
-            
-            // Build summary HTML
+
             let summaryHtml = `
                 <div style="text-align: left; font-size: 0.95rem; line-height: 1.8;">
                     <div style="margin-bottom: 0.5rem;"><strong>Plate Code:</strong> ${plateCode}</div>
@@ -548,8 +683,7 @@
                     </div>
                 </div>
             `;
-            
-            const actionText = isEditForm ? 'update' : 'create';
+
             const confirmText = isEditForm ? 'Yes, Update' : 'Yes, Create';
 
             Swal.fire({

@@ -381,7 +381,7 @@
                             <span class="required">*</span>
                         </label>
                         <input type="text" class="form-control @error('username') is-invalid @enderror"
-                               id="username" name="username" value="{{ old('username') }}">
+                               id="username" name="username" value="{{ old('username') }}" required>
                         @error('username')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -428,58 +428,59 @@
 @section('scripts')
 <script>
     document.addEventListener('DOMContentLoaded', function() {
+        // Auto-capitalize first letter for name fields
+        const nameFields = ['first_name', 'middle_name', 'last_name'];
+        nameFields.forEach(fieldId => {
+            const field = document.querySelector(`#${fieldId}`);
+            if (field) {
+                field.addEventListener('input', function() {
+                    if (this.value.length > 0) {
+                        this.value = this.value.charAt(0).toUpperCase() + this.value.slice(1);
+                    }
+                });
+            }
+        });
         const adminRadio = document.querySelector('input[value="admin"]');
         const operatorRadio = document.querySelector('input[value="operator"]');
-        const lastNameDiv = document.querySelector('input[name="last_name"]').parentElement;
-        const emailInput = document.querySelector('#email');
-        const usernameInput = document.querySelector('#username');
-        const emailFieldDiv = emailInput ? emailInput.parentElement : null;
-        const usernameFieldDiv = usernameInput ? usernameInput.parentElement : null;
+        const authFieldContainer = document.querySelector('input[name="last_name"]').closest('.form-row');
 
         function updateFields(role) {
-            const formRow = lastNameDiv.parentElement;
-            
+            const existingEmail = authFieldContainer.querySelector('#emailField');
+            const existingUsername = authFieldContainer.querySelector('#usernameField');
+
+            if (existingEmail) existingEmail.remove();
+            if (existingUsername) existingUsername.remove();
+
+            const newField = document.createElement('div');
+
             if (role === 'admin') {
-                if (usernameFieldDiv && usernameFieldDiv.parentElement === formRow) {
-                    usernameFieldDiv.remove();
-                }
-                
-                if (!document.querySelector('#emailField')) {
-                    const emailField = document.createElement('div');
-                    emailField.id = 'emailField';
-                    emailField.innerHTML = `
-                        <label for="email" class="form-label">
-                            Email Address
-                            <span class="required">*</span>
-                        </label>
-                        <input type="email" class="form-control" id="email" name="email" value="" required>
-                        <div class="invalid-feedback"></div>
-                    `;
-                    formRow.appendChild(emailField);
-                }
+                newField.id = 'emailField';
+                newField.innerHTML = `
+                    <label for="email" class="form-label">
+                        Email Address
+                        <span class="required">*</span>
+                    </label>
+                    <input type="email" class="form-control" id="email" name="email" value="" required>
+                    <div class="invalid-feedback"></div>
+                `;
             } else {
-                if (emailFieldDiv && emailFieldDiv.parentElement === formRow) {
-                    emailFieldDiv.remove();
-                }
-                
-                if (!document.querySelector('#usernameField')) {
-                    const usernameField = document.createElement('div');
-                    usernameField.id = 'usernameField';
-                    usernameField.innerHTML = `
-                        <label for="username" class="form-label">
-                            Username
-                            <span class="required">*</span>
-                        </label>
-                        <input type="text" class="form-control" id="username" name="username" value="">
-                        <div class="invalid-feedback"></div>
-                    `;
-                    formRow.appendChild(usernameField);
-                }
+                newField.id = 'usernameField';
+                newField.innerHTML = `
+                    <label for="username" class="form-label">
+                        Username
+                        <span class="required">*</span>
+                    </label>
+                    <input type="text" class="form-control" id="username" name="username" value="" required>
+                    <div class="invalid-feedback"></div>
+                `;
             }
+
+            authFieldContainer.appendChild(newField);
         }
 
         adminRadio.addEventListener('change', () => updateFields('admin'));
         operatorRadio.addEventListener('change', () => updateFields('operator'));
+
 
         // SweetAlert confirmation for form submission
         const createUserForm = document.getElementById('createUserForm');

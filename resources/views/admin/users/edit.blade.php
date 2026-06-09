@@ -436,6 +436,19 @@
 @section('scripts')
 <script>
     document.addEventListener('DOMContentLoaded', function() {
+        // Auto-capitalize first letter for name fields
+        const nameFields = ['first_name', 'middle_name', 'last_name'];
+        nameFields.forEach(fieldId => {
+            const field = document.querySelector(`#${fieldId}`);
+            if (field) {
+                field.addEventListener('input', function() {
+                    if (this.value.length > 0) {
+                        this.value = this.value.charAt(0).toUpperCase() + this.value.slice(1);
+                    }
+                });
+            }
+        });
+
         // SweetAlert confirmation for form submission
         const editUserForm = document.getElementById('editUserForm');
         

@@ -51,14 +51,39 @@ class PlateSpecificationController extends Controller
     {
         $validated = $request->validate([
             'plate_code' => 'required|string|max:100|unique:plate_specification',
-            'weight_usl' => 'required|numeric|between:0,999.99',
-            'weight_target' => 'required|numeric|between:0,999.99',
-            'weight_lsl' => 'required|numeric|between:0,999.99',
-            'thick_usl' => 'required|numeric|between:0,999.99',
-            'thick_target' => 'required|numeric|between:0,999.99',
-            'thick_lsl' => 'required|numeric|between:0,999.99',
-            'mc_lsl' => 'required|numeric|between:0,999.99',
+            'weight_usl' => 'required|numeric|min:0|max:999.99',
+            'weight_target' => 'required|numeric|min:0|max:999.99',
+            'weight_lsl' => 'required|numeric|min:0|max:999.99',
+            'thick_usl' => 'required|numeric|min:0|max:999.99',
+            'thick_target' => 'required|numeric|min:0|max:999.99',
+            'thick_lsl' => 'required|numeric|min:0|max:999.99',
+            'mc_lsl' => 'required|numeric|min:0|max:999.99',
+        ], [
+            'weight_usl.required' => 'Weight USL is required',
+            'weight_target.required' => 'Weight target is required',
+            'weight_lsl.required' => 'Weight LSL is required',
+            'thick_usl.required' => 'Thickness USL is required',
+            'thick_target.required' => 'Thickness target is required',
+            'thick_lsl.required' => 'Thickness LSL is required',
         ]);
+
+        $validated['plate_code'] = strtoupper($validated['plate_code']);
+
+        if ($validated['weight_lsl'] >= $validated['weight_usl']) {
+            return back()->withErrors(['weight_lsl' => 'Weight LSL must be lower than USL'])->withInput();
+        }
+
+        if ($validated['weight_target'] < $validated['weight_lsl'] || $validated['weight_target'] > $validated['weight_usl']) {
+            return back()->withErrors(['weight_target' => 'Weight target must be between LSL and USL'])->withInput();
+        }
+
+        if ($validated['thick_lsl'] >= $validated['thick_usl']) {
+            return back()->withErrors(['thick_lsl' => 'Thickness LSL must be lower than USL'])->withInput();
+        }
+
+        if ($validated['thick_target'] < $validated['thick_lsl'] || $validated['thick_target'] > $validated['thick_usl']) {
+            return back()->withErrors(['thick_target' => 'Thickness target must be between LSL and USL'])->withInput();
+        }
 
         $validated['created_by'] = Auth::id();
         $validated['is_active'] = true;
@@ -83,15 +108,33 @@ class PlateSpecificationController extends Controller
     {
         $validated = $request->validate([
             'plate_code' => 'required|string|max:100|unique:plate_specification,plate_code,' . $plate->id,
-            'weight_usl' => 'required|numeric|between:0,999.99',
-            'weight_target' => 'required|numeric|between:0,999.99',
-            'weight_lsl' => 'required|numeric|between:0,999.99',
-            'thick_usl' => 'required|numeric|between:0,999.99',
-            'thick_target' => 'required|numeric|between:0,999.99',
-            'thick_lsl' => 'required|numeric|between:0,999.99',
-            'mc_lsl' => 'required|numeric|between:0,999.99',
+            'weight_usl' => 'required|numeric|min:0|max:999.99',
+            'weight_target' => 'required|numeric|min:0|max:999.99',
+            'weight_lsl' => 'required|numeric|min:0|max:999.99',
+            'thick_usl' => 'required|numeric|min:0|max:999.99',
+            'thick_target' => 'required|numeric|min:0|max:999.99',
+            'thick_lsl' => 'required|numeric|min:0|max:999.99',
+            'mc_lsl' => 'required|numeric|min:0|max:999.99',
             'is_active' => 'boolean',
         ]);
+
+        $validated['plate_code'] = strtoupper($validated['plate_code']);
+
+        if ($validated['weight_lsl'] >= $validated['weight_usl']) {
+            return back()->withErrors(['weight_lsl' => 'Weight LSL must be lower than USL'])->withInput();
+        }
+
+        if ($validated['weight_target'] < $validated['weight_lsl'] || $validated['weight_target'] > $validated['weight_usl']) {
+            return back()->withErrors(['weight_target' => 'Weight target must be between LSL and USL'])->withInput();
+        }
+
+        if ($validated['thick_lsl'] >= $validated['thick_usl']) {
+            return back()->withErrors(['thick_lsl' => 'Thickness LSL must be lower than USL'])->withInput();
+        }
+
+        if ($validated['thick_target'] < $validated['thick_lsl'] || $validated['thick_target'] > $validated['thick_usl']) {
+            return back()->withErrors(['thick_target' => 'Thickness target must be between LSL and USL'])->withInput();
+        }
 
         $validated['updated_by'] = Auth::id();
 
