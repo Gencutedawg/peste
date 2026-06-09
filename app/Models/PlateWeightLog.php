@@ -12,16 +12,22 @@ class PlateWeightLog extends Model
 
     protected $fillable = [
         'production_line_id',
+        'production_line_name',
         'user_id',
         'time_shift_id',
+        'shift_name',
         'plate_specification_id',
+        'plate_code',
         'run_type_id',
+        'run_type_name',
         'weight_date_log',
         'weight_time_log',
         'op_w1', 'op_w2', 'op_w3', 'op_w4',
         'nop_w1', 'nop_w2', 'nop_w3', 'nop_w4',
         'plate_quality_status_id',
+        'quality_status_name',
         'weight_remark_id',
+        'remark_name',
         'created_by', 'updated_by', 'is_active'
     ];
 

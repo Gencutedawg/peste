@@ -353,6 +353,7 @@
 @section('content')
 <form id="weightTestForm" data-url="{{ route('testing.weight.store') }}">
     @csrf
+    <input type="hidden" name="weight_remark_id" id="weightRemarkInput" value="">
 
     <div class="filter-bar">
         <div class="filter-group">
@@ -418,19 +419,6 @@
                     <div class="stat-item"><div class="stat-label">Range</div><div class="stat-value" id="statRange">—</div></div>
                 </div>
             </div>
-
-            <div class="card" style="margin-top: 24px;">
-                <h3 class="card-title"><i class="bi bi-chat-dots"></i> Remarks</h3>
-                <div class="filter-group">
-                    <label for="weightRemarks">Select Remarks</label>
-                    <select id="weightRemarks" name="weight_remark_id" class="remarks-select">
-                        <option value="">-- Select a remark (Optional) --</option>
-                        @foreach($remarks ?? [] as $remark)
-                            <option value="{{ $remark->id }}">{{ $remark->remark_name }}</option>
-                        @endforeach
-                    </select>
-                </div>
-            </div>
         </div>
 
         <div class="card">
@@ -472,7 +460,6 @@
     </div>
 
     <div style="text-align: right; margin-top: 24px;">
-        <button type="submit" class="btn-remarks"><i class="bi bi-floppy"></i> Save Test Results</button>
         <span class="loading" id="savingIndicator">Saving...</span>
     </div>
 </form>
@@ -485,6 +472,7 @@ class WeightTestController {
         this.lsl = null;
         this.target = null;
         this.usl = null;
+        this.remarks = @json($remarks ?? []);
         this.init();
     }
 
@@ -499,8 +487,31 @@ class WeightTestController {
             this.loadSpecification(e.target.options[e.target.selectedIndex]);
         });
 
-        document.querySelectorAll('.weight-input').forEach(input => {
+        const weightInputs = document.querySelectorAll('.weight-input');
+        const inputArray = Array.from(weightInputs);
+
+        weightInputs.forEach((input, index) => {
             input.addEventListener('blur', () => this.handleWeightInput(input));
+
+            input.addEventListener('keydown', (e) => {
+                if (e.key === 'Tab' || e.key === 'Enter') {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                    }
+                    const nextInput = inputArray[index + 1];
+                    if (nextInput) {
+                        nextInput.focus();
+                        nextInput.select();
+                    } else if (e.key === 'Enter') {
+                        this.checkAndAutoSave();
+                    }
+                    return false;
+                }
+            });
+
+            input.addEventListener('change', () => {
+                this.checkAndAutoSave();
+            });
         });
 
         document.getElementById('measureBtn').addEventListener('click', () => {
@@ -510,6 +521,70 @@ class WeightTestController {
 
         document.getElementById('weightTestForm').addEventListener('submit', (e) => {
             this.submitForm(e);
+        });
+    }
+
+    checkAndAutoSave() {
+        const weights = this.collectWeights();
+
+        if (weights.length === 8) {
+            const hasFail = this.checkForFailures(weights);
+
+            if (hasFail) {
+                this.showRemarksDialog();
+            } else {
+                this.autoSave();
+            }
+        }
+    }
+
+    autoSave() {
+        const form = document.getElementById('weightTestForm');
+        const indicator = document.getElementById('savingIndicator');
+
+        indicator.classList.add('active');
+
+        const formData = new FormData(form);
+
+        fetch(form.dataset.url, {
+            method: 'POST',
+            body: formData,
+            headers: { 'X-Requested-With': 'XMLHttpRequest' }
+        })
+        .then(response => response.json().then(data => ({ status: response.status, data })))
+        .then(({ status, data }) => {
+            indicator.classList.remove('active');
+
+            if (status === 200 || status === 201) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Saved!',
+                    text: 'Test results saved successfully',
+                    confirmButtonColor: '#28a745'
+                }).then(() => {
+                    this.resetForm();
+                });
+            } else {
+                const errorMsg = data.message || 'Unknown error occurred';
+                const errors = data.errors ? Object.values(data.errors).flat().join('\n') : '';
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    html: `<div style="text-align: left;">${errorMsg}<br>${errors ? '<br>' + errors : ''}</div>`,
+                    confirmButtonColor: '#dc3545'
+                });
+                console.error('Save error:', data);
+            }
+        })
+        .catch(error => {
+            indicator.classList.remove('active');
+            Swal.fire({
+                icon: 'error',
+                title: 'Error!',
+                text: 'Error saving test results: ' + error.message,
+                confirmButtonColor: '#dc3545'
+            });
+            console.error('Error:', error);
         });
     }
 
@@ -651,58 +726,50 @@ class WeightTestController {
     }
 
     submitForm(e) {
-        e.preventDefault();
+        if (e) e.preventDefault();
+    }
 
-        const form = document.getElementById('weightTestForm');
-        const button = form.querySelector('.btn-remarks');
-        const indicator = document.getElementById('savingIndicator');
-        const remarksSelect = document.getElementById('weightRemarks');
-        const weights = this.collectWeights();
+    showRemarksDialog() {
+        const remarksOptions = this.remarks.map(r => `<option value="${r.id}">${r.remark_name}</option>`).join('');
 
-        if (weights.length === 0) {
-            alert('Please enter at least one weight value.');
-            return;
-        }
-
-        const hasFail = this.checkForFailures(weights);
-
-        if (hasFail && !remarksSelect.value) {
-            alert('⚠️ Some weights failed specifications!\n\nPlease select remarks before saving.');
-            remarksSelect.focus();
-            return;
-        }
-
-        button.disabled = true;
-        indicator.classList.add('active');
-
-        const formData = new FormData(form);
-
-        fetch(form.dataset.url, {
-            method: 'POST',
-            body: formData,
-            headers: { 'X-Requested-With': 'XMLHttpRequest' }
-        })
-        .then(response => response.json().then(data => ({ status: response.status, data })))
-        .then(({ status, data }) => {
-            indicator.classList.remove('active');
-            button.disabled = false;
-
-            if (status === 200 || status === 201) {
-                alert('✅ Test results saved successfully!');
-                this.resetForm();
-                document.getElementById('weightRemarks').value = '';
-            } else {
-                const errorMsg = data.message || 'Unknown error occurred';
-                const errors = data.errors ? '\n\nErrors: ' + JSON.stringify(data.errors) : '';
-                alert('❌ Error: ' + errorMsg + errors);
-                console.error('Save error:', data);
+        Swal.fire({
+            icon: 'warning',
+            title: 'Failed Measurements',
+            html: `
+                <div style="text-align: left; margin: 20px 0;">
+                    <p><strong>⚠️ Some weights failed specifications!</strong></p>
+                    <p style="margin-top: 15px; margin-bottom: 10px;">Please select a remark:</p>
+                    <select id="swal-remarks" class="form-control" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; font-size: 14px;">
+                        <option value="">-- Select a remark --</option>
+                        ${remarksOptions}
+                    </select>
+                </div>
+            `,
+            showCancelButton: true,
+            confirmButtonColor: '#1D3557',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Save',
+            cancelButtonText: 'Cancel',
+            didOpen: () => {
+                document.getElementById('swal-remarks').focus();
+            },
+            allowOutsideClick: false,
+            allowEscapeKey: false
+        }).then(result => {
+            if (result.isConfirmed) {
+                const remarkId = document.getElementById('swal-remarks').value;
+                if (!remarkId) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Required',
+                        text: 'Please select a remark',
+                        confirmButtonColor: '#dc3545'
+                    });
+                    return;
+                }
+                document.getElementById('weightRemarkInput').value = remarkId;
+                this.autoSave();
             }
-        })
-        .catch(error => {
-            indicator.classList.remove('active');
-            button.disabled = false;
-            alert('❌ Error saving test results: ' + error.message);
-            console.error('Error:', error);
         });
     }
 

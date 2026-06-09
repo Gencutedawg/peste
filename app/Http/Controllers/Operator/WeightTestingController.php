@@ -52,6 +52,9 @@ class WeightTestingController extends Controller
             ]);
 
             $plate = PlateSpecification::findOrFail($validated['plate_specification_id']);
+            $productionLine = ProductionLine::findOrFail($validated['production_line_id']);
+            $shift = TimeShift::findOrFail($validated['time_shift_id']);
+            $runType = RunType::findOrFail($validated['run_type_id']);
 
             $weights = [
                 $validated['op_w01'] ?? null,
@@ -75,13 +78,24 @@ class WeightTestingController extends Controller
             }
 
             $statusId = $hasFail ? 2 : 1;
+            $qualityStatus = PlateQualityStatus::findOrFail($statusId);
+
+            $remarkName = null;
+            if ($validated['weight_remark_id']) {
+                $remark = \App\Models\WeightRemarks::findOrFail($validated['weight_remark_id']);
+                $remarkName = $remark->remark_name;
+            }
 
             $log = PlateWeightLog::create([
                 'production_line_id' => $validated['production_line_id'],
+                'production_line_name' => $productionLine->line_name,
                 'user_id' => Auth::id(),
                 'time_shift_id' => $validated['time_shift_id'],
+                'shift_name' => $shift->shift_name,
                 'plate_specification_id' => $validated['plate_specification_id'],
+                'plate_code' => $plate->plate_code,
                 'run_type_id' => $validated['run_type_id'],
+                'run_type_name' => $runType->run_type_name,
                 'weight_date_log' => Carbon::now()->toDateString(),
                 'weight_time_log' => Carbon::now()->toTimeString(),
                 'op_w1' => $validated['op_w01'] ?? null,
@@ -93,7 +107,9 @@ class WeightTestingController extends Controller
                 'nop_w3' => $validated['nop_w03'] ?? null,
                 'nop_w4' => $validated['nop_w04'] ?? null,
                 'plate_quality_status_id' => $statusId,
+                'quality_status_name' => $qualityStatus->status_name,
                 'weight_remark_id' => $validated['weight_remark_id'] ?? null,
+                'remark_name' => $remarkName,
                 'created_by' => Auth::id(),
             ]);
 
