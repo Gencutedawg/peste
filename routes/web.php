@@ -4,7 +4,9 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Operator\WeightTestingController;
+use App\Http\Controllers\Operator\ThicknessTestingController;
 use App\Http\Controllers\Operator\WeightAlarmController;
+use App\Http\Controllers\Operator\ThicknessAlarmController;
 use App\Http\Middleware\IsAdmin;
 use App\Http\Middleware\IsOperator; 
 
@@ -23,9 +25,8 @@ Route::middleware(['auth', IsOperator::class, \App\Http\Middleware\ValidateSessi
         Route::prefix('testing')->name('testing.')->group(function () {
                 Route::get('weight', [WeightTestingController::class, 'index'])->name('weight');
                 Route::post('weight', [WeightTestingController::class, 'store'])->name('weight.store');
-                Route::get('thickness', function () {
-                        return view('operator.testing.thickness');
-                })->name('thickness');
+                Route::get('thickness', [ThicknessTestingController::class, 'index'])->name('thickness');
+                Route::post('thickness', [ThicknessTestingController::class, 'store'])->name('thickness.store');
                 Route::get('moisture', function () {
                         return view('operator.testing.moisture');
                 })->name('moisture');
@@ -34,9 +35,7 @@ Route::middleware(['auth', IsOperator::class, \App\Http\Middleware\ValidateSessi
         // SPC Alarm Routes
         Route::prefix('alarm')->name('alarm.')->group(function () {
                 Route::get('weight', [WeightAlarmController::class, 'weight'])->name('weight');
-                Route::get('thickness', function () {
-                        return view('operator.alarm.thickness');
-                })->name('thickness');
+                Route::get('thickness', [ThicknessAlarmController::class, 'thickness'])->name('thickness');
                 Route::get('moisture', function () {
                         return view('operator.alarm.moisture');
                 })->name('moisture');

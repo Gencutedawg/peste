@@ -501,6 +501,14 @@ class WeightTestController {
 
     init() {
         this.attachEventListeners();
+
+        // Load spec if one is already selected
+        const plateSpecSelect = document.getElementById('plateSpec');
+        if (plateSpecSelect.value) {
+            const option = plateSpecSelect.options[plateSpecSelect.selectedIndex];
+            this.loadSpecification(option);
+        }
+
         this.updateTime();
         setInterval(() => this.updateTime(), 60000);
     }
@@ -729,6 +737,12 @@ class WeightTestController {
             input.classList.remove('pass', 'fail');
             this.updateStatus(input, 'empty');
             return;
+        }
+
+        // Ensure specifications are loaded
+        if (this.lsl === null || this.usl === null) {
+            const option = document.getElementById('plateSpec').options[document.getElementById('plateSpec').selectedIndex];
+            this.loadSpecification(option);
         }
 
         if (this.lsl !== null && this.usl !== null) {
