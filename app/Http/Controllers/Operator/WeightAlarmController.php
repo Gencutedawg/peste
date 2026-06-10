@@ -10,7 +10,7 @@ class WeightAlarmController extends Controller
 {
     public function weight(Request $request)
     {
-        $query = PlateWeightLog::where('plate_quality_status_id', 2);
+        $query = PlateWeightLog::where('plate_quality_status_id', 2)->with('plateSpecification');
 
         if ($request->filled('from_date')) {
             $query->whereDate('weight_date_log', '>=', $request->from_date);
@@ -64,9 +64,13 @@ class WeightAlarmController extends Controller
             $filterSummary[] = $request->operator;
         }
 
+        $perPage = $request->get('per_page', 10);
+        $perPage = in_array($perPage, [10, 25, 50, 100]) ? $perPage : 10;
+
         $failedTests = $query->orderBy('weight_date_log', 'desc')
             ->orderBy('weight_time_log', 'desc')
-            ->paginate(15);
+            ->paginate($perPage)
+            ->appends($request->query());
 
         $totalFailed = PlateWeightLog::where('plate_quality_status_id', 2)->count();
 
@@ -102,7 +106,8 @@ class WeightAlarmController extends Controller
             'shifts',
             'plateCodes',
             'activeFilters',
-            'filterSummary'
+            'filterSummary',
+            'perPage'
         ));
     }
 }

@@ -19,21 +19,21 @@
     /* Filter Card Container */
     .filter-card {
         background: white;
-        border-radius: 16px;
-        padding: 24px;
+        border-radius: 12px;
+        padding: 20px;
         box-shadow: var(--shadow);
         border: 1px solid var(--border-color);
-        margin-bottom: 24px;
+        margin-bottom: 16px;
     }
 
     .filter-card-header {
-        margin-bottom: 20px;
-        padding-bottom: 16px;
+        margin-bottom: 16px;
+        padding-bottom: 12px;
         border-bottom: 2px solid var(--light-gray);
     }
 
     .filter-title {
-        font-size: 16px;
+        font-size: 14px;
         font-weight: 700;
         color: var(--primary);
         margin: 0;
@@ -47,13 +47,13 @@
         display: grid;
         grid-template-columns: repeat(5, 1fr);
         gap: 16px;
-        margin-bottom: 20px;
+        margin-bottom: 16px;
     }
 
     .filter-date-range {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 12px;
+        gap: 16px;
         grid-column: span 2;
     }
 
@@ -67,7 +67,7 @@
         font-size: 12px;
         font-weight: 600;
         color: var(--primary);
-        margin-bottom: 8px;
+        margin-bottom: 6px;
         text-transform: uppercase;
         letter-spacing: 0.5px;
     }
@@ -76,13 +76,37 @@
     .filter-group select {
         padding: 10px 12px;
         border: 1px solid var(--border-color);
-        border-radius: 8px;
-        font-size: 14px;
+        border-radius: 6px;
+        font-size: 13px;
         font-family: inherit;
         background: white;
         color: #333;
         transition: all 0.2s ease;
+    }
+
+    .filter-group input {
         height: 40px;
+    }
+
+    .filter-group select {
+        height: 40px;
+        line-height: 1.4;
+        cursor: pointer;
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%231D3557' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 12px center;
+        padding-right: 32px;
+    }
+
+    .filter-group select option {
+        padding: 8px 10px;
+        line-height: 1.6;
+        color: #333;
+    }
+
+    .filter-group select option[value=""] {
+        color: #666;
     }
 
     .filter-group input:focus,
@@ -103,17 +127,17 @@
     .btn-apply,
     .btn-reset,
     .btn-clear {
-        padding: 10px 16px;
+        padding: 6px 10px;
         border: none;
-        border-radius: 8px;
-        font-size: 13px;
+        border-radius: 6px;
+        font-size: 11px;
         font-weight: 600;
         cursor: pointer;
         transition: all 0.2s ease;
         display: inline-flex;
         align-items: center;
-        gap: 6px;
-        height: 40px;
+        gap: 4px;
+        height: 32px;
     }
 
     .btn-apply {
@@ -157,29 +181,29 @@
 
     /* Active Filters Section */
     .active-filters-section {
-        margin-bottom: 20px;
-        padding: 12px 16px;
+        margin-bottom: 12px;
+        padding: 8px 10px;
         background: var(--light-gray);
-        border-radius: 8px;
+        border-radius: 6px;
         border: 1px solid var(--border-color);
     }
 
     .active-filters {
         display: flex;
         flex-wrap: wrap;
-        gap: 8px;
-        margin-bottom: 12px;
+        gap: 6px;
+        margin-bottom: 8px;
     }
 
     .filter-chip {
         display: inline-flex;
         align-items: center;
-        gap: 8px;
-        padding: 6px 12px;
+        gap: 6px;
+        padding: 4px 8px;
         background: white;
         border: 1px solid var(--border-color);
-        border-radius: 20px;
-        font-size: 13px;
+        border-radius: 16px;
+        font-size: 11px;
     }
 
     .chip-label {
@@ -256,8 +280,8 @@
     /* Table Container */
     .table-container {
         background: white;
-        overflow-x: auto;
-        border-radius: 8px;
+        overflow-x: hidden;
+        border-radius: 6px;
         border: 1px solid var(--border-color);
     }
 
@@ -265,6 +289,7 @@
         width: 100%;
         border-collapse: collapse;
         margin: 0;
+        font-size: 11px;
     }
 
     .table-header-sticky {
@@ -272,18 +297,19 @@
         top: 0;
         z-index: 10;
         background: var(--light-gray);
-        border-bottom: 2px solid var(--border-color);
+        border-bottom: 1px solid var(--border-color);
     }
 
     .data-table th {
-        padding: 12px 16px;
+        padding: 6px 8px;
         text-align: left;
-        font-size: 12px;
+        font-size: 10px;
         font-weight: 700;
         color: var(--primary);
         text-transform: uppercase;
-        letter-spacing: 0.5px;
+        letter-spacing: 0.3px;
         background: var(--light-gray);
+        white-space: nowrap;
     }
 
     .table-row-odd {
@@ -299,9 +325,9 @@
     }
 
     .data-table td {
-        padding: 14px 16px;
+        padding: 6px 8px;
         border-bottom: 1px solid var(--border-color);
-        font-size: 14px;
+        font-size: 11px;
         color: #333;
     }
 
@@ -325,44 +351,84 @@
     /* Empty State */
     .empty-state {
         text-align: center;
-        padding: 60px 40px;
+        padding: 40px 20px;
         background: white;
-        border-radius: 8px;
+        border-radius: 6px;
         border: 1px solid var(--border-color);
     }
 
     .empty-state i {
-        font-size: 48px;
+        font-size: 36px;
         color: #ccc;
-        margin-bottom: 16px;
+        margin-bottom: 12px;
         display: block;
     }
 
     .empty-state h3 {
-        font-size: 18px;
+        font-size: 15px;
         font-weight: 700;
         color: var(--primary);
-        margin: 0 0 8px 0;
+        margin: 0 0 6px 0;
     }
 
     .empty-state p {
         color: #6c757d;
-        margin: 0 0 20px 0;
+        margin: 0 0 12px 0;
+        font-size: 12px;
+    }
+
+    .per-page-selector {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 10px;
+        background: white;
+        border: 1px solid var(--border-color);
+        border-radius: 6px;
+        margin-bottom: 8px;
+    }
+
+    .per-page-label {
+        font-size: 11px;
+        font-weight: 600;
+        color: var(--primary);
+        margin: 0;
+    }
+
+    .per-page-select {
+        padding: 4px 8px;
+        border: 1px solid var(--border-color);
+        border-radius: 4px;
+        font-size: 11px;
+        color: #333;
+        background: white;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+
+    .per-page-select:hover {
+        border-color: var(--primary);
+    }
+
+    .per-page-select:focus {
+        outline: none;
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(29, 53, 87, 0.1);
     }
 
     /* Pagination */
     .pagination {
         margin: 0;
-        gap: 0.25rem;
+        gap: 0.15rem;
         display: inline-flex;
     }
 
     .page-link {
         color: var(--primary);
         border-color: var(--border-color);
-        border-radius: 6px;
-        padding: 0.375rem 0.625rem;
-        font-size: 0.875rem;
+        border-radius: 4px;
+        padding: 0.25rem 0.5rem;
+        font-size: 0.75rem;
         display: flex;
         align-items: center;
         gap: 0.25rem;
@@ -388,9 +454,34 @@
 
     .pagination-wrapper {
         display: flex;
-        justify-content: center;
-        padding: 16px 0;
-        margin-top: 20px;
+        justify-content: space-between;
+        align-items: center;
+        padding: 8px;
+        margin-top: 8px;
+        background: white;
+        border: 1px solid var(--border-color);
+        border-radius: 6px;
+    }
+
+    .pagination-wrapper-sticky {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 8px 10px;
+        background: white;
+        border: 1px solid var(--border-color);
+        border-radius: 6px;
+        margin-bottom: 8px;
+    }
+
+    .pagination-info {
+        font-size: 11px;
+        color: #6c757d;
+    }
+
+    .pagination-info strong {
+        color: var(--primary);
+        font-weight: 600;
     }
 
     /* Responsive Breakpoints */
@@ -477,7 +568,7 @@
             <div class="filter-group">
                 <label>Operator</label>
                 <select name="operator" class="filter-select">
-                    <option value="">All Operators</option>
+                    <option value="">Select Operator</option>
                     @foreach($operators as $op)
                         <option value="{{ $op }}" {{ request('operator') === $op ? 'selected' : '' }}>
                             {{ $op }}
@@ -490,7 +581,7 @@
             <div class="filter-group">
                 <label>Line</label>
                 <select name="line" class="filter-select">
-                    <option value="">All Lines</option>
+                    <option value="">Select Line</option>
                     @foreach($lines as $line)
                         <option value="{{ $line }}" {{ request('line') === $line ? 'selected' : '' }}>
                             {{ $line }}
@@ -503,7 +594,7 @@
             <div class="filter-group">
                 <label>Shift</label>
                 <select name="shift" class="filter-select">
-                    <option value="">All Shifts</option>
+                    <option value="">Select Shift</option>
                     @foreach($shifts as $shift)
                         <option value="{{ $shift }}" {{ request('shift') === $shift ? 'selected' : '' }}>
                             {{ $shift }}
@@ -516,7 +607,7 @@
             <div class="filter-group">
                 <label>Plate Code</label>
                 <select name="plate_code" class="filter-select">
-                    <option value="">All Plate Codes</option>
+                    <option value="">Select Plate Code</option>
                     @foreach($plateCodes as $code)
                         <option value="{{ $code }}" {{ request('plate_code') === $code ? 'selected' : '' }}>
                             {{ $code }}
@@ -593,20 +684,17 @@
 </div>
 @endif
 
-<!-- Result Summary -->
+<!-- Result Summary and Per-Page Selector -->
 @if($failedTests->count() > 0)
-<div class="result-summary">
-    <div class="result-info">
-        <span class="result-count">
-            Showing <strong>{{ $failedTests->count() }}</strong> of
-            <strong>{{ $totalFailed }}</strong> records
-        </span>
-    </div>
-    @if(count($filterSummary) > 0)
-        <div class="result-filters">
-            Filtered by: <strong>{{ implode(' • ', $filterSummary) }}</strong>
-        </div>
-    @endif
+<!-- Per-Page Selector -->
+<div class="per-page-selector">
+    <label class="per-page-label">Records per page:</label>
+    <select class="per-page-select" id="perPageSelect">
+        <option value="10" {{ request('per_page', 10) == 10 ? 'selected' : '' }}>10</option>
+        <option value="25" {{ request('per_page', 10) == 25 ? 'selected' : '' }}>25</option>
+        <option value="50" {{ request('per_page', 10) == 50 ? 'selected' : '' }}>50</option>
+        <option value="100" {{ request('per_page', 10) == 100 ? 'selected' : '' }}>100</option>
+    </select>
 </div>
 @endif
 
@@ -616,12 +704,14 @@
         <table class="data-table">
             <thead class="table-header-sticky">
                 <tr>
-                    <th>Date</th>
-                    <th>Time</th>
+                    <th>Date and Time</th>
                     <th>Operator</th>
                     <th>Line</th>
                     <th>Shift</th>
                     <th>Plate Code</th>
+                    <th>LSL</th>
+                    <th>Target</th>
+                    <th>USL</th>
                     <th>Op W1</th>
                     <th>Op W2</th>
                     <th>Op W3</th>
@@ -636,12 +726,14 @@
             <tbody>
                 @foreach($failedTests as $test)
                     <tr class="table-row-{{ $loop->odd ? 'odd' : 'even' }}">
-                        <td>{{ $test->weight_date_log->format('M d, Y') }}</td>
-                        <td>{{ $test->weight_time_log }}</td>
+                        <td>{{ $test->weight_date_log->format('M d, Y H:i:s') }}</td>
                         <td><strong>{{ $test->operator_name }}</strong></td>
                         <td>{{ $test->production_line_name }}</td>
                         <td>{{ $test->shift_name }}</td>
                         <td>{{ $test->plate_code }}</td>
+                        <td>{{ $test->plateSpecification?->weight_lsl ?? '—' }}</td>
+                        <td>{{ $test->plateSpecification?->weight_target ?? '—' }}</td>
+                        <td>{{ $test->plateSpecification?->weight_usl ?? '—' }}</td>
                         <td>{{ $test->op_w1 ?? '—' }}</td>
                         <td>{{ $test->op_w2 ?? '—' }}</td>
                         <td>{{ $test->op_w3 ?? '—' }}</td>
@@ -665,7 +757,14 @@
 
     <!-- Pagination -->
     <div class="pagination-wrapper">
-        {{ $failedTests->links('pagination::bootstrap-5') }}
+        <div style="flex: 1; text-align: center;">
+            {{ $failedTests->links('pagination::bootstrap-5') }}
+        </div>
+        <div style="flex: 1; text-align: right;">
+            <span class="pagination-info">
+                Total: <strong>{{ $failedTests->total() }}</strong> records
+            </span>
+        </div>
     </div>
 @else
     <div class="empty-state">
@@ -745,6 +844,27 @@ class FilterManager {
 
 document.addEventListener('DOMContentLoaded', () => {
     new FilterManager();
+
+    // Per-page selector
+    const perPageSelect = document.getElementById('perPageSelect');
+    if (perPageSelect) {
+        perPageSelect.addEventListener('change', (e) => {
+            const form = document.getElementById('filterForm');
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = 'per_page';
+            input.value = e.target.value;
+            
+            // Remove existing per_page input if present
+            const existing = form.querySelector('input[name="per_page"]');
+            if (existing) {
+                existing.remove();
+            }
+            
+            form.appendChild(input);
+            form.submit();
+        });
+    }
 });
 </script>
 @endsection
