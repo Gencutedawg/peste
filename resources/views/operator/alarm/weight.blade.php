@@ -16,45 +16,154 @@
         background: #f5f6f8;
     }
 
-    /* Filter Card Container */
-    .filter-card {
+    /* Compact Toolbar */
+    .filter-toolbar {
         background: white;
-        border-radius: 12px;
-        padding: 20px;
-        box-shadow: var(--shadow);
         border: 1px solid var(--border-color);
-        margin-bottom: 16px;
+        border-radius: 8px;
+        padding: 12px 16px;
+        margin-bottom: 12px;
+        display: flex;
+        align-items: flex-end;
+        gap: 12px;
+        flex-wrap: wrap;
     }
 
-    .filter-card-header {
-        margin-bottom: 16px;
-        padding-bottom: 12px;
-        border-bottom: 2px solid var(--light-gray);
+    .filter-item {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
     }
 
-    .filter-title {
-        font-size: 14px;
-        font-weight: 700;
+    .filter-item label {
+        font-size: 11px;
+        font-weight: 600;
         color: var(--primary);
-        margin: 0;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .filter-item input,
+    .filter-item select {
+        padding: 8px 10px;
+        border: 1px solid var(--border-color);
+        border-radius: 6px;
+        font-size: 12px;
+        background: white;
+        color: var(--primary);
+        height: 36px;
+        font-family: inherit;
+    }
+
+    .filter-item select {
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%231D3557' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 10px center;
+        padding-right: 28px;
+        cursor: pointer;
+        color: var(--primary);
+    }
+
+    .filter-item select:focus {
+        outline: none;
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(29, 53, 87, 0.1);
+    }
+
+    .filter-item select option {
+        padding: 8px 10px;
+        line-height: 1.6;
+        color: #333;
+    }
+
+    .filter-item select option[value=""] {
+        color: #666;
+        font-weight: 500;
+    }
+
+    .filter-item.date-range {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .date-range-inputs {
+        display: flex;
+        gap: 6px;
+        align-items: center;
+    }
+
+    .date-range-inputs input {
+        flex: 1;
+        min-width: 120px;
+    }
+
+    .date-separator {
+        color: #ccc;
+        font-weight: 600;
+    }
+
+    .filter-actions-compact {
+        display: flex;
+        gap: 8px;
+        align-items: flex-end;
+    }
+
+    .btn-apply-compact {
+        padding: 8px 16px;
+        background: var(--primary);
+        color: white;
+        border: none;
+        border-radius: 6px;
+        font-size: 12px;
+        font-weight: 600;
+        cursor: pointer;
+        height: 36px;
         display: flex;
         align-items: center;
-        gap: 8px;
+        gap: 6px;
+        white-space: nowrap;
     }
 
-    /* Responsive Grid Layout */
-    .filter-grid {
-        display: grid;
-        grid-template-columns: repeat(5, 1fr);
-        gap: 16px;
-        margin-bottom: 16px;
+    .btn-apply-compact:hover {
+        background: #0f1f2e;
     }
 
-    .filter-date-range {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 16px;
-        grid-column: span 2;
+    .btn-reset-compact {
+        padding: 8px 12px;
+        background: transparent;
+        color: var(--primary);
+        border: 1px solid var(--border-color);
+        border-radius: 6px;
+        font-size: 12px;
+        font-weight: 600;
+        cursor: pointer;
+        height: 36px;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+    }
+
+    .btn-reset-compact:hover {
+        background: var(--light-gray);
+    }
+
+    .filter-select {
+        color: var(--primary) !important;
+    }
+
+    .filter-select option {
+        color: #333;
+    }
+
+    .filter-select option[value=""] {
+        color: #666;
+    }
+
+    /* Old Filter Card (hide) */
+    .filter-card {
+        display: none;
     }
 
     /* Filter Groups */
@@ -80,7 +189,7 @@
         font-size: 13px;
         font-family: inherit;
         background: white;
-        color: #333;
+        color: var(--primary);
         transition: all 0.2s ease;
     }
 
@@ -350,31 +459,56 @@
 
     /* Empty State */
     .empty-state {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
         text-align: center;
-        padding: 40px 20px;
+        padding: 24px 20px;
+        min-height: 200px;
         background: white;
         border-radius: 6px;
         border: 1px solid var(--border-color);
     }
 
     .empty-state i {
-        font-size: 36px;
-        color: #ccc;
-        margin-bottom: 12px;
+        font-size: 28px;
+        color: #d0d0d0;
+        margin-bottom: 8px;
         display: block;
     }
 
     .empty-state h3 {
-        font-size: 15px;
+        font-size: 14px;
         font-weight: 700;
         color: var(--primary);
-        margin: 0 0 6px 0;
+        margin: 0 0 4px 0;
     }
 
     .empty-state p {
         color: #6c757d;
         margin: 0 0 12px 0;
         font-size: 12px;
+        line-height: 1.4;
+    }
+
+    .empty-state-link {
+        color: var(--primary);
+        font-size: 12px;
+        font-weight: 600;
+        text-decoration: none;
+        padding: 6px 12px;
+        border: 1px solid var(--border-color);
+        border-radius: 4px;
+        transition: all 0.2s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+    }
+
+    .empty-state-link:hover {
+        background: var(--light-gray);
+        border-color: var(--primary);
     }
 
     .per-page-selector {
@@ -542,147 +676,82 @@
 @endsection
 
 @section('content')
-<!-- Filter Card -->
-<div class="filter-card">
-    <div class="filter-card-header">
-        <h3 class="filter-title">
-            <i class="bi bi-funnel-fill"></i> Filter Failed Tests
-        </h3>
-    </div>
-
-    <form method="GET" action="{{ route('alarm.weight') }}" class="filter-form" id="filterForm">
-        <div class="filter-grid">
-            <!-- Date Range -->
-            <div class="filter-date-range">
-                <div class="filter-group">
-                    <label>From Date</label>
-                    <input type="date" name="from_date" value="{{ request('from_date') }}">
-                </div>
-                <div class="filter-group">
-                    <label>To Date</label>
-                    <input type="date" name="to_date" value="{{ request('to_date') }}">
-                </div>
+<!-- Compact Filter Toolbar -->
+<div class="filter-toolbar">
+    <form method="GET" action="{{ route('alarm.weight') }}" class="filter-form" id="filterForm" style="display: flex; gap: 12px; flex-wrap: wrap; align-items: flex-end; width: 100%;">
+        <!-- Date Range -->
+        <div class="filter-item date-range">
+            <label>Date Range</label>
+            <div class="date-range-inputs">
+                <input type="date" name="from_date" value="{{ request('from_date') }}" title="From Date">
+                <span class="date-separator">—</span>
+                <input type="date" name="to_date" value="{{ request('to_date') }}" title="To Date">
             </div>
+        </div>
 
-            <!-- Operator -->
-            <div class="filter-group">
-                <label>Operator</label>
-                <select name="operator" class="filter-select">
-                    <option value="">Select Operator</option>
-                    @foreach($operators as $op)
-                        <option value="{{ $op }}" {{ request('operator') === $op ? 'selected' : '' }}>
-                            {{ $op }}
-                        </option>
-                    @endforeach
-                </select>
-            </div>
+        <!-- Operator -->
+        <div class="filter-item">
+            <label>Operator</label>
+            <select name="operator" class="filter-select">
+                <option value="">Select Operator</option>
+                @foreach($operators as $op)
+                    <option value="{{ $op }}" {{ request('operator') === $op ? 'selected' : '' }}>
+                        {{ $op }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
 
-            <!-- Line -->
-            <div class="filter-group">
-                <label>Line</label>
-                <select name="line" class="filter-select">
-                    <option value="">Select Line</option>
-                    @foreach($lines as $line)
-                        <option value="{{ $line }}" {{ request('line') === $line ? 'selected' : '' }}>
-                            {{ $line }}
-                        </option>
-                    @endforeach
-                </select>
-            </div>
+        <!-- Line -->
+        <div class="filter-item">
+            <label>Line</label>
+            <select name="line" class="filter-select">
+                <option value="">Select Line</option>
+                @foreach($lines as $line)
+                    <option value="{{ $line }}" {{ request('line') === $line ? 'selected' : '' }}>
+                        {{ $line }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
 
-            <!-- Shift -->
-            <div class="filter-group">
-                <label>Shift</label>
-                <select name="shift" class="filter-select">
-                    <option value="">Select Shift</option>
-                    @foreach($shifts as $shift)
-                        <option value="{{ $shift }}" {{ request('shift') === $shift ? 'selected' : '' }}>
-                            {{ $shift }}
-                        </option>
-                    @endforeach
-                </select>
-            </div>
+        <!-- Shift -->
+        <div class="filter-item">
+            <label>Shift</label>
+            <select name="shift" class="filter-select">
+                <option value="">Select Shift</option>
+                @foreach($shifts as $shift)
+                    <option value="{{ $shift }}" {{ request('shift') === $shift ? 'selected' : '' }}>
+                        {{ $shift }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
 
-            <!-- Plate Code -->
-            <div class="filter-group">
-                <label>Plate Code</label>
-                <select name="plate_code" class="filter-select">
-                    <option value="">Select Plate Code</option>
-                    @foreach($plateCodes as $code)
-                        <option value="{{ $code }}" {{ request('plate_code') === $code ? 'selected' : '' }}>
-                            {{ $code }}
-                        </option>
-                    @endforeach
-                </select>
-            </div>
+        <!-- Plate Code -->
+        <div class="filter-item">
+            <label>Plate Code</label>
+            <select name="plate_code" class="filter-select">
+                <option value="">Select Plate Code</option>
+                @foreach($plateCodes as $code)
+                    <option value="{{ $code }}" {{ request('plate_code') === $code ? 'selected' : '' }}>
+                        {{ $code }}
+                    </option>
+                @endforeach
+            </select>
         </div>
 
         <!-- Action Buttons -->
-        <div class="filter-actions">
-            <button type="submit" class="btn-apply" id="applyBtn">
-                <i class="bi bi-funnel"></i> Apply Filters
+        <div class="filter-actions-compact" style="margin-left: auto;">
+            <button type="submit" class="btn-apply-compact" id="applyBtn">
+                <i class="bi bi-funnel"></i> Apply
             </button>
-            <a href="{{ route('alarm.weight') }}" class="btn-reset">
+            <a href="{{ route('alarm.weight') }}" class="btn-reset-compact">
                 <i class="bi bi-arrow-counterclockwise"></i> Reset
             </a>
-            @if($failedTests->count() > 0 && request()->anyFilled(['from_date', 'to_date', 'operator', 'line', 'shift', 'plate_code']))
-                <a href="#" class="btn-clear" id="clearAllBtn">Clear All</a>
-            @endif
         </div>
     </form>
 </div>
-
-<!-- Active Filters Display -->
-@if($failedTests->count() > 0 && count($activeFilters) > 0)
-<div class="active-filters-section">
-    <div class="active-filters">
-        @if(request('from_date') || request('to_date'))
-            <div class="filter-chip">
-                <span class="chip-label">
-                    Date:
-                    @if(request('from_date') && request('to_date'))
-                        {{ \Carbon\Carbon::parse(request('from_date'))->format('M d') }} - {{ \Carbon\Carbon::parse(request('to_date'))->format('M d') }}
-                    @elseif(request('from_date'))
-                        From {{ \Carbon\Carbon::parse(request('from_date'))->format('M d') }}
-                    @else
-                        Until {{ \Carbon\Carbon::parse(request('to_date'))->format('M d') }}
-                    @endif
-                </span>
-                <button type="button" class="chip-remove" data-filter="date">×</button>
-            </div>
-        @endif
-
-        @if(request('operator'))
-            <div class="filter-chip">
-                <span class="chip-label">Operator: {{ request('operator') }}</span>
-                <button type="button" class="chip-remove" data-filter="operator">×</button>
-            </div>
-        @endif
-
-        @if(request('line'))
-            <div class="filter-chip">
-                <span class="chip-label">Line: {{ request('line') }}</span>
-                <button type="button" class="chip-remove" data-filter="line">×</button>
-            </div>
-        @endif
-
-        @if(request('shift'))
-            <div class="filter-chip">
-                <span class="chip-label">Shift: {{ request('shift') }}</span>
-                <button type="button" class="chip-remove" data-filter="shift">×</button>
-            </div>
-        @endif
-
-        @if(request('plate_code'))
-            <div class="filter-chip">
-                <span class="chip-label">Plate Code: {{ request('plate_code') }}</span>
-                <button type="button" class="chip-remove" data-filter="plate_code">×</button>
-            </div>
-        @endif
-    </div>
-    <button type="button" class="btn-clear-all">Clear All Filters</button>
-</div>
-@endif
 
 <!-- Result Summary and Per-Page Selector -->
 @if($failedTests->count() > 0)
@@ -770,9 +839,9 @@
     <div class="empty-state">
         <i class="bi bi-inbox"></i>
         <h3>No Records Found</h3>
-        <p>No failed weight measurements match your filters.</p>
+        <p>No failed weight measurements match your selected filters.</p>
         @if(request()->anyFilled(['from_date', 'to_date', 'operator', 'line', 'shift', 'plate_code']))
-            <a href="{{ route('alarm.weight') }}" class="btn-clear" style="display: inline-block; padding: 10px 16px; background: var(--primary); color: white; border-radius: 8px; text-decoration: none;">
+            <a href="{{ route('alarm.weight') }}" class="empty-state-link">
                 <i class="bi bi-arrow-counterclockwise"></i> Clear Filters
             </a>
         @endif
