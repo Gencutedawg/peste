@@ -4,6 +4,9 @@ namespace App\Http\Controllers\Operator;
 
 use App\Http\Controllers\Controller;
 use App\Models\PlateWeightLog;
+use App\Models\ProductionLine;
+use App\Models\TimeShift;
+use App\Models\PlateSpecification;
 use Illuminate\Http\Request;
 
 class WeightAlarmController extends Controller
@@ -74,28 +77,28 @@ class WeightAlarmController extends Controller
 
         $totalFailed = PlateWeightLog::where('plate_quality_status_id', 2)->count();
 
-        $operators = PlateWeightLog::where('plate_quality_status_id', 2)
-            ->distinct()
-            ->pluck('operator_name')
+        $operators = \App\Models\User::where('role', 'operator')
+            ->where('is_active', 1)
+            ->orderBy('first_name')
+            ->get()
+            ->map(fn($u) => $u->first_name . ' ' . $u->last_name)
+            ->unique()
             ->sort()
             ->values();
 
-        $lines = PlateWeightLog::where('plate_quality_status_id', 2)
-            ->distinct()
-            ->pluck('production_line_name')
-            ->sort()
+        $lines = ProductionLine::where('is_active', 1)
+            ->orderBy('line_name')
+            ->pluck('line_name')
             ->values();
 
-        $shifts = PlateWeightLog::where('plate_quality_status_id', 2)
-            ->distinct()
+        $shifts = TimeShift::where('is_active', 1)
+            ->orderBy('shift_name')
             ->pluck('shift_name')
-            ->sort()
             ->values();
 
-        $plateCodes = PlateWeightLog::where('plate_quality_status_id', 2)
-            ->distinct()
+        $plateCodes = PlateSpecification::where('is_active', 1)
+            ->orderBy('plate_code')
             ->pluck('plate_code')
-            ->sort()
             ->values();
 
         return view('operator.alarm.weight', compact(

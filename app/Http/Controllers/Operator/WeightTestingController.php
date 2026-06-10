@@ -100,7 +100,7 @@ class WeightTestingController extends Controller
                 'run_type_id' => $validated['run_type_id'],
                 'run_type_name' => $runType->run_type_name,
                 'weight_date_log' => $philippineTime->toDateString(),
-                'weight_time_log' => $philippineTime->toTimeString(),
+                'weight_time_log' => $philippineTime->format('H:i:s'),
                 'op_w1' => $validated['op_w01'] ?? null,
                 'op_w2' => $validated['op_w02'] ?? null,
                 'op_w3' => $validated['op_w03'] ?? null,

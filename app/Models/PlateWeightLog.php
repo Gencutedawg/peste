@@ -34,7 +34,6 @@ class PlateWeightLog extends Model
 
     protected $casts = [
         'weight_date_log' => 'date',
-        'weight_time_log' => 'datetime:H:i:s',
         'op_w1' => 'decimal:2',
         'op_w2' => 'decimal:2',
         'op_w3' => 'decimal:2',

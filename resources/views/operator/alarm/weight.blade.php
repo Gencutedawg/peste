@@ -795,7 +795,7 @@
             <tbody>
                 @foreach($failedTests as $test)
                     <tr class="table-row-{{ $loop->odd ? 'odd' : 'even' }}">
-                        <td>{{ $test->weight_date_log->format('M d, Y H:i:s') }}</td>
+                        <td>{{ $test->weight_date_log->format('M d, Y') }} {{ $test->weight_time_log }}</td>
                         <td><strong>{{ $test->operator_name }}</strong></td>
                         <td>{{ $test->production_line_name }}</td>
                         <td>{{ $test->shift_name }}</td>

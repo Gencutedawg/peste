@@ -459,7 +459,7 @@
                         <tr>
                             @if($loop->first)<td rowspan="4" class="side-label">OP</td>@endif
                             <td>{{ $num }}</td>
-                            <td><input type="number" class="weight-input" name="op_w{{ $num }}" placeholder="Enter weight" step="any" data-sample="op{{ $num }}"></td>
+                            <td><input type="number" class="weight-input" name="op_w{{ $num }}" placeholder="Enter weight" step="any" data-sample="op{{ $num }}" min="1" max="8" disabled></td>
                             <td><span class="status-badge status-empty" id="status-op{{ $num }}">—</span></td>
                         </tr>
                     @endforeach
@@ -467,7 +467,7 @@
                         <tr>
                             @if($loop->first)<td rowspan="4" class="side-label">NOP</td>@endif
                             <td>0{{ $loop->index + 5 }}</td>
-                            <td><input type="number" class="weight-input" name="nop_w0{{ $loop->index + 1 }}" placeholder="Enter weight" step="any" data-sample="nop0{{ $loop->index + 1 }}"></td>
+                            <td><input type="number" class="weight-input" name="nop_w0{{ $loop->index + 1 }}" placeholder="Enter weight" step="any" data-sample="nop0{{ $loop->index + 1 }}" min="1" max="8" disabled></td>
                             <td><span class="status-badge status-empty" id="status-nop0{{ $loop->index + 1 }}">—</span></td>
                         </tr>
                     @endforeach
@@ -508,12 +508,32 @@ class WeightTestController {
     attachEventListeners() {
         document.getElementById('plateSpec').addEventListener('change', (e) => {
             this.loadSpecification(e.target.options[e.target.selectedIndex]);
+            this.validateAndEnableWeightInputs();
+        });
+
+        document.getElementById('runType').addEventListener('change', () => {
+            this.validateAndEnableWeightInputs();
+        });
+
+        document.getElementById('shift').addEventListener('change', () => {
+            this.validateAndEnableWeightInputs();
+        });
+
+        document.getElementById('line').addEventListener('change', () => {
+            this.validateAndEnableWeightInputs();
         });
 
         const weightInputs = document.querySelectorAll('.weight-input');
         const inputArray = Array.from(weightInputs);
 
         weightInputs.forEach((input, index) => {
+            input.addEventListener('focus', () => {
+                if (input.disabled) {
+                    this.showValidationError();
+                    return false;
+                }
+            });
+
             input.addEventListener('blur', () => this.handleWeightInput(input));
 
             input.addEventListener('keydown', (e) => {
@@ -534,12 +554,69 @@ class WeightTestController {
         });
 
         document.getElementById('measureBtn').addEventListener('click', () => {
+            if (!this.areAllRequiredFieldsSelected()) {
+                this.showValidationError();
+                return;
+            }
             this.resetForm();
-            document.querySelector('.weight-input').focus();
+            const firstInput = document.querySelector('.weight-input:not([disabled])');
+            if (firstInput) {
+                firstInput.focus();
+                firstInput.select();
+            }
         });
 
         document.getElementById('weightTestForm').addEventListener('submit', (e) => {
             this.submitForm(e);
+        });
+    }
+
+    areAllRequiredFieldsSelected() {
+        const runType = document.getElementById('runType').value;
+        const plateSpec = document.getElementById('plateSpec').value;
+        const shift = document.getElementById('shift').value;
+        const line = document.getElementById('line').value;
+
+        return runType && plateSpec && shift && line;
+    }
+
+    validateAndEnableWeightInputs() {
+        const weightInputs = document.querySelectorAll('.weight-input');
+        const isValid = this.areAllRequiredFieldsSelected();
+
+        weightInputs.forEach(input => {
+            if (isValid) {
+                input.disabled = false;
+            } else {
+                input.disabled = true;
+                input.value = '';
+                input.classList.remove('pass', 'fail');
+            }
+        });
+
+        if (!isValid) {
+            this.resetStatistics();
+        }
+    }
+
+    showValidationError() {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Required Fields Missing',
+            html: `
+                <div style="text-align: left;">
+                    <p><strong>⚠️ Please select all required fields first:</strong></p>
+                    <ul style="margin: 15px 0; text-align: left;">
+                        <li>Run Type</li>
+                        <li>Plate Specification</li>
+                        <li>Shift</li>
+                        <li>Production Line</li>
+                    </ul>
+                    <p style="margin-top: 15px; font-size: 13px; color: #666;">Then click the <strong>Measure</strong> button to start entering weights.</p>
+                </div>
+            `,
+            confirmButtonColor: '#1D3557',
+            confirmButtonText: 'OK'
         });
     }
 
