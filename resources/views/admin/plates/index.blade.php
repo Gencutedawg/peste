@@ -221,8 +221,8 @@
                 <thead>
                     <tr>
                         <th>Plate Code</th>
-                        <th>Weight (USL/Target/LSL)</th>
-                        <th>Thickness (USL/Target/LSL)</th>
+                        <th>Weight (LSL/Target/USL)</th>
+                        <th>Thickness (LSL/Target/USL)</th>
                         <th>MC LSL %</th>
                         <th>Created By</th>
                         <th>Updated</th>
@@ -236,7 +236,7 @@
                             <td>
                                 <div class="spec-value">
                                     @if($plate->weight_usl || $plate->weight_target || $plate->weight_lsl)
-                                        {{ $plate->weight_usl ?? '-' }} / {{ $plate->weight_target ?? '-' }} / {{ $plate->weight_lsl ?? '-' }}
+                                        {{ $plate->weight_lsl ?? '-' }} / {{ $plate->weight_target ?? '-' }} / {{ $plate->weight_usl ?? '-' }}
                                     @else
                                         <span class="text-muted">-</span>
                                     @endif
@@ -245,7 +245,7 @@
                             <td>
                                 <div class="spec-value">
                                     @if($plate->thick_usl || $plate->thick_target || $plate->thick_lsl)
-                                        {{ $plate->thick_usl ?? '-' }} / {{ $plate->thick_target ?? '-' }} / {{ $plate->thick_lsl ?? '-' }}
+                                        {{ $plate->thick_lsl ?? '-' }} / {{ $plate->thick_target ?? '-' }} / {{ $plate->thick_usl ?? '-' }}
                                     @else
                                         <span class="text-muted">-</span>
                                     @endif

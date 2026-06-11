@@ -491,18 +491,6 @@
                     </div>
                 </div>
             </div>
-
-            <!-- Status -->
-            <div class="form-group-section">
-                <span class="form-section-title">Status</span>
-
-                <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" id="is_active" name="is_active" value="1" checked>
-                    <label class="form-check-label" for="is_active">
-                        Active
-                    </label>
-                </div>
-            </div>
         </form>
     </div>
 </div>
