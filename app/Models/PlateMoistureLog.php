@@ -28,6 +28,8 @@ class PlateMoistureLog extends Model
         'quality_status_name',
         'moisture_remark_id',
         'remark_name',
+        'curing_booth_id',
+        'rack_no',
         'created_by', 'updated_by', 'is_active',
         'created_at', 'updated_at'
     ];

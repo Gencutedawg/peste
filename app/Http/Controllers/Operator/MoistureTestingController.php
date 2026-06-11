@@ -9,6 +9,7 @@ use App\Models\ProductionLine;
 use App\Models\TimeShift;
 use App\Models\RunType;
 use App\Models\PlateQualityStatus;
+use App\Models\CuringBooth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
@@ -22,13 +23,15 @@ class MoistureTestingController extends Controller
         $shifts = TimeShift::where('is_active', 1)->get();
         $lines = ProductionLine::where('is_active', 1)->get();
         $remarks = \App\Models\MoistureRemarks::where('is_active', 1)->get();
+        $curingBooths = CuringBooth::where('is_active', 1)->get();
 
         return view('operator.testing.moisture', compact(
             'runTypes',
             'plateSpecifications',
             'shifts',
             'lines',
-            'remarks'
+            'remarks',
+            'curingBooths'
         ));
     }
 
@@ -42,12 +45,15 @@ class MoistureTestingController extends Controller
                 'run_type_id' => 'required|exists:run_type,id',
                 'mc_result' => 'required|numeric|min:0',
                 'moisture_remark_id' => 'nullable|exists:moisture_remarks,id',
+                'curing_booth_id' => 'required|exists:curing_booth,id',
+                'rack_no' => 'required|string|max:255',
             ]);
 
             $plate = PlateSpecification::findOrFail($validated['plate_specification_id']);
             $productionLine = ProductionLine::findOrFail($validated['production_line_id']);
             $shift = TimeShift::findOrFail($validated['time_shift_id']);
             $runType = RunType::findOrFail($validated['run_type_id']);
+            $curingBooth = CuringBooth::findOrFail($validated['curing_booth_id']);
 
             $mcResult = floatval($validated['mc_result']);
             $hasFail = $mcResult < $plate->mc_lsl;
@@ -81,6 +87,8 @@ class MoistureTestingController extends Controller
                 'quality_status_name' => $qualityStatus->status_name,
                 'moisture_remark_id' => $validated['moisture_remark_id'] ?? null,
                 'remark_name' => $remarkName,
+                'curing_booth_id' => $validated['curing_booth_id'],
+                'rack_no' => $validated['rack_no'],
                 'created_by' => Auth::id(),
                 'created_at' => $philippineTime,
                 'updated_at' => $philippineTime,

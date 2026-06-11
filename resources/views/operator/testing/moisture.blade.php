@@ -72,6 +72,21 @@
         border-color: var(--info);
     }
 
+    .filter-group input {
+        padding: 8px 10px;
+        border: 1px solid var(--border-color);
+        border-radius: 6px;
+        font-size: 13px;
+        background-color: white;
+        color: var(--primary);
+        transition: all 0.2s ease;
+    }
+
+    .filter-group input:focus {
+        outline: none;
+        border-color: var(--info);
+    }
+
     .btn-measure {
         background: linear-gradient(135deg, #10b981 0%, #059669 100%);
         color: white;
@@ -328,6 +343,21 @@
             </select>
         </div>
 
+        <div class="filter-group">
+            <label for="curingBooth">Curing Booth</label>
+            <select id="curingBooth" name="curing_booth_id" required>
+                <option value="">Select Curing Booth</option>
+                @foreach($curingBooths ?? [] as $cb)
+                    <option value="{{ $cb->id }}">{{ $cb->curing_booth }}</option>
+                @endforeach
+            </select>
+        </div>
+
+        <div class="filter-group">
+            <label for="rackNo">Rack No.</label>
+            <input type="text" id="rackNo" name="rack_no" placeholder="Enter rack number" required>
+        </div>
+
         <button type="button" class="btn-measure" id="measureBtn"><i class="bi bi-play-circle"></i> Measure</button>
     </div>
 
@@ -416,6 +446,14 @@ class MoistureTestController {
             this.validateAndEnableMoistureInput();
         });
 
+        document.getElementById('curingBooth').addEventListener('change', () => {
+            this.validateAndEnableMoistureInput();
+        });
+
+        document.getElementById('rackNo').addEventListener('change', () => {
+            this.validateAndEnableMoistureInput();
+        });
+
         const mcInput = document.getElementById('mcResult');
 
         mcInput.addEventListener('focus', () => {
@@ -454,8 +492,10 @@ class MoistureTestController {
         const plateSpec = document.getElementById('plateSpec').value;
         const shift = document.getElementById('shift').value;
         const line = document.getElementById('line').value;
+        const curingBooth = document.getElementById('curingBooth').value;
+        const rackNo = document.getElementById('rackNo').value.trim();
 
-        return runType && plateSpec && shift && line;
+        return runType && plateSpec && shift && line && curingBooth && rackNo;
     }
 
     validateAndEnableMoistureInput() {
@@ -487,6 +527,8 @@ class MoistureTestController {
                         <li>Plate Specification</li>
                         <li>Shift</li>
                         <li>Production Line</li>
+                        <li>Curing Booth</li>
+                        <li>Rack No.</li>
                     </ul>
                     <p style="margin-top: 15px; font-size: 13px; color: #666;">Then click the <strong>Measure</strong> button to start entering moisture content.</p>
                 </div>
