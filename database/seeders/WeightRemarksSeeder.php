@@ -9,7 +9,7 @@ class WeightRemarksSeeder extends Seeder
 {
     public function run(): void
     {
-        DB::table('weight_remarks')->insert([
+        DB::table('weight_remarks')->insertOrIgnore([
             [
                 'remark_name' => 'Within Specification',
                 'is_active' => true,

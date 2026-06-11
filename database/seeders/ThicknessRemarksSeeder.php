@@ -9,7 +9,7 @@ class ThicknessRemarksSeeder extends Seeder
 {
     public function run(): void
     {
-        DB::table('thickness_remarks')->insert([
+        DB::table('thickness_remarks')->insertOrIgnore([
             [
                 'remark_name' => 'Decreased clearance between hopper trowell roll and drum',
                 'is_active' => true,
