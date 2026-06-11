@@ -33,7 +33,12 @@ class PlateSpecificationController extends Controller
         $perPage = (int) $request->input('per_page', 10);
         $plates = $query->orderBy('created_at', 'desc')->paginate($perPage)->withQueryString();
 
-        return view('admin.plates.index', compact('plates'));
+        $plateCodes = PlateSpecification::where('is_active', 1)
+            ->orderBy('plate_code')
+            ->pluck('plate_code')
+            ->values();
+
+        return view('admin.plates.index', compact('plates', 'plateCodes'));
     }
 
     /**

@@ -15,12 +15,21 @@ class WeightAlarmController extends Controller
     {
         $query = PlateWeightLog::where('plate_quality_status_id', 2)->with('plateSpecification');
 
-        if ($request->filled('from_date')) {
-            $query->whereDate('weight_date_log', '>=', $request->from_date);
+        $fromDate = $request->filled('from_date') ? $request->from_date : null;
+        $toDate = $request->filled('to_date') ? $request->to_date : null;
+
+        if ($fromDate && !$toDate) {
+            $toDate = $fromDate;
+        } elseif ($toDate && !$fromDate) {
+            $fromDate = $toDate;
         }
 
-        if ($request->filled('to_date')) {
-            $query->whereDate('weight_date_log', '<=', $request->to_date);
+        if ($fromDate) {
+            $query->whereDate('weight_date_log', '>=', $fromDate);
+        }
+
+        if ($toDate) {
+            $query->whereDate('weight_date_log', '<=', $toDate);
         }
 
         if ($request->filled('operator')) {
