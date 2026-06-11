@@ -34,6 +34,7 @@ class ThicknessTestingController extends Controller
 
     public function store(Request $request)
     {
+        \Log::info('Thickness test store request', $request->all());
         try {
             $validated = $request->validate([
                 'production_line_id' => 'required|exists:production_line,id',
@@ -115,6 +116,8 @@ class ThicknessTestingController extends Controller
                 'remark_name' => $remarkName,
                 'created_by' => Auth::id(),
             ]);
+
+            \Log::info('Thickness test saved successfully', ['id' => $log->id, 'user_id' => Auth::id()]);
 
             return response()->json([
                 'success' => true,

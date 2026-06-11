@@ -34,6 +34,7 @@ class WeightTestingController extends Controller
 
     public function store(Request $request)
     {
+        \Log::info('Weight test store request', $request->all());
         try {
             $validated = $request->validate([
                 'production_line_id' => 'required|exists:production_line,id',
@@ -115,6 +116,8 @@ class WeightTestingController extends Controller
                 'remark_name' => $remarkName,
                 'created_by' => Auth::id(),
             ]);
+
+            \Log::info('Weight test saved successfully', ['id' => $log->id, 'user_id' => Auth::id()]);
 
             return response()->json([
                 'success' => true,
