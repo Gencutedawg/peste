@@ -11,43 +11,25 @@ class WeightRemarksSeeder extends Seeder
     {
         DB::table('weight_remarks')->insertOrIgnore([
             [
-                'remark_name' => 'Within Specification',
+                'remark_name' => 'Decreased Clearance between hopper trowell roll and drum',
                 'is_active' => true,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
-                'remark_name' => 'Minor Deviation',
+                'remark_name' => 'Increased Clearance between hopper trowell roll and drum',
                 'is_active' => true,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
-                'remark_name' => 'Out of Specification',
+                'remark_name' => 'Checked grid weight - out of specification',
                 'is_active' => true,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
-                'remark_name' => 'Equipment Malfunction',
-                'is_active' => true,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'remark_name' => 'Operator Error',
-                'is_active' => true,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'remark_name' => 'Material Issue',
-                'is_active' => true,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'remark_name' => 'Other',
+                'remark_name' => 'Checked grid weight - within specification',
                 'is_active' => true,
                 'created_at' => now(),
                 'updated_at' => now(),
