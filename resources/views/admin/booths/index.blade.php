@@ -220,7 +220,6 @@
                         <th>Booth Name</th>
                         <th>Created By</th>
                         <th>Updated</th>
-                        <th>Status</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -230,13 +229,6 @@
                             <td style="font-weight: 600; color: #1D3557;">{{ $booth->curing_booth }}</td>
                             <td><small class="text-muted">{{ $booth->creator ? $booth->creator->name : 'System' }}</small></td>
                             <td><small class="text-muted">{{ $booth->updated_at->format('d M Y H:i') }}</small></td>
-                            <td>
-                                @if($booth->is_active)
-                                    <span class="badge bg-success">Active</span>
-                                @else
-                                    <span class="badge bg-secondary">Inactive</span>
-                                @endif
-                            </td>
                             <td>
                                 <div class="btn-group btn-group-sm" role="group">
                                     <a href="{{ route('booths.edit', $booth) }}" class="btn btn-outline-primary" title="Edit booth" aria-label="Edit">
@@ -254,7 +246,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="5" class="text-center text-muted py-5">
+                            <td colspan="4" class="text-center text-muted py-5">
                                 <i class="bi bi-inbox" style="font-size: 32px; color: #ccc; display: block; margin-bottom: 0.5rem;"></i>
                                 No booths found
                             </td>

@@ -439,6 +439,8 @@
                     <div class="stat-item"><div class="stat-label">Std Dev</div><div class="stat-value" id="statStdDev">—</div></div>
                     <div class="stat-item"><div class="stat-label">RSD %</div><div class="stat-value" id="statRSD">—</div></div>
                     <div class="stat-item"><div class="stat-label">Range</div><div class="stat-value" id="statRange">—</div></div>
+                    <div class="stat-item"><div class="stat-label">LSL</div><div class="stat-value" id="statLSL">—</div></div>
+                    <div class="stat-item"><div class="stat-label">USL</div><div class="stat-value" id="statUSL">—</div></div>
                 </div>
             </div>
         </div>
@@ -712,6 +714,9 @@ class WeightTestController {
         document.getElementById('specLSL').textContent = this.lsl.toFixed(2);
         document.getElementById('specTarget').textContent = this.target.toFixed(2);
         document.getElementById('specUSL').textContent = this.usl.toFixed(2);
+
+        document.getElementById('statLSL').textContent = this.lsl.toFixed(2);
+        document.getElementById('statUSL').textContent = this.usl.toFixed(2);
     }
 
     resetSpecification() {
@@ -826,6 +831,8 @@ class WeightTestController {
         document.getElementById('statStdDev').textContent = '—';
         document.getElementById('statRSD').textContent = '—';
         document.getElementById('statRange').textContent = '—';
+        document.getElementById('statLSL').textContent = '—';
+        document.getElementById('statUSL').textContent = '—';
         document.getElementById('failedCount').textContent = '0';
         document.getElementById('failureRate').textContent = '0%';
     }
