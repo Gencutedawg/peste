@@ -447,19 +447,25 @@
         <div class="nav-label mt-3">Management</div>
         <ul class="nav flex-column">
             <li class="nav-item">
-                <a class="nav-link {{ request()->routeIs('users.index') ? 'active' : '' }}" 
+                <a class="nav-link {{ request()->routeIs('users.index') ? 'active' : '' }}"
                    href="{{ route('users.index') }}">
                     <i class="bi bi-people"></i> User Management
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link {{ request()->routeIs('plates.index') ? 'active' : '' }}" 
+                <a class="nav-link {{ request()->routeIs('plates.index') ? 'active' : '' }}"
                    href="{{ route('plates.index') }}">
                     <i class="bi bi-layers"></i> Plate Type Management
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link {{ request()->routeIs('spc-report.*') ? 'active' : '' }}" 
+                <a class="nav-link {{ request()->routeIs('booths.index') ? 'active' : '' }}"
+                   href="{{ route('booths.index') }}">
+                    <i class="bi bi-shop"></i> Curing Booth Management
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {{ request()->routeIs('spc-report.*') ? 'active' : '' }}"
                    href="javascript:void(0);">
                     <i class="bi bi-file-earmark-text"></i> SPC Report
                 </a>

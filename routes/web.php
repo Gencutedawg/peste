@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Operator\WeightTestingController;
 use App\Http\Controllers\Operator\ThicknessTestingController;
+use App\Http\Controllers\Operator\MoistureTestingController;
 use App\Http\Controllers\Operator\WeightAlarmController;
 use App\Http\Controllers\Operator\ThicknessAlarmController;
 use App\Http\Middleware\IsAdmin;
@@ -27,9 +28,8 @@ Route::middleware(['auth', IsOperator::class, \App\Http\Middleware\ValidateSessi
                 Route::post('weight', [WeightTestingController::class, 'store'])->name('weight.store');
                 Route::get('thickness', [ThicknessTestingController::class, 'index'])->name('thickness');
                 Route::post('thickness', [ThicknessTestingController::class, 'store'])->name('thickness.store');
-                Route::get('moisture', function () {
-                        return view('operator.testing.moisture');
-                })->name('moisture');
+                Route::get('moisture', [MoistureTestingController::class, 'index'])->name('moisture');
+                Route::post('moisture', [MoistureTestingController::class, 'store'])->name('moisture.store');
         });
 
         // SPC Alarm Routes
@@ -66,6 +66,16 @@ Route::middleware(['auth', 'verified', IsAdmin::class, \App\Http\Middleware\Vali
                 Route::get('{plate}/edit', 'edit')->name('edit');
                 Route::put('{plate}', 'update')->name('update');
                 Route::delete('{plate}', 'destroy')->name('destroy');
+        });
+
+        // Curing Booth Management Routes
+        Route::prefix('admin/booths')->name('booths.')->controller(\App\Http\Controllers\Admin\CuringBoothController::class)->group(function () {
+                Route::get('', 'index')->name('index');
+                Route::get('create', 'create')->name('create');
+                Route::post('', 'store')->name('store');
+                Route::get('{booth}/edit', 'edit')->name('edit');
+                Route::put('{booth}', 'update')->name('update');
+                Route::delete('{booth}', 'destroy')->name('destroy');
         });
 });
 
