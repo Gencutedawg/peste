@@ -466,9 +466,9 @@
                     @foreach(['01', '02', '03', '04'] as $num)
                         <tr>
                             @if($loop->first)<td rowspan="4" class="side-label">NOP</td>@endif
-                            <td>0{{ $loop->index + 5 }}</td>
-                            <td><input type="number" class="weight-input" name="nop_w0{{ $loop->index + 1 }}" placeholder="Enter weight" step="any" data-sample="nop0{{ $loop->index + 1 }}" min="1" max="8" disabled></td>
-                            <td><span class="status-badge status-empty" id="status-nop0{{ $loop->index + 1 }}">—</span></td>
+                            <td>{{ $num }}</td>
+                            <td><input type="number" class="weight-input" name="nop_w{{ $num }}" placeholder="Enter weight" step="any" data-sample="nop{{ $num }}" min="1" max="8" disabled></td>
+                            <td><span class="status-badge status-empty" id="status-nop{{ $num }}">—</span></td>
                         </tr>
                     @endforeach
                 </tbody>
