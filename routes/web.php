@@ -8,6 +8,7 @@ use App\Http\Controllers\Operator\ThicknessTestingController;
 use App\Http\Controllers\Operator\MoistureTestingController;
 use App\Http\Controllers\Operator\WeightAlarmController;
 use App\Http\Controllers\Operator\ThicknessAlarmController;
+use App\Http\Controllers\Operator\MoistureAlarmController;
 use App\Http\Middleware\IsAdmin;
 use App\Http\Middleware\IsOperator; 
 
@@ -36,9 +37,7 @@ Route::middleware(['auth', IsOperator::class, \App\Http\Middleware\ValidateSessi
         Route::prefix('alarm')->name('alarm.')->group(function () {
                 Route::get('weight', [WeightAlarmController::class, 'weight'])->name('weight');
                 Route::get('thickness', [ThicknessAlarmController::class, 'thickness'])->name('thickness');
-                Route::get('moisture', function () {
-                        return view('operator.alarm.moisture');
-                })->name('moisture');
+                Route::get('moisture', [MoistureAlarmController::class, 'moisture'])->name('moisture');
         });
 
 });
