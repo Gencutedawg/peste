@@ -789,7 +789,7 @@
                     <th>NOP W2</th>
                     <th>NOP W3</th>
                     <th>NOP W4</th>
-                    <th>Remark</th>
+                    <th>Remarks</th>
                 </tr>
             </thead>
             <tbody>

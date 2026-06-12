@@ -422,9 +422,9 @@
                     <th>Plate Code</th>
                     <th>MC LSL (%)</th>
                     <th>MC Result (%)</th>
+                    <th>Remarks</th>
                     <th>Temp From (°C)</th>
                     <th>Temp To (°C)</th>
-                    <th>Remark</th>
                 </tr>
             </thead>
             <tbody>
@@ -437,9 +437,9 @@
                         <td>{{ $test->plate_code }}</td>
                         <td>{{ $test->plateSpecification->mc_lsl ? number_format($test->plateSpecification->mc_lsl, 2) : '—' }}</td>
                         <td>{{ number_format($test->mc_result, 2) }}</td>
+                        <td><span class="remark-text">{{ $test->remark_name ?? '—' }}</span></td>
                         <td>{{ $test->from_temperature ? number_format($test->from_temperature, 2) : '—' }}</td>
                         <td>{{ $test->to_temperature ? number_format($test->to_temperature, 2) : '—' }}</td>
-                        <td><span class="remark-text">{{ $test->remark_name ?? '—' }}</span></td>
                     </tr>
                 @endforeach
             </tbody>

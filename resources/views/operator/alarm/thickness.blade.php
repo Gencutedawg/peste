@@ -506,7 +506,7 @@
                 <th>NOP C2</th>
                 <th>NOP C3</th>
                 <th>NOP C4</th>
-                <th>Remark</th>
+                <th>Remarks</th>
             </tr>
         </thead>
         <tbody>
