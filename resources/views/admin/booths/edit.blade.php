@@ -337,35 +337,8 @@
                 </div>
             </div>
 
-            <!-- Status Section -->
-            <div class="form-group-section">
-                <label class="form-section-title">
-                    <i class="bi bi-toggle2-on"></i> Status
-                </label>
-
-                <div class="form-row full">
-                    <div class="form-check form-switch">
-                        <input
-                            class="form-check-input"
-                            type="checkbox"
-                            id="is_active"
-                            name="is_active"
-                            value="1"
-                            {{ old('is_active', $booth->is_active) ? 'checked' : '' }}
-                        >
-                        <label class="form-check-label" for="is_active">
-                            Active
-                        </label>
-                    </div>
-                </div>
-            </div>
-
             <!-- Audit Information Section -->
             <div class="form-group-section">
-                <label class="form-section-title">
-                    <i class="bi bi-clock-history"></i> Audit Information
-                </label>
-
                 <div class="audit-info">
                     <div class="audit-info-row">
                         <div class="audit-info-item">
@@ -414,11 +387,10 @@
 <script>
     document.getElementById('editForm').addEventListener('submit', function(e) {
         const boothName = document.getElementById('curing_booth').value.trim();
-        const isActive = document.getElementById('is_active').checked;
 
         Swal.fire({
             title: 'Confirm Update',
-            html: `<p>Update curing booth to:</p><strong>${boothName}</strong><p style="margin-top: 0.5rem; font-size: 0.875rem; color: #718096;">Status: ${isActive ? 'Active' : 'Inactive'}</p>`,
+            html: `<p>Update curing booth to:</p><strong>${boothName}</strong>`,
             icon: 'info',
             showCancelButton: true,
             confirmButtonColor: '#2C6CB0',

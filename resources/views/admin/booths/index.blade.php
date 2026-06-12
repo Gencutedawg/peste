@@ -4,8 +4,6 @@
 
 @section('styles')
 <link href="https://cdn.jsdelivr.net/npm/datatables.net-bs5@1.13.4/css/dataTables.bootstrap5.min.css" rel="stylesheet">
-<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-<link href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" rel="stylesheet" />
 <style>
     :root {
         --primary: #1D3557;
@@ -146,16 +144,6 @@
     .btn-group-sm { gap: 0.5rem; }
     .btn-group-sm .btn { padding: 0.375rem 0.5rem; font-size: 0.875rem; }
 
-    /* Select2 styling */
-    .select2-container--bootstrap-5 .select2-selection--single {
-        height: 38px;
-        font-size: 0.875rem;
-    }
-
-    .select2-container--bootstrap-5 .select2-selection--single .select2-selection__rendered {
-        padding-top: 0.375rem;
-    }
-
     /* Responsive adjustments */
     @media (max-width: 768px) {
         .filter-toolbar { flex-direction: column; }
@@ -183,19 +171,6 @@
     </a>
 </div>
 
-<!-- Filter Toolbar -->
-<div class="mb-3" style="width: fit-content;">
-    <form method="GET" action="{{ route('booths.index') }}" id="filterForm">
-        <select class="form-select form-select-sm" id="searchBooths" name="search" style="width: 100%; max-width: 500px;">
-            <option value="">Select Booth Name</option>
-            @foreach($boothNames as $name)
-                <option value="{{ $name }}" {{ request('search') === $name ? 'selected' : '' }}>
-                    {{ $name }}
-                </option>
-            @endforeach
-        </select>
-    </form>
-</div>
 
 <!-- Per-Page Selector -->
 @if($booths->count() > 0)
@@ -277,22 +252,8 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/datatables.net@1.13.4/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/datatables.net-bs5@1.13.4/js/dataTables.bootstrap5.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Initialize Select2 for searchable dropdown
-        $('#searchBooths').select2({
-            theme: 'bootstrap-5',
-            placeholder: 'Search or select booth name...',
-            allowClear: true,
-            width: '100%'
-        });
-
-        // Submit form when booth is selected
-        $('#searchBooths').on('change', function() {
-            document.getElementById('filterForm').submit();
-        });
-
         // Per-page selector
         const perPageSelect = document.getElementById('perPageSelect');
         if (perPageSelect) {
