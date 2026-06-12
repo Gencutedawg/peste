@@ -30,6 +30,8 @@ class PlateMoistureLog extends Model
         'remark_name',
         'curing_booth_id',
         'rack_no',
+        'from_temperature',
+        'to_temperature',
         'created_by', 'updated_by', 'is_active',
         'created_at', 'updated_at'
     ];
@@ -37,6 +39,8 @@ class PlateMoistureLog extends Model
     protected $casts = [
         'moisture_date_log' => 'date',
         'mc_result' => 'decimal:2',
+        'from_temperature' => 'decimal:2',
+        'to_temperature' => 'decimal:2',
     ];
 
     public function productionLine()

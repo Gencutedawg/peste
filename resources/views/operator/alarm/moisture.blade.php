@@ -415,28 +415,30 @@
         <table class="data-table">
             <thead>
                 <tr>
-                    <th>Date</th>
-                    <th>Time</th>
+                    <th>Date & Time</th>
                     <th>Operator</th>
                     <th>Line</th>
                     <th>Shift</th>
                     <th>Plate Code</th>
+                    <th>MC LSL (%)</th>
                     <th>MC Result (%)</th>
-                    <th>Status</th>
+                    <th>Temp From (°C)</th>
+                    <th>Temp To (°C)</th>
                     <th>Remark</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach($failedTests as $test)
                     <tr class="{{ $loop->odd ? 'table-row-odd' : 'table-row-even' }}">
-                        <td>{{ $test->moisture_date_log }}</td>
-                        <td>{{ $test->moisture_time_log }}</td>
-                        <td>{{ $test->operator_name }}</td>
+                        <td>{{ \Carbon\Carbon::parse($test->moisture_date_log)->format('Y-m-d') }} {{ $test->moisture_time_log }}</td>
+                        <td><strong>{{ $test->operator_name }}</strong></td>
                         <td>{{ $test->production_line_name }}</td>
                         <td>{{ $test->shift_name }}</td>
                         <td>{{ $test->plate_code }}</td>
+                        <td>{{ $test->plateSpecification->mc_lsl ? number_format($test->plateSpecification->mc_lsl, 2) : '—' }}</td>
                         <td>{{ number_format($test->mc_result, 2) }}</td>
-                        <td><span class="status-fail">{{ $test->quality_status_name }}</span></td>
+                        <td>{{ $test->from_temperature ? number_format($test->from_temperature, 2) : '—' }}</td>
+                        <td>{{ $test->to_temperature ? number_format($test->to_temperature, 2) : '—' }}</td>
                         <td><span class="remark-text">{{ $test->remark_name ?? '—' }}</span></td>
                     </tr>
                 @endforeach

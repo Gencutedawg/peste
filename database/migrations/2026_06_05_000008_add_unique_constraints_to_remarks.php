@@ -7,13 +7,21 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up(): void
     {
-        Schema::table('weight_remarks', function (Blueprint $table) {
-            $table->unique('remark_name', 'uk_weight_remark_name');
-        });
+        try {
+            Schema::table('weight_remarks', function (Blueprint $table) {
+                $table->unique('remark_name', 'uk_weight_remark_name');
+            });
+        } catch (\Exception $e) {
+            // Index might already exist
+        }
 
-        Schema::table('thickness_remarks', function (Blueprint $table) {
-            $table->unique('remark_name', 'uk_thickness_remark_name');
-        });
+        try {
+            Schema::table('thickness_remarks', function (Blueprint $table) {
+                $table->unique('remark_name', 'uk_thickness_remark_name');
+            });
+        } catch (\Exception $e) {
+            // Index might already exist
+        }
     }
 
     public function down(): void

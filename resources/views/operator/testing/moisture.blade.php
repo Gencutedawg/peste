@@ -301,6 +301,8 @@
 <form id="moistureTestForm" data-url="{{ route('testing.moisture.store') }}">
     @csrf
     <input type="hidden" name="moisture_remark_id" id="moistureRemarkInput" value="">
+    <input type="hidden" name="from_temperature" id="fromTemperatureInput" value="">
+    <input type="hidden" name="to_temperature" id="toTemperatureInput" value="">
 
     <div class="filter-bar">
         <div class="filter-group">
@@ -718,6 +720,17 @@ class MoistureTestController {
                         <option value="">-- Select a remark --</option>
                         ${remarksOptions}
                     </select>
+                    <p style="margin-top: 15px; margin-bottom: 10px;">Enter temperature range (°C):</p>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                        <div>
+                            <label style="font-size: 12px; font-weight: 600; color: #666; margin-bottom: 5px; display: block;">From (°C)</label>
+                            <input type="number" id="swal-from-temperature" placeholder="From" step="0.01" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 14px;">
+                        </div>
+                        <div>
+                            <label style="font-size: 12px; font-weight: 600; color: #666; margin-bottom: 5px; display: block;">To (°C)</label>
+                            <input type="number" id="swal-to-temperature" placeholder="To" step="0.01" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 14px;">
+                        </div>
+                    </div>
                 </div>
             `,
             showCancelButton: true,
@@ -733,6 +746,9 @@ class MoistureTestController {
         }).then(result => {
             if (result.isConfirmed) {
                 const remarkId = document.getElementById('swal-remarks').value;
+                const fromTemp = document.getElementById('swal-from-temperature').value;
+                const toTemp = document.getElementById('swal-to-temperature').value;
+
                 if (!remarkId) {
                     Swal.fire({
                         icon: 'warning',
@@ -742,7 +758,20 @@ class MoistureTestController {
                     });
                     return;
                 }
+
+                if (!fromTemp || !toTemp) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Required',
+                        text: 'Please enter both from and to temperatures',
+                        confirmButtonColor: '#dc3545'
+                    });
+                    return;
+                }
+
                 document.getElementById('moistureRemarkInput').value = remarkId;
+                document.getElementById('fromTemperatureInput').value = fromTemp;
+                document.getElementById('toTemperatureInput').value = toTemp;
                 this.autoSave();
             }
         });

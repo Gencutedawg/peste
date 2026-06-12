@@ -47,6 +47,8 @@ class MoistureTestingController extends Controller
                 'moisture_remark_id' => 'nullable|exists:moisture_remarks,id',
                 'curing_booth_id' => 'required|exists:curing_booth,id',
                 'rack_no' => 'required|string|max:255',
+                'from_temperature' => 'required|numeric',
+                'to_temperature' => 'required|numeric',
             ]);
 
             $plate = PlateSpecification::findOrFail($validated['plate_specification_id']);
@@ -89,6 +91,8 @@ class MoistureTestingController extends Controller
                 'remark_name' => $remarkName,
                 'curing_booth_id' => $validated['curing_booth_id'],
                 'rack_no' => $validated['rack_no'],
+                'from_temperature' => floatval($validated['from_temperature']),
+                'to_temperature' => floatval($validated['to_temperature']),
                 'created_by' => Auth::id(),
                 'created_at' => $philippineTime,
                 'updated_at' => $philippineTime,

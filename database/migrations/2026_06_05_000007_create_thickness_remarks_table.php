@@ -7,13 +7,15 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up(): void
     {
-        Schema::create('thickness_remarks', function (Blueprint $table) {
-            $table->id();
-            $table->string('remark_name', 100);
-            $table->text('description')->nullable();
-            $table->boolean('is_active')->default(true);
-            $table->timestamps();
-        });
+        if (!Schema::hasTable('thickness_remarks')) {
+            Schema::create('thickness_remarks', function (Blueprint $table) {
+                $table->id();
+                $table->string('remark_name', 100);
+                $table->text('description')->nullable();
+                $table->boolean('is_active')->default(true);
+                $table->timestamps();
+            });
+        }
     }
 
     public function down(): void
