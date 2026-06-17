@@ -675,6 +675,13 @@ class WeightTestController {
                     confirmButtonColor: '#28a745'
                 }).then(() => {
                     this.resetForm();
+                    setTimeout(() => {
+                        const inputs = document.querySelectorAll('.weight-input');
+                        if (inputs.length > 0) {
+                            inputs[0].focus();
+                            inputs[0].setSelectionRange(0, 0);
+                        }
+                    }, 100);
                 });
             } else {
                 const errorMsg = data.message || 'Unknown error occurred';

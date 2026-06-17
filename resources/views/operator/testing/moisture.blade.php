@@ -587,6 +587,13 @@ class MoistureTestController {
                     confirmButtonColor: '#28a745'
                 }).then(() => {
                     this.resetForm();
+                    setTimeout(() => {
+                        const mcInput = document.getElementById('mcResult');
+                        if (mcInput) {
+                            mcInput.focus();
+                            mcInput.setSelectionRange(0, 0);
+                        }
+                    }, 100);
                 });
             } else {
                 const errorMsg = data.message || 'Unknown error occurred';

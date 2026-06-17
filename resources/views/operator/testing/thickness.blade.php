@@ -283,6 +283,59 @@
     .loading { display: none; color: var(--info); font-size: 12px; }
     .loading.active { display: inline-block; }
 
+    .plate-indicator-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 20px 0;
+        padding: 16px;
+        background: var(--light-gray);
+        border-radius: 8px;
+        border: 2px solid var(--border-color);
+    }
+
+    .plate-visual {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 1fr 1fr;
+        gap: 8px;
+        width: 120px;
+        height: 120px;
+    }
+
+    .corner {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 2px solid var(--border-color);
+        border-radius: 4px;
+        background: white;
+        font-size: 12px;
+        font-weight: 700;
+        color: var(--primary);
+        cursor: default;
+        transition: all 0.2s ease;
+    }
+
+    .corner.active {
+        animation: cornerBlink 2s ease-in-out infinite;
+    }
+
+    @keyframes cornerBlink {
+        0%, 100% { background: white; box-shadow: none; }
+        50% { background: #0dcaf0; color: white; box-shadow: 0 0 12px rgba(13, 202, 240, 0.6); }
+    }
+
+    .corner-label {
+        font-size: 10px;
+        font-weight: 600;
+        color: #6c757d;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 12px;
+        text-align: center;
+    }
+
     #thicknessTestForm {
         display: flex;
         flex-direction: column;
@@ -385,6 +438,19 @@
 
         <div class="card">
             <h3 class="card-title"><i class="bi bi-rulers"></i> Thickness Collection</h3>
+
+            <div style="margin-bottom: 20px;">
+                <div class="corner-label">Active Corner Testing</div>
+                <div class="plate-indicator-container">
+                    <div class="plate-visual">
+                        <div class="corner" id="corner-c1">C1</div>
+                        <div class="corner" id="corner-c2">C2</div>
+                        <div class="corner" id="corner-c4">C4</div>
+                        <div class="corner" id="corner-c3">C3</div>
+                    </div>
+                </div>
+            </div>
+
             <table class="data-table">
                 <thead>
                     <tr>
@@ -436,6 +502,12 @@ class ThicknessTestController {
         this.usl = null;
         this.remarks = @json($remarks ?? []);
         this.isSaving = false;
+        this.cornerMap = {
+            'op_c1': 'c1', 'nop_c1': 'c1',
+            'op_c2': 'c2', 'nop_c2': 'c2',
+            'op_c3': 'c3', 'nop_c3': 'c3',
+            'op_c4': 'c4', 'nop_c4': 'c4'
+        };
         this.init();
     }
 
@@ -486,6 +558,7 @@ class ThicknessTestController {
                     this.showValidationError();
                     return false;
                 }
+                this.activateCornerBlink(input);
             });
 
             input.addEventListener('blur', () => this.handleThicknessInput(input));
@@ -523,6 +596,23 @@ class ThicknessTestController {
         document.getElementById('thicknessTestForm').addEventListener('submit', (e) => {
             this.submitForm(e);
         });
+    }
+
+    activateCornerBlink(input) {
+        const inputName = input.getAttribute('name');
+        const cornerId = this.cornerMap[inputName];
+
+        if (cornerId) {
+            const cornerElement = document.getElementById(`corner-${cornerId}`);
+            if (cornerElement) {
+                // Remove active class from all corners
+                document.querySelectorAll('.corner').forEach(corner => {
+                    corner.classList.remove('active');
+                });
+                // Add active class to current corner
+                cornerElement.classList.add('active');
+            }
+        }
     }
 
     areAllRequiredFieldsSelected() {
@@ -619,6 +709,13 @@ class ThicknessTestController {
                     confirmButtonColor: '#28a745'
                 }).then(() => {
                     this.resetForm();
+                    setTimeout(() => {
+                        const inputs = document.querySelectorAll('.thickness-input');
+                        if (inputs.length > 0) {
+                            inputs[0].focus();
+                            inputs[0].setSelectionRange(0, 0);
+                        }
+                    }, 100);
                 });
             } else {
                 const errorMsg = data.message || 'Unknown error occurred';
@@ -789,6 +886,9 @@ class ThicknessTestController {
             const statusEl = document.getElementById(`status-${sample}`);
             statusEl.textContent = '—';
             statusEl.className = 'status-badge status-empty';
+        });
+        document.querySelectorAll('.corner').forEach(corner => {
+            corner.classList.remove('active');
         });
         this.resetStatistics();
     }
