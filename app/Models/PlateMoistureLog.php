@@ -77,4 +77,9 @@ class PlateMoistureLog extends Model
     {
         return $this->belongsTo(MoistureRemarks::class, 'moisture_remark_id');
     }
+
+    public function curingBooth()
+    {
+        return $this->belongsTo(CuringBooth::class);
+    }
 }

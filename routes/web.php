@@ -76,6 +76,14 @@ Route::middleware(['auth', 'verified', IsAdmin::class, \App\Http\Middleware\Vali
                 Route::put('{booth}', 'update')->name('update');
                 Route::delete('{booth}', 'destroy')->name('destroy');
         });
+
+        // Remarks Management Routes
+        Route::prefix('admin/remarks')->name('remarks.')->controller(\App\Http\Controllers\Admin\RemarksController::class)->group(function () {
+                Route::get('', 'index')->name('index');
+                Route::post('', 'store')->name('store');
+                Route::put('{type}/{id}', 'update')->name('update');
+                Route::delete('{type}/{id}', 'destroy')->name('destroy');
+        });
 });
 
 

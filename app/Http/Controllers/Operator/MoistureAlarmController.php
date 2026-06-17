@@ -13,7 +13,7 @@ class MoistureAlarmController extends Controller
 {
     public function moisture(Request $request)
     {
-        $query = PlateMoistureLog::where('plate_quality_status_id', 2)->with('plateSpecification');
+        $query = PlateMoistureLog::where('plate_quality_status_id', 2)->with('plateSpecification', 'curingBooth');
 
         $fromDate = $request->filled('from_date') ? $request->from_date : null;
         $toDate = $request->filled('to_date') ? $request->to_date : null;

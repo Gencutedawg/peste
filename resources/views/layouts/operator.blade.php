@@ -505,28 +505,28 @@
                 </ul>
             </li>
 
-            <!-- SPC Alarm Dropdown -->
+            <!-- Rejection History Dropdown -->
             <li class="nav-item">
                 <button class="nav-dropdown-toggle {{ request()->routeIs('alarm.*') ? 'active' : '' }}" id="alarmToggle" type="button">
                     <div style="display: flex; align-items: center;">
-                        <i class="bi bi-exclamation-triangle"></i> SPC Alarm
+                        <i class="bi bi-exclamation-triangle"></i> Rejection History
                     </div>
                     <i class="bi bi-chevron-down dropdown-arrow"></i>
                 </button>
                 <ul class="nav flex-column nav-dropdown {{ request()->routeIs('alarm.*') ? 'show' : '' }}" id="alarmDropdown">
                     <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('alarm.weight') ? 'active' : '' }}" href="{{ route('alarm.weight') }}">
-                            Weight Alarm
+                            Weight Rejection
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('alarm.thickness') ? 'active' : '' }}" href="{{ route('alarm.thickness') }}">
-                            Thickness Alarm
+                            Thickness Rejection
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('alarm.moisture') ? 'active' : '' }}" href="{{ route('alarm.moisture') }}">
-                            Moisture Content Alarm
+                            Moisture Content Rejection
                         </a>
                     </li>
                 </ul>

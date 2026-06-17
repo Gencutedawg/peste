@@ -420,6 +420,8 @@
                     <th>Line</th>
                     <th>Shift</th>
                     <th>Plate Code</th>
+                    <th>Curing Booth</th>
+                    <th>Rack No</th>
                     <th>MC LSL (%)</th>
                     <th>MC Result (%)</th>
                     <th>Remarks</th>
@@ -435,6 +437,8 @@
                         <td>{{ $test->production_line_name }}</td>
                         <td>{{ $test->shift_name }}</td>
                         <td>{{ $test->plate_code }}</td>
+                        <td>{{ $test->curingBooth?->curing_booth ?? '—' }}</td>
+                        <td>{{ $test->rack_no ?? '—' }}</td>
                         <td>{{ $test->plateSpecification->mc_lsl ? number_format($test->plateSpecification->mc_lsl, 2) : '—' }}</td>
                         <td>{{ number_format($test->mc_result, 2) }}</td>
                         <td><span class="remark-text">{{ $test->remark_name ?? '—' }}</span></td>
