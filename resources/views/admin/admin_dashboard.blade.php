@@ -51,6 +51,17 @@
                     <i class="bi bi-chat-dots text-3xl text-orange-600"></i>
                 </div>
             </a>
+
+            <!-- Testing Logs Card -->
+            <a href="{{ route('testing-logs.index') }}" class="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-900">Testing Logs</h3>
+                        <p class="text-gray-600 text-sm mt-1">View test results</p>
+                    </div>
+                    <i class="bi bi-graph-up text-3xl text-red-600"></i>
+                </div>
+            </a>
         </div>
     </div>
 </div>

@@ -84,6 +84,12 @@ Route::middleware(['auth', 'verified', IsAdmin::class, \App\Http\Middleware\Vali
                 Route::put('{type}/{id}', 'update')->name('update');
                 Route::delete('{type}/{id}', 'destroy')->name('destroy');
         });
+
+        // Testing Logs Routes
+        Route::prefix('admin/testing-logs')->name('testing-logs.')->controller(\App\Http\Controllers\Admin\TestingLogsController::class)->group(function () {
+                Route::get('', 'index')->name('index');
+                Route::get('export-csv', 'exportCsv')->name('export-csv');
+        });
 });
 
 

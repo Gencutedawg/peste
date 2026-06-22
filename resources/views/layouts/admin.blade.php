@@ -473,6 +473,12 @@
                 </a>
             </li>
             <li class="nav-item">
+                <a class="nav-link {{ request()->routeIs('testing-logs.*') ? 'active' : '' }}"
+                   href="{{ route('testing-logs.index') }}">
+                    <i class="bi bi-graph-up"></i> Testing Logs
+                </a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link {{ request()->routeIs('spc-report.*') ? 'active' : '' }}"
                    href="javascript:void(0);">
                     <i class="bi bi-file-earmark-text"></i> SPC Report
