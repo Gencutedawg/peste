@@ -263,8 +263,65 @@
 
 @endsection
 
+<!-- Date Range Modal -->
+<div id="dateRangeModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center">
+    <div class="bg-white rounded-lg shadow-lg max-w-md w-full mx-4">
+        <div class="p-6 border-b border-gray-200">
+            <h3 class="text-lg font-semibold text-gray-900">Select Date Range for Export</h3>
+        </div>
+        <div class="p-6 space-y-3">
+            <button onclick="setDateRange('today')" class="w-full text-left px-4 py-3 rounded-lg border border-gray-300 hover:bg-blue-50 hover:border-blue-500 transition-colors">
+                <span class="font-medium text-gray-900">Today</span>
+                <span class="text-sm text-gray-500 block">Export today's data</span>
+            </button>
+            <button onclick="setDateRange('week')" class="w-full text-left px-4 py-3 rounded-lg border border-gray-300 hover:bg-blue-50 hover:border-blue-500 transition-colors">
+                <span class="font-medium text-gray-900">This Week</span>
+                <span class="text-sm text-gray-500 block">Monday to today</span>
+            </button>
+            <button onclick="setDateRange('lastweek')" class="w-full text-left px-4 py-3 rounded-lg border border-gray-300 hover:bg-blue-50 hover:border-blue-500 transition-colors">
+                <span class="font-medium text-gray-900">Last Week</span>
+                <span class="text-sm text-gray-500 block">Previous 7 days</span>
+            </button>
+            <button onclick="setDateRange('30days')" class="w-full text-left px-4 py-3 rounded-lg border border-gray-300 hover:bg-blue-50 hover:border-blue-500 transition-colors">
+                <span class="font-medium text-gray-900">Last 30 Days</span>
+                <span class="text-sm text-gray-500 block">Past month</span>
+            </button>
+            <div class="border-t border-gray-200 pt-3">
+                <button onclick="toggleCustomRange()" class="w-full text-left px-4 py-3 rounded-lg border border-gray-300 hover:bg-blue-50 hover:border-blue-500 transition-colors">
+                    <span class="font-medium text-gray-900">Custom Range</span>
+                    <span class="text-sm text-gray-500 block">Choose specific dates</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Custom Range Section -->
+        <div id="customRangeSection" class="hidden border-t border-gray-200 p-6 space-y-4">
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Start Date</label>
+                <input type="date" id="customStartDate" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">End Date</label>
+                <input type="date" id="customEndDate" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+        </div>
+
+        <div class="px-6 py-4 border-t border-gray-200 flex gap-3 justify-end">
+            <button onclick="closeModal()" class="px-4 py-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50 font-medium">
+                Cancel
+            </button>
+            <button onclick="proceedExport()" class="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium">
+                Export
+            </button>
+        </div>
+    </div>
+</div>
+
 @section('scripts')
 <script>
+    let selectedType = null;
+    let selectedDateRange = null;
+
     const tabButtons = document.querySelectorAll('.tab-button');
 
     tabButtons.forEach(btn => {
@@ -301,20 +358,98 @@
     }
 
     function exportData(format, type) {
-        const startDate = document.getElementById('startDate').value;
-        const endDate = document.getElementById('endDate').value;
+        selectedType = type;
+        selectedDateRange = null;
+        document.getElementById('customRangeSection').classList.add('hidden');
+        document.getElementById('dateRangeModal').classList.remove('hidden');
+    }
 
-        if (!startDate || !endDate) {
-            alert('Please select both start and end dates');
-            return;
+    function closeModal() {
+        document.getElementById('dateRangeModal').classList.add('hidden');
+        selectedType = null;
+        selectedDateRange = null;
+    }
+
+    function setDateRange(range) {
+        selectedDateRange = range;
+        const customSection = document.getElementById('customRangeSection');
+        if (range === 'custom') {
+            customSection.classList.remove('hidden');
+        } else {
+            customSection.classList.add('hidden');
+            proceedExport();
+        }
+    }
+
+    function toggleCustomRange() {
+        selectedDateRange = 'custom';
+        const customSection = document.getElementById('customRangeSection');
+        customSection.classList.remove('hidden');
+    }
+
+    function getDateRangeValues() {
+        const today = new Date();
+        let startDate, endDate = today.toISOString().split('T')[0];
+
+        switch(selectedDateRange) {
+            case 'today':
+                startDate = endDate;
+                break;
+            case 'week': {
+                const first = new Date(today.getFullYear(), today.getMonth(), today.getDate() - today.getDay() + 1);
+                startDate = first.toISOString().split('T')[0];
+                break;
+            }
+            case 'lastweek': {
+                const last = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
+                startDate = last.toISOString().split('T')[0];
+                break;
+            }
+            case '30days': {
+                const thirtyDaysAgo = new Date(today.getTime() - 30 * 24 * 60 * 60 * 1000);
+                startDate = thirtyDaysAgo.toISOString().split('T')[0];
+                break;
+            }
+            case 'custom':
+                startDate = document.getElementById('customStartDate').value;
+                endDate = document.getElementById('customEndDate').value;
+                if (!startDate || !endDate) {
+                    alert('Please select both start and end dates');
+                    return null;
+                }
+                break;
+            default:
+                return null;
         }
 
-        const params = new URLSearchParams();
-        params.append('start_date', startDate);
-        params.append('end_date', endDate);
-        params.append('type', type);
+        return { startDate, endDate };
+    }
 
+    function proceedExport() {
+        const dateRange = getDateRangeValues();
+        if (!dateRange) return;
+
+        const params = new URLSearchParams();
+        params.append('start_date', dateRange.startDate);
+        params.append('end_date', dateRange.endDate);
+        params.append('type', selectedType);
+
+        closeModal();
         window.location.href = '{{ route("testing-logs.export-csv") }}?' + params.toString();
     }
+
+    // Close modal on escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closeModal();
+        }
+    });
+
+    // Close modal on background click
+    document.getElementById('dateRangeModal').addEventListener('click', function(e) {
+        if (e.target === this) {
+            closeModal();
+        }
+    });
 </script>
 @endsection
