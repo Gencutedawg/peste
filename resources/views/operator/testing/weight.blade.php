@@ -209,16 +209,6 @@
         background-color: rgba(13, 202, 240, 0.03);
     }
 
-    .side-label {
-        background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
-        color: white;
-        font-weight: 600;
-        text-align: center;
-        padding: 10px;
-        font-size: 11px;
-        min-width: 50px;
-        font-weight: 700;
-    }
 
     .weight-input {
         width: 100%;
@@ -428,7 +418,6 @@
             <table class="data-table">
                 <thead>
                     <tr>
-                        <th>Side</th>
                         <th>Sample No.</th>
                         <th>Weight Input</th>
                         <th>Status</th>
@@ -437,16 +426,12 @@
                 <tbody>
                     @foreach(['01', '02', '03', '04'] as $num)
                         <tr>
-                            @if($loop->first)<td rowspan="4" class="side-label">OP</td>@endif
-                            <td>{{ $num }}</td>
+                            <td>{{ $num }} (OP)</td>
                             <td><input type="number" class="weight-input" name="op_w{{ $num }}" placeholder="Enter weight" step="any" data-sample="op{{ $num }}" min="1" max="8" disabled></td>
                             <td><span class="status-badge status-empty" id="status-op{{ $num }}">—</span></td>
                         </tr>
-                    @endforeach
-                    @foreach(['01', '02', '03', '04'] as $num)
                         <tr>
-                            @if($loop->first)<td rowspan="4" class="side-label">NOP</td>@endif
-                            <td>{{ $num }}</td>
+                            <td>{{ $num }} (NOP)</td>
                             <td><input type="number" class="weight-input" name="nop_w{{ $num }}" placeholder="Enter weight" step="any" data-sample="nop{{ $num }}" min="1" max="8" disabled></td>
                             <td><span class="status-badge status-empty" id="status-nop{{ $num }}">—</span></td>
                         </tr>
@@ -654,21 +639,17 @@ class WeightTestController {
             if (status === 200 || status === 201) {
                 Swal.fire({
                     icon: 'success',
-                    title: 'Saved!',
-                    text: 'Test results saved successfully',
-                    confirmButtonColor: '#28a745'
+                    text: 'Test result saved successfully',
+                    showConfirmButton: false,
+                    timer: 1500
                 }).then(() => {
-                    // Force focus away from any previously focused element
                     document.body.focus();
-
                     this.resetForm();
                     setTimeout(() => {
                         const inputs = document.querySelectorAll('.weight-input');
                         if (inputs.length > 0) {
                             inputs[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
                             inputs[0].focus();
-                            inputs[0].selectionStart = 0;
-                            inputs[0].selectionEnd = 0;
                         }
                     }, 100);
                 });

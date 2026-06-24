@@ -736,21 +736,17 @@ class ThicknessTestController {
             if (status === 200 || status === 201) {
                 Swal.fire({
                     icon: 'success',
-                    title: 'Saved!',
-                    text: 'Test results saved successfully',
-                    confirmButtonColor: '#28a745'
+                    text: 'Test result saved successfully',
+                    showConfirmButton: false,
+                    timer: 1500
                 }).then(() => {
-                    // Force focus away from any previously focused element
                     document.body.focus();
-
                     this.resetForm();
                     setTimeout(() => {
                         const inputs = document.querySelectorAll('.thickness-input');
                         if (inputs.length > 0) {
                             inputs[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
                             inputs[0].focus();
-                            inputs[0].selectionStart = 0;
-                            inputs[0].selectionEnd = 0;
                         }
                     }, 100);
                 });

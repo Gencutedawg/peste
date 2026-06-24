@@ -70,7 +70,8 @@
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">LSL</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Target</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">USL</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">W1-W4</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">OP W1-W4</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">NOP W1-W4</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Status</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Remarks</th>
                             </tr>
@@ -90,12 +91,15 @@
                                     <td class="px-6 py-4 text-sm text-gray-700">
                                         <span class="font-mono text-xs">{{ $log->op_w1 ?? '-' }}/{{ $log->op_w2 ?? '-' }}/{{ $log->op_w3 ?? '-' }}/{{ $log->op_w4 ?? '-' }}</span>
                                     </td>
+                                    <td class="px-6 py-4 text-sm text-gray-700">
+                                        <span class="font-mono text-xs">{{ $log->nop_w1 ?? '-' }}/{{ $log->nop_w2 ?? '-' }}/{{ $log->nop_w3 ?? '-' }}/{{ $log->nop_w4 ?? '-' }}</span>
+                                    </td>
                                     <td class="px-6 py-4 text-sm text-gray-700">{{ $log->quality_status_name ?? '-' }}</td>
                                     <td class="px-6 py-4 text-sm text-gray-700">{{ $log->remark_name ?? '-' }}</td>
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="12" class="px-6 py-8 text-center text-gray-500">
+                                    <td colspan="13" class="px-6 py-8 text-center text-gray-500">
                                         <i class="bi bi-inbox text-2xl mb-2 block opacity-50"></i>
                                         No weight logs found
                                     </td>
