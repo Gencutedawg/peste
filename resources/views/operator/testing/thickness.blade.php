@@ -14,13 +14,37 @@
         --shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
     }
 
+    /* This page is a single-screen HMI: shrink the shared layout's chrome
+       (topbar/sidebar/footer) so the whole form fits one viewport. */
+    body:has(#thicknessTestForm) {
+        overflow: hidden;
+    }
+
+    body:has(#thicknessTestForm) .topbar {
+        height: 48px;
+        padding: 0 20px;
+    }
+
+    body:has(#thicknessTestForm) .sidebar {
+        padding-top: 48px;
+    }
+
+    body:has(#thicknessTestForm) .main-content {
+        margin-top: 48px;
+        padding: 10px 14px;
+    }
+
+    body:has(#thicknessTestForm) .footer {
+        display: none;
+    }
+
     #thicknessTestForm {
         display: flex;
         flex-direction: column;
-        height: calc(100vh - 32px);
-        gap: 12px;
+        height: calc(100vh - 68px);
+        gap: 10px;
         overflow: hidden;
-        padding: 16px;
+        padding: 0;
     }
 
     .page-header {
@@ -51,9 +75,9 @@
     .filter-bar {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(155px, 1fr));
-        gap: 12px;
+        gap: 10px;
         background: white;
-        padding: 14px;
+        padding: 10px 12px;
         border-radius: 10px;
         box-shadow: var(--shadow);
         border: 1px solid var(--border-color);
@@ -113,7 +137,7 @@
     .content-grid {
         display: grid;
         grid-template-columns: 1fr 1.8fr;
-        gap: 14px;
+        gap: 10px;
         flex: 1;
         overflow: hidden;
         min-height: 0;
@@ -124,7 +148,7 @@
     .card {
         background: white;
         border-radius: 10px;
-        padding: 16px;
+        padding: 14px;
         box-shadow: var(--shadow);
         border: 1px solid var(--border-color);
         overflow-y: auto;
@@ -136,8 +160,8 @@
         font-size: 13px;
         font-weight: 700;
         color: var(--primary);
-        margin: 0 0 12px 0;
-        padding-bottom: 10px;
+        margin: 0 0 8px 0;
+        padding-bottom: 8px;
         border-bottom: 2px solid var(--light-gray);
         display: flex;
         align-items: center;
@@ -148,12 +172,12 @@
     .specification-grid {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
-        gap: 10px;
+        gap: 8px;
     }
 
     .spec-item {
         text-align: center;
-        padding: 12px;
+        padding: 10px;
         background: linear-gradient(135deg, #f0f4f9 0%, #ffffff 100%);
         border-radius: 8px;
         border: 1px solid var(--border-color);
@@ -176,11 +200,17 @@
 
     .data-table {
         width: 100%;
+        table-layout: fixed;
         border-collapse: collapse;
         font-size: 12px;
         flex: 1;
         overflow: auto;
     }
+
+    .data-table th:nth-child(1) { width: 12%; }
+    .data-table th:nth-child(2) { width: 16%; }
+    .data-table th:nth-child(3) { width: 48%; }
+    .data-table th:nth-child(4) { width: 24%; }
 
     .data-table thead {
         background: linear-gradient(135deg, #f0f4f9 0%, #ffffff 100%);
@@ -190,7 +220,7 @@
     }
 
     .data-table th {
-        padding: 10px;
+        padding: 7px 10px;
         text-align: left;
         font-size: 11px;
         font-weight: 700;
@@ -200,7 +230,7 @@
     }
 
     .data-table td {
-        padding: 9px 10px;
+        padding: 5px 10px;
         border-bottom: 1px solid var(--border-color);
         font-size: 13px;
     }
@@ -222,7 +252,7 @@
 
     .thickness-input {
         width: 100%;
-        padding: 8px;
+        padding: 6px;
         border: 2px solid var(--border-color);
         border-radius: 6px;
         font-size: 13px;
@@ -266,13 +296,13 @@
     .stats-grid {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
-        gap: 10px;
-        margin-top: 12px;
+        gap: 8px;
+        margin-top: 8px;
     }
 
     .stat-item {
         background: linear-gradient(135deg, #f0f4f9 0%, #ffffff 100%);
-        padding: 12px;
+        padding: 9px;
         border-radius: 8px;
         border: 1px solid var(--border-color);
     }
@@ -295,14 +325,14 @@
     .nonconformance-grid {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 10px;
-        margin-top: 12px;
+        gap: 8px;
+        margin-top: 8px;
         margin-bottom: 0;
     }
 
     .nc-item {
         background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
-        padding: 12px;
+        padding: 9px;
         border-radius: 8px;
         border-left: 4px solid var(--danger);
     }
@@ -326,8 +356,8 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        margin: 16px 0;
-        padding: 14px;
+        margin: 8px 0;
+        padding: 8px;
         background: linear-gradient(135deg, #f0f4f9 0%, #ffffff 100%);
         border-radius: 8px;
         border: 1px solid var(--border-color);
@@ -337,9 +367,9 @@
         display: grid;
         grid-template-columns: 1fr 1fr;
         grid-template-rows: 1fr 1fr;
-        gap: 10px;
-        width: 130px;
-        height: 130px;
+        gap: 6px;
+        width: 84px;
+        height: 84px;
     }
 
     .corner {
@@ -349,7 +379,7 @@
         border: 2px solid var(--border-color);
         border-radius: 6px;
         background: white;
-        font-size: 12px;
+        font-size: 11px;
         font-weight: 700;
         color: var(--primary);
         cursor: default;
@@ -371,7 +401,7 @@
         color: #6c757d;
         text-transform: uppercase;
         letter-spacing: 0.5px;
-        margin-bottom: 10px;
+        margin-bottom: 6px;
         text-align: center;
     }
 
@@ -449,7 +479,7 @@
                 </div>
             </div>
 
-            <div class="card" style="margin-top: 14px;">
+            <div class="card" style="margin-top: 10px;">
                 <h3 class="card-title"><i class="bi bi-graph-up"></i> Live Statistics</h3>
                 <div class="stats-grid">
                     <div class="stat-item"><div class="stat-label">Average</div><div class="stat-value" id="statAverage">—</div></div>
@@ -465,7 +495,7 @@
         <div class="card">
             <h3 class="card-title"><i class="bi bi-rulers"></i> Thickness Collection</h3>
 
-            <div style="margin-bottom: 14px;">
+            <div style="margin-bottom: 8px;">
                 <div class="corner-label">Active Corner Testing</div>
                 <div class="plate-indicator-container">
                     <div class="plate-visual">
