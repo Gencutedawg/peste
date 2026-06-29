@@ -418,20 +418,19 @@
             <table class="data-table">
                 <thead>
                     <tr>
-                        <th>Sample No.</th>
-                        <th>Weight Input</th>
-                        <th>Status</th>
+                        <th>Sample</th>
+                        <th>OP Weight</th>
+                        <th>OP Status</th>
+                        <th>NOP Weight</th>
+                        <th>NOP Status</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach(['01', '02', '03', '04'] as $num)
                         <tr>
-                            <td>{{ $num }} (OP)</td>
+                            <td>{{ $num }}</td>
                             <td><input type="number" class="weight-input" name="op_w{{ $num }}" placeholder="Enter weight" step="any" data-sample="op{{ $num }}" min="1" max="8" disabled></td>
                             <td><span class="status-badge status-empty" id="status-op{{ $num }}">—</span></td>
-                        </tr>
-                        <tr>
-                            <td>{{ $num }} (NOP)</td>
                             <td><input type="number" class="weight-input" name="nop_w{{ $num }}" placeholder="Enter weight" step="any" data-sample="nop{{ $num }}" min="1" max="8" disabled></td>
                             <td><span class="status-badge status-empty" id="status-nop{{ $num }}">—</span></td>
                         </tr>
