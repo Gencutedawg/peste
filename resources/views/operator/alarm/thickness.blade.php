@@ -16,16 +16,49 @@
         background: #f5f6f8;
     }
 
+    /* This page is a single-screen HMI: shrink the shared layout's chrome
+       (topbar/sidebar/footer) so the table fits one viewport. */
+    body:has(.filter-toolbar) {
+        overflow: hidden;
+    }
+
+    body:has(.filter-toolbar) .topbar {
+        height: 48px;
+        padding: 0 20px;
+    }
+
+    body:has(.filter-toolbar) .sidebar {
+        padding-top: 48px;
+    }
+
+    body:has(.filter-toolbar) .main-content {
+        margin-top: 48px;
+        padding: 8px 12px;
+    }
+
+    body:has(.filter-toolbar) .footer {
+        display: none;
+    }
+
+    .rejection-page {
+        display: flex;
+        flex-direction: column;
+        height: calc(100vh - 64px);
+        gap: 6px;
+        overflow: hidden;
+    }
+
     .filter-toolbar {
         background: white;
         border: 1px solid var(--border-color);
         border-radius: 8px;
-        padding: 12px 16px;
-        margin-bottom: 12px;
+        padding: 8px 10px;
+        margin-bottom: 0;
         display: flex;
         align-items: flex-end;
-        gap: 12px;
+        gap: 8px;
         flex-wrap: wrap;
+        flex-shrink: 0;
     }
 
     .filter-item {
@@ -163,12 +196,30 @@
     .per-page-selector {
         display: flex;
         align-items: center;
+        justify-content: space-between;
         gap: 8px;
-        padding: 8px 10px;
+        padding: 6px 10px;
         background: white;
         border: 1px solid var(--border-color);
         border-radius: 6px;
-        margin-bottom: 8px;
+        margin-bottom: 0;
+        flex-shrink: 0;
+    }
+
+    .per-page-controls {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .results-summary {
+        font-size: 11px;
+        color: #6c757d;
+    }
+
+    .results-summary strong {
+        color: var(--primary);
+        font-weight: 700;
     }
 
     .per-page-label {
@@ -201,16 +252,18 @@
 
     .table-container {
         background: white;
-        overflow-x: auto;
+        overflow: auto;
         border-radius: 6px;
         border: 1px solid var(--border-color);
+        flex: 1;
+        min-height: 0;
     }
 
     .data-table {
         width: 100%;
         border-collapse: collapse;
         margin: 0;
-        font-size: 11px;
+        font-size: 13px;
     }
 
     .table-header-sticky {
@@ -222,15 +275,17 @@
     }
 
     .data-table th {
-        padding: 6px 8px;
+        padding: 11px 10px;
         text-align: left;
-        font-size: 10px;
+        font-size: 11px;
         font-weight: 700;
         color: var(--primary);
         text-transform: uppercase;
         letter-spacing: 0.3px;
         background: var(--light-gray);
         white-space: nowrap;
+        vertical-align: middle;
+        line-height: 1.3;
     }
 
     .table-row-odd {
@@ -246,11 +301,44 @@
     }
 
     .data-table td {
-        padding: 6px 8px;
+        padding: 12px 10px;
         border-bottom: 1px solid var(--border-color);
-        font-size: 11px;
+        font-size: 13px;
         color: #333;
+        white-space: nowrap;
+        vertical-align: middle;
+        line-height: 1.3;
     }
+
+    /* Frozen identification columns (ID, Date/Time, Operator, Line, Shift, Plate Code)
+       stay visible while the measurement columns scroll horizontally. */
+    .data-table th:nth-child(-n+6),
+    .data-table td:nth-child(-n+6) {
+        position: sticky;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .data-table td:nth-child(-n+6) { z-index: 2; }
+    .data-table th:nth-child(-n+6) { z-index: 11; }
+
+    .data-table th:nth-child(1), .data-table td:nth-child(1) { left: 0;     width: 50px;  min-width: 50px;  max-width: 50px; }
+    .data-table th:nth-child(2), .data-table td:nth-child(2) { left: 50px;  width: 150px; min-width: 150px; max-width: 150px; }
+    .data-table th:nth-child(3), .data-table td:nth-child(3) { left: 200px; width: 130px; min-width: 130px; max-width: 130px; }
+    .data-table th:nth-child(4), .data-table td:nth-child(4) { left: 330px; width: 80px;  min-width: 80px;  max-width: 80px; }
+    .data-table th:nth-child(5), .data-table td:nth-child(5) { left: 410px; width: 80px;  min-width: 80px;  max-width: 80px; }
+    .data-table th:nth-child(6), .data-table td:nth-child(6) {
+        left: 490px;
+        width: 100px;
+        min-width: 100px;
+        max-width: 100px;
+        border-right: 2px solid var(--border-color);
+    }
+
+    .table-row-odd td:nth-child(-n+6) { background: white; }
+    .table-row-even td:nth-child(-n+6) { background: var(--light-gray); }
+    .data-table tbody tr:hover td:nth-child(-n+6) { background-color: #f0f0f0 !important; }
 
     .status-fail {
         background: rgba(220, 53, 69, 0.1);
@@ -361,11 +449,12 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 8px;
-        margin-top: 8px;
+        padding: 6px 8px;
+        margin-top: 0;
         background: white;
         border: 1px solid var(--border-color);
         border-radius: 6px;
+        flex-shrink: 0;
     }
 
     .pagination-info {
@@ -405,8 +494,9 @@
 @endsection
 
 @section('content')
+<div class="rejection-page">
 <div class="filter-toolbar">
-    <form method="GET" action="{{ route('alarm.thickness') }}" class="filter-form" id="filterForm" style="display: flex; gap: 12px; flex-wrap: wrap; align-items: flex-end; width: 100%;">
+    <form method="GET" action="{{ route('alarm.thickness') }}" class="filter-form" id="filterForm" style="display: flex; gap: 8px; flex-wrap: wrap; align-items: flex-end; width: 100%;">
         <div class="filter-item date-range">
             <label>Date Range</label>
             <div class="date-range-inputs">
@@ -477,19 +567,26 @@
 
 @if($failedTests->count() > 0)
 <div class="per-page-selector">
-    <label class="per-page-label">Records per page:</label>
-    <select class="per-page-select" id="perPageSelect">
-        <option value="10" {{ request('per_page', 10) == 10 ? 'selected' : '' }}>10</option>
-        <option value="25" {{ request('per_page', 10) == 25 ? 'selected' : '' }}>25</option>
-        <option value="50" {{ request('per_page', 10) == 50 ? 'selected' : '' }}>50</option>
-        <option value="100" {{ request('per_page', 10) == 100 ? 'selected' : '' }}>100</option>
-    </select>
+    <span class="results-summary">
+        Showing <strong>{{ $failedTests->firstItem() ?? 0 }}</strong>–<strong>{{ $failedTests->lastItem() ?? 0 }}</strong>
+        of <strong>{{ $failedTests->total() }}</strong> results
+    </span>
+    <div class="per-page-controls">
+        <label class="per-page-label">Records per page:</label>
+        <select class="per-page-select" id="perPageSelect">
+            <option value="10" {{ request('per_page', 10) == 10 ? 'selected' : '' }}>10</option>
+            <option value="25" {{ request('per_page', 10) == 25 ? 'selected' : '' }}>25</option>
+            <option value="50" {{ request('per_page', 10) == 50 ? 'selected' : '' }}>50</option>
+            <option value="100" {{ request('per_page', 10) == 100 ? 'selected' : '' }}>100</option>
+        </select>
+    </div>
 </div>
 
 <div class="table-container">
     <table class="data-table">
         <thead class="table-header-sticky">
             <tr>
+                <th>ID</th>
                 <th>Date and Time</th>
                 <th>Operator</th>
                 <th>Line</th>
@@ -512,6 +609,7 @@
         <tbody>
             @foreach($failedTests as $test)
                 <tr class="table-row-{{ $loop->odd ? 'odd' : 'even' }}">
+                    <td>{{ $test->id }}</td>
                     <td>{{ $test->thickness_date_log->format('M d, Y') }} {{ $test->thickness_time_log }}</td>
                     <td><strong>{{ $test->operator_name }}</strong></td>
                     <td>{{ $test->production_line_name }}</td>
@@ -545,11 +643,6 @@
     <div style="flex: 1; text-align: center;">
         {{ $failedTests->links('pagination::bootstrap-5') }}
     </div>
-    <div style="flex: 1; text-align: right;">
-        <span class="pagination-info">
-            Total: <strong>{{ $failedTests->total() }}</strong> records
-        </span>
-    </div>
 </div>
 @else
 <div class="empty-state">
@@ -563,6 +656,7 @@
     @endif
 </div>
 @endif
+</div>
 @endsection
 
 @section('scripts')
