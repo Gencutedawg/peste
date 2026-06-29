@@ -61,6 +61,7 @@
                     <table class="w-full">
                         <thead class="bg-gray-50 border-b border-gray-200">
                             <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">ID</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Date & Time</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Line</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Operator</th>
@@ -79,6 +80,7 @@
                         <tbody class="divide-y divide-gray-200">
                             @forelse($weightLogs as $log)
                                 <tr class="hover:bg-gray-50 transition-colors">
+                                    <td class="px-6 py-4 text-sm text-gray-700">{{ $log->id }}</td>
                                     <td class="px-6 py-4 text-sm text-gray-900">{{ $log->weight_date_log }} {{ $log->weight_time_log }}</td>
                                     <td class="px-6 py-4 text-sm text-gray-700">{{ $log->production_line_name ?? '-' }}</td>
                                     <td class="px-6 py-4 text-sm text-gray-700">{{ $log->operator_name ?? '-' }}</td>
@@ -99,7 +101,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="13" class="px-6 py-8 text-center text-gray-500">
+                                    <td colspan="14" class="px-6 py-8 text-center text-gray-500">
                                         <i class="bi bi-inbox text-2xl mb-2 block opacity-50"></i>
                                         No weight logs found
                                     </td>
@@ -135,6 +137,7 @@
                     <table class="w-full">
                         <thead class="bg-gray-50 border-b border-gray-200">
                             <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">ID</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Date & Time</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Line</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Operator</th>
@@ -153,6 +156,7 @@
                         <tbody class="divide-y divide-gray-200">
                             @forelse($thicknessLogs as $log)
                                 <tr class="hover:bg-gray-50 transition-colors">
+                                    <td class="px-6 py-4 text-sm text-gray-700">{{ $log->id }}</td>
                                     <td class="px-6 py-4 text-sm text-gray-900">{{ $log->thickness_date_log }} {{ $log->thickness_time_log }}</td>
                                     <td class="px-6 py-4 text-sm text-gray-700">{{ $log->production_line_name ?? '-' }}</td>
                                     <td class="px-6 py-4 text-sm text-gray-700">{{ $log->operator_name ?? '-' }}</td>
@@ -173,7 +177,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="13" class="px-6 py-8 text-center text-gray-500">
+                                    <td colspan="14" class="px-6 py-8 text-center text-gray-500">
                                         <i class="bi bi-inbox text-2xl mb-2 block opacity-50"></i>
                                         No thickness logs found
                                     </td>
@@ -209,6 +213,7 @@
                     <table class="w-full">
                         <thead class="bg-gray-50 border-b border-gray-200">
                             <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">ID</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Date & Time</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Line</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Operator</th>
@@ -224,6 +229,7 @@
                         <tbody class="divide-y divide-gray-200">
                             @forelse($moistureLogs as $log)
                                 <tr class="hover:bg-gray-50 transition-colors">
+                                    <td class="px-6 py-4 text-sm text-gray-700">{{ $log->id }}</td>
                                     <td class="px-6 py-4 text-sm text-gray-900">{{ $log->moisture_date_log }} {{ $log->moisture_time_log }}</td>
                                     <td class="px-6 py-4 text-sm text-gray-700">{{ $log->production_line_name ?? '-' }}</td>
                                     <td class="px-6 py-4 text-sm text-gray-700">{{ $log->operator_name ?? '-' }}</td>
@@ -237,7 +243,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="10" class="px-6 py-8 text-center text-gray-500">
+                                    <td colspan="11" class="px-6 py-8 text-center text-gray-500">
                                         <i class="bi bi-inbox text-2xl mb-2 block opacity-50"></i>
                                         No moisture logs found
                                     </td>
