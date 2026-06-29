@@ -534,10 +534,12 @@
 
 @if($failedTests->hasPages())
     <div class="pagination-wrapper">
-        <div class="pagination-info">
+        <div style="flex: 1; text-align: center;">
+            {{ $failedTests->links('pagination::bootstrap-5') }}
+        </div>
+        <div class="pagination-info" style="flex-shrink: 0;">
             Page <strong>{{ $failedTests->currentPage() }}</strong> of <strong>{{ $failedTests->lastPage() }}</strong>
         </div>
-        {{ $failedTests->render() }}
     </div>
 @endif
 </div>
