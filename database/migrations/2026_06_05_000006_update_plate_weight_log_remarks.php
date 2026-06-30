@@ -13,7 +13,7 @@ return new class extends Migration {
             $table->foreign('weight_remark_id')
                 ->references('id')
                 ->on('weight_remarks')
-                ->onDelete('setNull');
+                ->onDelete('set null');
         });
     }
 

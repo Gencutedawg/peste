@@ -9,22 +9,22 @@ return new class extends Migration {
     {
         Schema::create('plate_moisture_log', function (Blueprint $table) {
             $table->id();
-            $table->integer('production_line_id');
+            $table->unsignedBigInteger('production_line_id');
             $table->string('production_line_name')->nullable();
             $table->unsignedBigInteger('user_id');
             $table->string('operator_name')->nullable();
-            $table->integer('time_shift_id');
+            $table->unsignedBigInteger('time_shift_id');
             $table->string('shift_name')->nullable();
             $table->unsignedBigInteger('plate_specification_id');
             $table->string('plate_code')->nullable();
-            $table->integer('run_type_id');
+            $table->unsignedBigInteger('run_type_id');
             $table->string('run_type_name')->nullable();
             $table->date('moisture_date_log');
             $table->time('moisture_time_log');
             $table->decimal('mc_result', 10, 2)->nullable();
-            $table->integer('plate_quality_status_id');
+            $table->unsignedBigInteger('plate_quality_status_id');
             $table->string('quality_status_name')->nullable();
-            $table->integer('moisture_remark_id')->nullable();
+            $table->unsignedBigInteger('moisture_remark_id')->nullable();
             $table->string('remark_name')->nullable();
             $table->timestamps();
             $table->unsignedBigInteger('created_by')->nullable();

@@ -11,6 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
+        // The base create_plate_weight_log_table migration already defines
+        // created_by/updated_by/is_active. This migration only needs to add
+        // them on databases that were created before that fix existed.
+        if (Schema::hasColumn('plate_weight_log', 'created_by')) {
+            return;
+        }
+
         Schema::table('plate_weight_log', function (Blueprint $table) {
             $table->unsignedBigInteger('created_by')->nullable()->after('weight_remark_id');
             $table->unsignedBigInteger('updated_by')->nullable()->after('created_by');
@@ -32,6 +39,10 @@ return new class extends Migration
      */
     public function down(): void
     {
+        if (!Schema::hasColumn('plate_weight_log', 'created_by')) {
+            return;
+        }
+
         Schema::table('plate_weight_log', function (Blueprint $table) {
             $table->dropForeign(['created_by']);
             $table->dropForeign(['updated_by']);

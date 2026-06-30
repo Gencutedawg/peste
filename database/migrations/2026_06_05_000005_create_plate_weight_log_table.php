@@ -59,11 +59,11 @@ return new class extends Migration {
             $table->foreign('created_by')
                 ->references('id')
                 ->on('users')
-                ->onDelete('setNull');
+                ->onDelete('set null');
             $table->foreign('updated_by')
                 ->references('id')
                 ->on('users')
-                ->onDelete('setNull');
+                ->onDelete('set null');
         });
     }
 

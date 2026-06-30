@@ -7,13 +7,7 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up(): void
     {
-        Schema::create('thickness_remarks', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('remark_name', 255);
-            $table->text('description')->nullable();
-            $table->boolean('is_active')->default(true);
-            $table->timestamps();
-        });
+        // thickness_remarks is created by 2026_06_05_000007_create_thickness_remarks_table
 
         Schema::create('plate_thickness_log', function (Blueprint $table) {
             $table->id();
@@ -51,7 +45,6 @@ return new class extends Migration {
     public function down(): void
     {
         Schema::dropIfExists('plate_thickness_log');
-        Schema::dropIfExists('thickness_remarks');
     }
 };
 
